@@ -28,6 +28,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
         });
 
         $scope.model.chartsConfig.push(configMonthlyContent);
+        $scope.model.chartsConfig.push(configViewsDistribution);
 
         $scope.model = StateSrv.load($location.path(), $scope.model);
 
@@ -235,6 +236,10 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
 
                 }],
                 yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Stunden'
+                    },
                     ticks: {
                         beginAtZero: true
                     }
@@ -262,6 +267,99 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
         }
 
         chart.series.push($scope.model.host.selected);
+
+        $scope.model.charts.push(chart);
+    };
+
+    var configViewsDistribution = function() {
+        var data = $scope.filterHost($scope.videos, $scope.model.host.selected);
+        var chart = {};
+        chart.labels = [];
+        chart.series = [];
+        chart.data = [
+            []
+        ];
+        chart.options = {
+            type: 'bar',
+            header: 'Häufigkeitsverteilung der Views',
+            width: '100%',
+            height: '400px',
+            legend: {
+                display: false
+            },
+            scales: {
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Views'
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Anzahl Videos'
+                    },
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        };
+
+        var bucketSize = 2000;
+        var totalViews = 0;
+        var viewsData = {};
+        for (var j = 0; j < data.length; j++) {
+            var video = data[j];
+            var bucket = Math.floor(video.stats.viewCount / bucketSize) * bucketSize;
+            totalViews += video.stats.viewCount;
+            viewsData[bucket] = viewsData[bucket] || 0;
+            viewsData[bucket]++;
+        }
+
+        chart.series.push($scope.model.host.selected);
+
+        var bucketCount = 0;
+        var videosCount = 0;
+        var maxBucket = -1;
+        for (var bucket in viewsData) {
+            videosCount += viewsData[bucket];
+            bucketCount++;
+            if (Number(bucket) > Number(maxBucket)) {
+                maxBucket = Number(bucket);
+            }
+        }
+
+        var averageBucketSize = videosCount / bucketCount;
+        var averageViews = Math.floor((totalViews / data.length) / bucketSize) * bucketSize;
+
+        //right (> averageViews)
+        var abortThreshold = 5;
+        var abort = abortThreshold;
+        var threshold = 0.1;
+        for (var i = averageViews; abort > 0; i += bucketSize) {
+            var value = viewsData[i] || 0;
+
+            chart.labels.push((i / 1000) + "k");
+            chart.data[0].push(value);
+
+            if (value < (threshold * averageBucketSize)) {
+                abort--;
+            }
+        }
+
+        //left (< averageViews)
+        abort = abortThreshold
+        for (var i = averageViews - bucketSize; i >= 0 && abort > 0; i -= bucketSize) {
+            var value = viewsData[i] || 0;
+
+            chart.labels.unshift((i / 1000) + "k");
+            chart.data[0].unshift(value);
+
+            if (value < (threshold * averageBucketSize)) {
+                abort--;
+            }
+        }
 
         $scope.model.charts.push(chart);
     };

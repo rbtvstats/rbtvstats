@@ -167,9 +167,16 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
             },
             scales: {
                 xAxes: [{
-
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Views'
+                    },
                 }],
                 yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Anzahl Videos'
+                    },
                     ticks: {
                         beginAtZero: true
                     }
@@ -178,10 +185,12 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
         };
 
         var bucketSize = 2000;
+        var totalViews = 0;
         var viewsData = {};
         for (var j = 0; j < data.length; j++) {
             var video = data[j];
             var bucket = Math.floor(video.stats.viewCount / bucketSize) * bucketSize;
+            totalViews += video.stats.viewCount;
             viewsData[bucket] = viewsData[bucket] || 0;
             viewsData[bucket]++;
         }
@@ -189,49 +198,44 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
         chart.series.push($scope.model.show.selected);
 
         var bucketCount = 0;
-        var averageBucketSize = 0;
+        var videosCount = 0;
         var maxBucket = -1;
         for (var bucket in viewsData) {
-            averageBucketSize += viewsData[bucket];
+            videosCount += viewsData[bucket];
             bucketCount++;
             if (Number(bucket) > Number(maxBucket)) {
                 maxBucket = Number(bucket);
             }
         }
 
-        averageBucketSize = averageBucketSize / bucketCount;
+        var averageBucketSize = videosCount / bucketCount;
+        var averageViews = Math.floor((totalViews / data.length) / bucketSize) * bucketSize;
 
-        var trim = false;
-        var thresholdMax = 3;
-        var start = thresholdMax;
-        var stop = thresholdMax * 2;
+        //right (> averageViews)
+        var abortThreshold = 5;
+        var abort = abortThreshold;
         var threshold = 0.1;
-        for (var i = 0; i <= maxBucket && stop > 0; i += bucketSize) {
+        for (var i = averageViews; abort > 0; i += bucketSize) {
             var value = viewsData[i] || 0;
 
             chart.labels.push((i / 1000) + "k");
             chart.data[0].push(value);
 
-            if (start == 0 || i >= maxBucket) {
-                if (!trim) {
-                    trim = true;
-                    var num = thresholdMax + 1;
-                    var trimLeftCount = chart.data[0].length - num;
-                    if (trimLeftCount > 0) {
-                        chart.labels.splice(0, trimLeftCount);
-                        chart.data[0].splice(0, trimLeftCount);
-                    }
-                }
+            if (value < (threshold * averageBucketSize)) {
+                abort--;
+            }
+        }
 
-                if (value < (threshold * averageBucketSize)) {
-                    stop--;
-                }
-            } else {
-                if (value > (threshold * averageBucketSize)) {
-                    start--;
-                } else if (start < thresholdMax) {
-                    start++;
-                }
+        //left (< averageViews)
+        abort = abortThreshold
+        for (var i = averageViews - bucketSize; i >= 0 && abort > 0; i -= bucketSize) {
+            var value = viewsData[i] || 0;
+
+            chart.labels.unshift((i / 1000) + "k");
+            chart.data[0].unshift(value);
+
+            if (value < (threshold * averageBucketSize)) {
+                abort--;
             }
         }
 

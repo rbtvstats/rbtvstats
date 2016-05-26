@@ -142,10 +142,14 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
             },
             scales: {
                 xAxes: [{
-                    stacked: true,
+                    stacked: true
                 }],
                 yAxes: [{
-                    stacked: true
+                    stacked: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Stunden'
+                    }
                 }]
             }
         };
@@ -198,10 +202,14 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
             },
             scales: {
                 xAxes: [{
-                    stacked: true,
+                    stacked: true
                 }],
                 yAxes: [{
-                    stacked: true
+                    stacked: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Views'
+                    }
                 }]
             }
         };
@@ -254,9 +262,17 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
             scales: {
                 xAxes: [{
                     stacked: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Views'
+                    }
                 }],
                 yAxes: [{
                     stacked: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Anzahl Videos'
+                    },
                     ticks: {
                         beginAtZero: true
                     }
@@ -347,11 +363,13 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
             },
             scales: {
                 xAxes: [{
-                    //stacked: true
+
                 }],
                 yAxes: [{
-                    //stacked: true,
-                    //display: false
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Positive Bewertungen (%)'
+                    },
                     ticks: {
                         beginAtZero: true
                     }
