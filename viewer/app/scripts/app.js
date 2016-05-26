@@ -12,10 +12,11 @@ var app = angular.module('rbtvstatsApp', [
     'ngRoute',
     'ngTable',
     'chart.js',
-    'ui.select'
+    'ui.select',
+    'angular-loading-bar'
 ]);
 
-app.config(function($routeProvider, ChartJsProvider) {
+app.config(function($routeProvider, ChartJsProvider, cfpLoadingBarProvider) {
     $routeProvider
     .when('/channels', {
         templateUrl: 'views/channels.html',
@@ -36,6 +37,9 @@ app.config(function($routeProvider, ChartJsProvider) {
     otherwise({
         redirectTo: '/channels'
     });
+
+    cfpLoadingBarProvider.includeSpinner = false;
+    cfpLoadingBarProvider.latencyThreshold = 500;
 
     ChartJsProvider.setOptions({
         responsive: true,

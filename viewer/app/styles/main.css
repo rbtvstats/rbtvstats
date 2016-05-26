@@ -5,6 +5,7 @@ html {
 
 body {
     margin-bottom: 80px;
+    min-width: 800px;
 }
 
 [ng\:cloak],
@@ -29,10 +30,6 @@ body {
 
 .max-width {
     max-width: 1400px;
-}
-
-.spacing {
-    margin-right: 20px;
 }
 
 .stats {}
@@ -82,6 +79,15 @@ body {
     cursor: pointer;
 }
 
+@media (min-width: 768px) {
+    ul.nav > li:first-of-type {
+        border-left: 1px solid #DFDFDF;
+    }
+    ul.nav > li {
+        border-right: 1px solid #DFDFDF;
+    }
+}
+
 .ui-select-placeholder,
 .ui-select-match-text {
     width: 100%;
@@ -95,5 +101,9 @@ body {
 }
 
 .ng-table-pagination {
+    margin-bottom: 0;
+}
+
+.breadcrumb {
     margin-bottom: 0;
 }

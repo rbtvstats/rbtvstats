@@ -1,6 +1,6 @@
 <div class="content max-width">
     <div class="select">
-        <ui-select ng-model="model.host.selected" on-select="update()">
+        <ui-select ng-if="hosts.length" ng-model="model.host.selected" on-select="update()">
             <ui-select-match placeholder="Auswählen..">
                 <span ng-bind="$select.selected"></span>
             </ui-select-match>
