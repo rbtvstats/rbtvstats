@@ -1,0 +1,86 @@
+<div class="content max-width">
+    <div class="select">
+        <ui-select ng-model="model.show.selected" on-select="update()">
+            <ui-select-match placeholder="Auswählen..">
+                <span ng-bind="$select.selected"></span>
+            </ui-select-match>
+            <ui-select-choices repeat="item in (shows | filter: $select.search | orderBy)">
+                <span ng-bind="item"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+    <div ng-if="model.show.selected">
+        <div class="stats panel panel-default" ng-if="model.stats.totalVideos">
+            <div class="panel-heading"><strong>Statistiken</strong></div>
+            <div class="panel-body">
+                <table>
+                    <tr>
+                        <td width="250">Anzahl Videos</td>
+                        <td>{{model.stats.totalVideos}}</td>
+                    </tr>
+                    <tr>
+                        <td>Ø Views pro Video</td>
+                        <td>{{model.stats.averageViews}}</td>
+                    </tr>
+                    <tr>
+                        <td>Top {{model.stats.topHosts.length}} Moderatoren</td>
+                        <td>
+                            <div class="topVideo" ng-if="host" ng-repeat="host in model.stats.topHosts track by $index">
+                                <label>{{$index + 1}}.</label>
+                                {{host.name}}
+                                <span class="info"> • {{host.count}} Videos</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Top {{model.stats.topVideos.length}} meiste Views</td>
+                        <td>
+                            <div class="topVideo" ng-if="video" ng-repeat="video in model.stats.topVideos track by $index">
+                                <label>{{$index + 1}}.</label>
+                                <a href="https://www.youtube.com/watch?v={{video.id}}" target="_blank">{{video.title}}</a>
+                                <span class="info"> • {{video.stats.viewCount}} Views</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Meiste positive Bewertungen</td>
+                        <td>
+                            <a href="https://www.youtube.com/watch?v={{model.stats.mostLikes.id}}" target="_blank">{{model.stats.mostLikes.title}}</a>
+                            <span class="info"> • {{model.stats.mostLikes.stats.likeCount}} Bewertungen</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Meiste negative Bewertungen</td>
+                        <td>
+                            <a href="https://www.youtube.com/watch?v={{model.stats.mostDislikes.id}}" target="_blank">{{model.stats.mostDislikes.title}}</a>
+                            <span class="info"> • {{model.stats.mostDislikes.stats.dislikeCount}} Bewertungen</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="chart panel panel-default" ng-repeat="chart in model.charts">
+            <div class="panel-heading"><strong>{{chart.options.header}}</strong></div>
+            <div class="panel-body" style="width:{{chart.options.width}}; height: {{chart.options.height}}">
+                <canvas id="chart" class="chart-base" chart-type="chart.options.type" chart-options="chart.options" chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series"></canvas>
+            </div>
+        </div>
+        <div class="panel panel-default" ng-if="model.filteredVideos.length">
+            <div class="panel-heading"><strong>Videos</strong></div>
+            <div class="panel-body">
+                <table class="table table-striped" ng-table="model.videosTable" show-filter="true">
+                    <tr ng-repeat="video in $data">
+                        <td title="'Titel'" filter="{ title: 'text'}" sortable="'title'"><a target="_blank" href="https://www.youtube.com/watch?v={{video.id}}">{{video.title}}</a></td>
+                        <td width="180" filter="{ hosts: 'text'}" title="'Personen'" sortable="'hosts'">{{toList(video.hosts)}}</td>
+                        <td width="200" title="'Kanal'" sortable="'channel'">{{video.channel}}</td>
+                        <td width="80" title="'Laufzeit'" sortable="'length'">{{video.length | duration}}</td>
+                        <td width="80" title="'Datum'" sortable="'published'">{{video.published | createDate | date:"dd.MM.yyyy"}}</td>
+                        <td width="80" title="'Views'" sortable="'stats.viewCount'">{{video.stats.viewCount}}</td>
+                        <td width="80" title="'Likes'" sortable="'stats.likeCount'">{{video.stats.likeCount}}</td>
+                        <td width="80" title="'Dislikes'" sortable="'stats.dislikeCount'">{{video.stats.dislikeCount}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

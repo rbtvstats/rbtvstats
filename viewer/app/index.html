@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
+    <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+</head>
+
+<body ng-controller="DataCtrl" ng-app="rbtvstatsApp" ng-cloak>
+    <nav class="navbar navbar-default" ng-controller="NavigationCtrl">
+        <div class="container-fluid max-width">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#/channels">RBTV Youtube Statistiken</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    <li ng-class="{ active: isActive('/channels')}"><a href="#/channels">Kanal</a></li>
+                    <li ng-class="{ active: isActive('/shows')}"><a href="#/shows">Formate</a></li>
+                    <li ng-class="{ active: isActive('/hosts')}"><a href="#/hosts">Moderatoren</a></li>
+                    <li ng-class="{ active: isActive('/videos')}"><a href="#/videos">Videos</a></li>
+                </ul>
+                <p class="navbar-text navbar-right">
+                    <span ng-if="!loadingData">Daten aktualisiert: {{metadata.time | createDate | date:"dd.MM.yyyy HH:mm"}}</span>
+                    <span ng-if="loadingData"><i class="fa fa-spinner fa-pulse fa-fw"></i>Lade Daten</span>
+                </p>
+            </div>
+        </div>
+    </nav>
+    <div ng-view></div>
+    <footer class="footer">
+        <div class="content max-width">
+            <a href="https://www.rocketbeans.tv/" target="_blank" class="spacing">Rocketbeans Homepage</a>
+            <a href="https://www.twitch.tv/rocketbeanstv" target="_blank" class="spacing">Rocketbeans Twitch</a>
+            <a href="https://www.reddit.com/r/rocketbeans" target="_blank" class="spacing">Rocketbeans Reddit</a>
+            <a href="javascript:window.scrollTo(0,0)" class="pull-right">Nach oben</a>
+        </div>
+    </footer>
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+    <script>
+    ! function(A, n, g, u, l, a, r) {
+        A.GoogleAnalyticsObject = l, A[l] = A[l] || function() {
+                (A[l].q = A[l].q || []).push(arguments)
+            }, A[l].l = +new Date, a = n.createElement(g),
+            r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+    }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-78347701-1');
+    ga('send', 'pageview');
+    </script>
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-ui-select/dist/select.js"></script>
+    <script src="bower_components/Chart.js/dist/Chart.js"></script>
+    <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+    <script src="bower_components/ng-table/dist/ng-table.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/filters/duration.js"></script>
+    <script src="scripts/filters/createdate.js"></script>
+    <script src="scripts/services/state.js"></script>
+    <script src="scripts/services/data.js"></script>
+    <script src="scripts/controllers/navigation.js"></script>
+    <script src="scripts/controllers/channels.js"></script>
+    <script src="scripts/controllers/hosts.js"></script>
+    <script src="scripts/controllers/shows.js"></script>
+    <script src="scripts/controllers/videos.js"></script>
+    <script src="scripts/controllers/data.js"></script>
+    <!-- endbuild -->
+</body>
+
+</html>
