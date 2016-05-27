@@ -2,48 +2,14 @@
     <div class="stats panel panel-default" ng-repeat="(channel, stats) in model.stats">
         <div class="panel-heading"><strong>{{channel}} Statistiken</strong></div>
         <div class="panel-body">
-            <table>
-                <tr>
-                    <td width="250">Anzahl Videos</td>
-                    <td>{{stats.totalVideos}}</td>
-                </tr>
-                <tr>
-                    <td>Ø Views pro Video</td>
-                    <td>{{stats.averageViews}}</td>
-                </tr>
-                <tr>
-                    <td>Ø Videolänge</td>
-                    <td>{{stats.averageLength | duration}}</td>
-                </tr>
-                <tr>
-                    <td>Ø Videos pro Tag</td>
-                    <td>{{stats.averageVideos}}</td>
-                </tr>
-                <tr>
-                    <td>Top {{stats.topVideos.length}} meiste Views</td>
-                    <td>
-                        <div ng-repeat="video in stats.topVideos track by $index">
-                            <label>{{$index + 1}}. {{cohost.host}}</label>
-                            <a href="https://www.youtube.com/watch?v={{video.id}}" target="_blank">{{video.title}}</a>
-                            <span class="info"> • {{video.stats.viewCount}} Views</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Meiste positive Bewertungen</td>
-                    <td>
-                        <a href="https://www.youtube.com/watch?v={{stats.mostLikes.id}}" target="_blank">{{stats.mostLikes.title}}</a>
-                        <span class="info"> • {{stats.mostLikes.stats.likeCount}} Bewertungen</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Meiste negative Bewertungen</td>
-                    <td>
-                        <a href="https://www.youtube.com/watch?v={{stats.mostDislikes.id}}" target="_blank">{{stats.mostDislikes.title}}</a>
-                        <span class="info"> • {{stats.mostDislikes.stats.dislikeCount}} Bewertungen</span>
-                    </td>
-                </tr>
-            </table>
+            <div class="container-fluid">
+                <div class="row" ng-repeat="stat in stats">
+                    <div class="col-md-3"><strong>{{stat.title}}</strong></div>
+                    <div class="col-md-9">
+                        <div stat="stat.value"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="chart panel panel-default" ng-repeat="chart in model.charts">

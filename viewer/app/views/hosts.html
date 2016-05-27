@@ -10,71 +10,17 @@
         </ui-select>
     </div>
     <div ng-if="model.host.selected">
-        <div class="stats panel panel-default" ng-if="model.stats.totalVideos">
+        <div class="stats panel panel-default" ng-if="model.stats.length">
             <div class="panel-heading"><strong>Statistiken</strong></div>
             <div class="panel-body">
-                <table>
-                    <tr>
-                        <td width="250">Anzahl Videos</td>
-                        <td>{{model.stats.totalVideos}}</td>
-                    </tr>
-                    <tr>
-                        <td>Ø Views pro Video</td>
-                        <td>{{model.stats.averageViews}}</td>
-                    </tr>
-                    <tr>
-                        <td>Ø Videos pro Tag</td>
-                        <td>{{model.stats.averageVideos}}</td>
-                    </tr>
-                    <tr>
-                        <td>Videos ohne Co-Moderatoren</td>
-                        <td>{{model.stats.soloVideos}}</td>
-                    </tr>
-                    <tr>
-                        <td>Top {{model.stats.topCohosts.length}} Co-Moderatoren</td>
-                        <td>
-                            <div class="topVideo" ng-if="cohost" ng-repeat="cohost in model.stats.topCohosts track by $index">
-                                <label>{{$index + 1}}.</label>
-                                {{cohost.name}}
-                                <span class="info"> • {{cohost.count}} Videos</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Top {{model.stats.topShows.length}} Formate</td>
-                        <td>
-                            <div class="topVideo" ng-if="show" ng-repeat="show in model.stats.topShows track by $index">
-                                <label>{{$index + 1}}.</label>
-                                {{show.name}}
-                                <span class="info"> • {{show.count}} Videos</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Top {{model.stats.topVideos.length}} meiste Views</td>
-                        <td>
-                            <div class="topVideo" ng-if="video" ng-repeat="video in model.stats.topVideos track by $index">
-                                <label>{{$index + 1}}.</label>
-                                <a href="https://www.youtube.com/watch?v={{video.id}}" target="_blank">{{video.title}}</a>
-                                <span class="info"> • {{video.stats.viewCount}} Views</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Meiste positive Bewertungen</td>
-                        <td>
-                            <a href="https://www.youtube.com/watch?v={{model.stats.mostLikes.id}}" target="_blank">{{model.stats.mostLikes.title}}</a>
-                            <span class="info"> • {{model.stats.mostLikes.stats.likeCount}} Bewertungen</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Meiste negative Bewertungen</td>
-                        <td>
-                            <a href="https://www.youtube.com/watch?v={{model.stats.mostDislikes.id}}" target="_blank">{{model.stats.mostDislikes.title}}</a>
-                            <span class="info"> • {{model.stats.mostDislikes.stats.dislikeCount}} Bewertungen</span>
-                        </td>
-                    </tr>
-                </table>
+                <div class="container-fluid">
+                    <div class="row" ng-repeat="stat in model.stats">
+                        <div class="col-md-3"><strong>{{stat.title}}</strong></div>
+                        <div class="col-md-9">
+                            <div stat="stat.value"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="chart panel panel-default" ng-repeat="chart in model.charts">
@@ -85,7 +31,7 @@
         </div>
         <div class="panel panel-default" ng-if="model.filteredVideos.length">
             <div class="panel-heading"><strong>Videos</strong></div>
-            <div class="panel-body">
+            <div class="panel-body container-table">
                 <table class="table table-striped" ng-table="model.videosTable" show-filter="true">
                     <tr ng-repeat="video in $data">
                         <td title="'Titel'" filter="{ title: 'text'}" data-sortable="'title'"><a target="_blank" href="https://www.youtube.com/watch?v={{video.id}}">{{video.title}}</a></td>

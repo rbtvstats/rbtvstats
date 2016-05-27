@@ -1,14 +1,16 @@
 <div class="content max-width">
-    <table class="table table-striped" ng-table="model.videosTable" show-filter="true">
-        <tr ng-repeat="video in $data">
-            <td title="'Titel'" filter="{ title: 'text'}" data-sortable="'title'"><a target="_blank" href="https://www.youtube.com/watch?v={{video.id}}">{{video.title}}</a></td>
-            <td width="180" filter="{ hosts: 'text'}" title="'Personen'" data-sortable="'hosts'">{{toList(video.hosts)}}</td>
-            <td width="200" title="'Kanal'" data-sortable="'channel'">{{video.channel}}</td>
-            <td width="80" title="'Laufzeit'" data-sortable="'length'">{{video.length | duration}}</td>
-            <td width="80" title="'Datum'" data-sortable="'published'">{{video.published | createDate | date:"dd.MM.yyyy"}}</td>
-            <td width="80" title="'Views'" data-sortable="'stats.viewCount'">{{video.stats.viewCount}}</td>
-            <td width="80" title="'Likes'" data-sortable="'stats.likeCount'">{{video.stats.likeCount}}</td>
-            <td width="80" title="'Dislikes'" data-sortable="'stats.dislikeCount'">{{video.stats.dislikeCount}}</td>
-        </tr>
-    </table>
+    <div class="container-table">
+        <table class="table table-striped" ng-table="model.videosTable" show-filter="true">
+            <tr ng-repeat="video in $data">
+                <td title="'Titel'" filter="{ title: 'text'}" data-sortable="'title'"><a target="_blank" href="https://www.youtube.com/watch?v={{video.id}}">{{video.title}}</a></td>
+                <td width="180" filter="{ hosts: 'text'}" title="'Personen'" data-sortable="'hosts'">{{toList(video.hosts)}}</td>
+                <td width="200" title="'Kanal'" data-sortable="'channel'">{{video.channel}}</td>
+                <td width="80" title="'Laufzeit'" data-sortable="'length'">{{video.length | duration}}</td>
+                <td width="80" title="'Datum'" data-sortable="'published'">{{video.published | createDate | date:"dd.MM.yyyy"}}</td>
+                <td width="80" title="'Views'" data-sortable="'stats.viewCount'">{{video.stats.viewCount}}</td>
+                <td width="80" title="'Likes'" data-sortable="'stats.likeCount'">{{video.stats.likeCount}}</td>
+                <td width="80" title="'Dislikes'" data-sortable="'stats.dislikeCount'">{{video.stats.dislikeCount}}</td>
+            </tr>
+        </table>
+    </div>
 </div>

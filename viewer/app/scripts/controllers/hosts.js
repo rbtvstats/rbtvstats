@@ -71,17 +71,30 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
 
         if ($scope.model.host.selected) {
             var data = $scope.filterHost($scope.videos, $scope.model.host.selected);
+            var stats = [];
 
             //totalVideos
-            var stats = {};
-            stats.totalVideos = data.length;
+            var totalVideos = data.length;
+            stats.push({
+                title: 'Anzahl Videos',
+                value: {
+                    type: 'number',
+                    text: totalVideos
+                }
+            });
 
             //averageViews
             var totalViews = 0;
             for (var j = 0; j < data.length; j++) {
                 totalViews += data[j].stats.viewCount;
             }
-            stats.averageViews = Math.round(totalViews / stats.totalVideos);
+            stats.push({
+                title: 'Ø Views pro Video',
+                value: {
+                    type: 'number',
+                    text: Math.round(totalViews / totalVideos)
+                }
+            });
 
             //averageVideos
             var min = Number.MAX_VALUE;
@@ -100,7 +113,13 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
             var totalDays = max - min;
             totalDays = totalDays / (1000 * 60 * 60 * 24);
 
-            stats.averageVideos = Math.round((stats.totalVideos / totalDays) * 100) / 100;
+            stats.push({
+                title: 'Ø Videos pro Tag',
+                value: {
+                    type: 'number',
+                    text: Math.round((totalVideos / totalDays) * 100) / 100
+                }
+            });
 
             //soloVideos
             var soloVideos = 0;
@@ -114,7 +133,13 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
                 }
             }
 
-            stats.soloVideos = soloVideos;
+            stats.push({
+                title: 'Videos ohne Co-Moderatoren',
+                value: {
+                    type: 'number',
+                    text: soloVideos
+                }
+            });
 
             //topCohosts
             var allCohosts = {};
@@ -148,7 +173,22 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
                 }
             }
 
-            stats.topCohosts = topCohosts;
+            var values = [];
+            for (var j = 0; j < topCohosts.length; j++) {
+                var topCohost = topCohosts[j];
+                if (topCohost != null) {
+                    values.push({
+                        type: 'text',
+                        text: topCohost.name,
+                        info: topCohost.count + ' Videos'
+                    });
+                }
+            }
+
+            stats.push({
+                title: 'Top ' + topCohosts.length + ' Co-Moderatoren',
+                value: values
+            });
 
             //topShows
             var allShows = {};
@@ -180,7 +220,22 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
                 }
             }
 
-            stats.topShows = topShows;
+            var values = [];
+            for (var j = 0; j < topShows.length; j++) {
+                var topShow = topShows[j];
+                if (topShow != null) {
+                    values.push({
+                        type: 'text',
+                        text: topShow.name,
+                        info: topShow.count + ' Videos'
+                    });
+                }
+            }
+
+            stats.push({
+                title: 'Top ' + topShows.length + ' Formate',
+                value: values
+            });
 
             //topVideos
             var topVideos = [null, null, null, null, null];
@@ -194,7 +249,24 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
                     }
                 }
             }
-            stats.topVideos = topVideos;
+
+            var values = [];
+            for (var j = 0; j < topVideos.length; j++) {
+                var video = topVideos[j];
+                if (video != null) {
+                    values.push({
+                        type: 'url',
+                        text: video.title,
+                        url: 'https://www.youtube.com/watch?v=' + video.id,
+                        info: video.stats.viewCount + ' Views'
+                    });
+                }
+            }
+
+            stats.push({
+                title: 'Top ' + topVideos.length + ' meiste Views',
+                value: values
+            });
 
             //mostLikes + mostDislikes
             var mostLikes = null;
@@ -208,8 +280,25 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
                     mostDislikes = video;
                 }
             }
-            stats.mostLikes = mostLikes;
-            stats.mostDislikes = mostDislikes;
+
+            stats.push(stats.mostLikes = {
+                title: 'Meiste positive Bewertungen',
+                value: {
+                    type: 'url',
+                    text: mostLikes.title,
+                    url: 'https://www.youtube.com/watch?v=' + mostLikes.id,
+                    info: mostLikes.stats.likeCount + ' Bewertungen'
+                }
+            });
+            stats.push({
+                title: 'Meiste negative Bewertungen',
+                value: {
+                    type: 'url',
+                    text: mostDislikes.title,
+                    url: 'https://www.youtube.com/watch?v=' + mostDislikes.id,
+                    info: mostDislikes.stats.dislikeCount + ' Bewertungen'
+                }
+            });
 
             $scope.model.stats = stats;
         }

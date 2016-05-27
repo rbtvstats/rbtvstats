@@ -24,6 +24,28 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
 
         $scope.model = StateSrv.load($location.path(), $scope.model);
 
+        $scope.model.stats2 = [];
+        $scope.model.stats2.push({
+            title: 'A long title',
+            type: 'number',
+            value: {
+                text: 123456
+            }
+        });
+        $scope.model.stats2.push({
+            title: 'A long title 2',
+            type: 'list',
+            value: [{
+                text: 'foobar',
+                url: 'google.de',
+                info: '10 Videos'
+            }, {
+                text: 'foobar 2',
+                url: 'google.de',
+                info: '5 Videos'
+            }]
+        });
+
         $scope.$on('updateData', function(event, args) {
             $scope.update();
         });
@@ -58,10 +80,17 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
             for (var i = 0; i < data.length; i++) {
                 var channel = data[i].key;
                 var dataset = data[i].value;
+                var stats = [];
 
                 //totalVideos
-                var stats = {};
-                stats.totalVideos = dataset.length;
+                var totalVideos = dataset.length;
+                stats.push({
+                    title: 'Anzahl Videos',
+                    value: {
+                        type: 'number',
+                        text: totalVideos
+                    }
+                });
 
                 //averageViews + averageLength
                 var totalViews = 0;
@@ -70,8 +99,20 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
                     totalViews += dataset[j].stats.viewCount;
                     totalLength += dataset[j].length;
                 }
-                stats.averageViews = Math.round(totalViews / stats.totalVideos);
-                stats.averageLength = Math.round(totalLength / stats.totalVideos);
+                stats.push({
+                    title: 'Ø Views pro Video',
+                    value: {
+                        type: 'number',
+                        text: Math.round(totalViews / totalVideos)
+                    }
+                });
+                stats.push({
+                    title: 'Ø Videolänge',
+                    value: {
+                        type: 'duration',
+                        text: Math.round(totalLength / totalVideos)
+                    }
+                });
 
                 //averageVideos
                 var min = Number.MAX_VALUE;
@@ -90,7 +131,13 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
                 var totalDays = max - min;
                 totalDays = totalDays / (1000 * 60 * 60 * 24);
 
-                stats.averageVideos = Math.round((stats.totalVideos / totalDays) * 100) / 100;
+                stats.push({
+                    title: 'Ø Videos pro Tag',
+                    value: {
+                        type: 'number',
+                        text: Math.round((totalVideos / totalDays) * 100) / 100
+                    }
+                });
 
                 //topVideos
                 var topVideos = [null, null, null, null, null];
@@ -104,7 +151,24 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
                         }
                     }
                 }
-                stats.topVideos = topVideos;
+
+                var values = [];
+                for (var j = 0; j < topVideos.length; j++) {
+                    var video = topVideos[j];
+                    if (video != null) {
+                        values.push({
+                            type: 'url',
+                            text: video.title,
+                            url: 'https://www.youtube.com/watch?v=' + video.id,
+                            info: video.stats.viewCount + ' Views'
+                        });
+                    }
+                }
+
+                stats.push({
+                    title: 'Top ' + topVideos.length + ' meiste Views',
+                    value: values
+                });
 
                 //mostLikes + mostDislikes
                 var mostLikes = null;
@@ -118,8 +182,26 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
                         mostDislikes = video;
                     }
                 }
-                stats.mostLikes = mostLikes;
-                stats.mostDislikes = mostDislikes;
+
+                stats.push(stats.mostLikes = {
+                    title: 'Meiste positive Bewertungen',
+                    value: {
+                        type: 'url',
+                        text: mostLikes.title,
+                        url: 'https://www.youtube.com/watch?v=' + mostLikes.id,
+                        info: mostLikes.stats.likeCount + ' Bewertungen'
+                    }
+                });
+
+                stats.push({
+                    title: 'Meiste negative Bewertungen',
+                    value: {
+                        type: 'url',
+                        text: mostDislikes.title,
+                        url: 'https://www.youtube.com/watch?v=' + mostDislikes.id,
+                        info: mostDislikes.stats.dislikeCount + ' Bewertungen'
+                    }
+                });
 
                 $scope.model.stats[channel] = stats;
             }

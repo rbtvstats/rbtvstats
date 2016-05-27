@@ -5,7 +5,6 @@ html {
 
 body {
     margin-bottom: 80px;
-    min-width: 800px;
 }
 
 [ng\:cloak],
@@ -34,20 +33,16 @@ body {
 
 .stats {}
 
-.stats .topVideo {
-    margin-bottom: 3px;
-}
-
 .stats .info {
     color: #888;
 }
 
-.stats td {
-    padding: 5px;
+.stats .row {
+    padding: 5px 0;
     vertical-align: top;
 }
 
-.stats tr:nth-child(even) {
+.stats .row:nth-child(even) {
     background-color: #f9f9f9;
 }
 
@@ -56,27 +51,51 @@ body {
     font-size: 1.4em;
 }
 
-.stats table {
-    width: 100%;
+.stats .array > * {
+    line-height: 1.8em;
 }
 
-.stats td:first-child {
-    font-weight: bold;
+.stats .array > div > div {
+    display: table-cell;
+}
+
+.stats .array > div > div:first-child {
+    padding-right: 5px;
 }
 
 .chart {}
 
 .select {
-    width: 300px;
+    max-width: 360px;
     margin-bottom: 20px;
-}
-
-.datatable th {
-    cursor: pointer;
 }
 
 .pagination a {
     cursor: pointer;
+}
+
+.container-table {
+    overflow-x: auto;
+    margin: 5px;
+}
+
+.container-table > * {
+    min-width: 600px;
+}
+
+@media (max-width: 900px) {
+    .container-table .table tr td:nth-of-type(3),
+    .container-table .table tr th:nth-of-type(3),
+    .container-table .table tr td:nth-of-type(4),
+    .container-table .table tr th:nth-of-type(4),
+    .container-table .table tr td:nth-of-type(6),
+    .container-table .table tr th:nth-of-type(6),
+    .container-table .table tr td:nth-of-type(7),
+    .container-table .table tr th:nth-of-type(7),
+    .container-table .table tr td:nth-of-type(8),
+    .container-table .table tr th:nth-of-type(8) {
+        display: none;
+    }
 }
 
 @media (min-width: 768px) {
@@ -104,6 +123,19 @@ body {
     margin-bottom: 0;
 }
 
-.breadcrumb {
-    margin-bottom: 0;
+.links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.links > * {
+    display: inline;
+    margin-right: 10px;
+}
+
+@media (max-width: 600px) {
+    .links > * {
+        display: block;
+    }
 }
