@@ -1,6 +1,6 @@
 <div class="content max-width">
     <div class="select">
-        <ui-select ng-if="shows.length" ng-model="model.show.selected" on-select="update()">
+        <ui-select ng-if="shows.length" ng-model="show.selected" on-select="update()">
             <ui-select-match placeholder="Auswählen..">
                 <span ng-bind="$select.selected"></span>
             </ui-select-match>
@@ -9,7 +9,7 @@
             </ui-select-choices>
         </ui-select>
     </div>
-    <div ng-if="model.show.selected">
+    <div ng-if="model.show == show.selected">
         <div class="stats panel panel-default" ng-if="model.stats.length">
             <div class="panel-heading"><strong>Statistiken</strong></div>
             <div class="panel-body">

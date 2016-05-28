@@ -17,6 +17,7 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/fontcustom.css">
     <!-- endbuild -->
 </head>
 
@@ -50,12 +51,16 @@
     <div ng-view></div>
     <footer class="footer">
         <div class="content max-width">
-            <ol class="links">
-                <li><a href="https://www.rocketbeans.tv/" target="_blank">Rocketbeans Homepage</a></li>
-                <li><a href="https://www.twitch.tv/rocketbeanstv" target="_blank">Rocketbeans Twitch</a></li>
-                <li><a href="https://www.reddit.com/r/rocketbeans" target="_blank">Rocketbeans Reddit</a></li>
-                <li><a href="javascript:void(0)" class="pull-right" ng-click="scrollTop()">Nach oben</a></li>
-            </ol>
+            <ul class="links left">
+                <li><a href="https://www.rocketbeans.tv/" target="_blank"><i class="icon-rbtv"></i> Homepage</a></li>
+                <li><a href="https://www.twitch.tv/rocketbeanstv" target="_blank"><i class="fa fa-twitch"></i> Twitch</a></li>
+                <li><a href="https://www.youtube.com/channel/UCQvTDmHza8erxZqDkjQ4bQQ" target="_blank"><i class="fa fa-youtube-play"></i> Rocket Beans TV</a></li>
+                <li><a href="https://www.youtube.com/channel/UCtSP1OA6jO4quIGLae7Fb4g" target="_blank"><i class="fa fa-youtube-play"></i> Rocket Beans TV Let's Play</a></li>
+                <li><a href="https://www.reddit.com/r/rocketbeans" target="_blank"><i class="fa fa-reddit"></i> Reddit</a></li>
+            </ul>
+            <ul class="links right">
+                <li><a href="javascript:void(0)" ng-click="scrollTop()">Nach oben</a></li>
+            </ul>
         </div>
     </footer>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->

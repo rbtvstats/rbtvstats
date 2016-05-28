@@ -9,15 +9,14 @@
  */
 app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParams, StateSrv, DataSrv) {
     $scope.init = function() {
+        //model (default)
         $scope.model = {};
+        $scope.model.show = null;
         $scope.model.filteredVideos = [];
         $scope.model.dataLatest = 0;
         $scope.model.chartsConfig = [];
         $scope.model.charts = [];
         $scope.model.stats = {};
-        $scope.model.show = {
-            selected: null
-        };
         $scope.model.videosTable = new NgTableParams({
             sorting: {
                 published: 'desc'
@@ -29,17 +28,21 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
 
         $scope.model.chartsConfig.push(configViewsDistribution);
 
+        //load model state
         $scope.model = StateSrv.load($location.path(), $scope.model);
-        $scope.model.show.selected = $scope.getShow() || $scope.model.show.selected;
+
+        $scope.show = {
+            selected: $scope.getShow() || $scope.model.show || 'Bohn Jour'
+        };
 
         $scope.$on('updateData', function(event, args) {
             $scope.update();
         });
 
-        $scope.$watch('model.show.selected', function(newVal, oldVal) {
+        $scope.$watch('show.selected', function(newVal, oldVal) {
             var param = {};
-            if ($scope.model.show.selected) {
-                param[$scope.model.show.selected] = true;
+            if ($scope.show.selected) {
+                param[$scope.show.selected] = true;
             }
             $location.search(param);
             $scope.update();
@@ -48,14 +51,10 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
         $scope.$on("$routeUpdate", function(event, route) {
             var params = $location.search();
             for (var show in params) {
-                $scope.model.show.selected = show;
+                $scope.show.selected = show;
                 break;
             }
         });
-
-        if (!$scope.model.show.selected) {
-            $scope.model.show.selected = 'Bohn Jour';
-        }
     };
 
     $scope.getShow = function() {
@@ -68,178 +67,179 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
     };
 
     $scope.update = function() {
-        $scope.updateCharts();
-        $scope.updateStats();
+        if ($scope.show.selected != $scope.model.show) {
+            if ($scope.shows.indexOf($scope.show.selected) > -1) {
+                $scope.model.dataLatest = $scope.metadata.time;
+                $scope.model.show = $scope.show.selected;
+                console.log('update: ', $scope.model.show);
 
-        //filter videos
-        var filteredVideos = $scope.filterShow($scope.videos, $scope.model.show.selected);
-        $scope.model.filteredVideos.length = 0;
-        for (var i = 0; i < filteredVideos.length; i++) {
-            $scope.model.filteredVideos.push(filteredVideos[i]);
+                $scope.updateCharts();
+                $scope.updateStats();
+
+                //filter videos
+                var filteredVideos = $scope.filterShow($scope.videos, $scope.model.show);
+                $scope.model.filteredVideos.length = 0;
+                for (var i = 0; i < filteredVideos.length; i++) {
+                    $scope.model.filteredVideos.push(filteredVideos[i]);
+                }
+
+                $scope.model.videosTable.reload();
+            }
         }
-
-        $scope.model.videosTable.reload();
-
-        $scope.model.dataLatest = $scope.metadata.time;
     };
 
     $scope.updateCharts = function() {
         $scope.model.charts = [];
-        if ($scope.shows.indexOf($scope.model.show.selected) > -1) {
-            for (var i = 0; i < $scope.model.chartsConfig.length; i++) {
-                $scope.model.chartsConfig[i]();
-            }
+        for (var i = 0; i < $scope.model.chartsConfig.length; i++) {
+            $scope.model.chartsConfig[i]();
         }
     };
 
     $scope.updateStats = function() {
         $scope.model.stats = {};
-        if ($scope.shows.indexOf($scope.model.show.selected) > -1) {
-            var data = $scope.filterShow($scope.videos, $scope.model.show.selected);
-            var stats = [];
 
-            //totalVideos
-            var totalVideos = data.length;
-            stats.push({
-                title: 'Anzahl Videos',
-                value: {
-                    type: 'number',
-                    text: totalVideos
-                }
-            });
+        var data = $scope.filterShow($scope.videos, $scope.model.show);
+        var stats = [];
 
-            //averageViews
-            var totalViews = 0;
-            for (var j = 0; j < data.length; j++) {
-                totalViews += data[j].stats.viewCount;
+        //totalVideos
+        var totalVideos = data.length;
+        stats.push({
+            title: 'Anzahl Videos',
+            value: {
+                type: 'number',
+                text: totalVideos
             }
-            stats.push({
-                title: 'Ø Views pro Video',
-                value: {
-                    type: 'number',
-                    text: Math.round(totalViews / totalVideos)
-                }
-            });
+        });
 
-            //topHosts
-            var allHosts = {};
-            for (var j = 0; j < data.length; j++) {
-                var video = data[j];
-                var hosts = video.hosts || [];
-                for (var k = 0; k < hosts.length; k++) {
-                    var host = hosts[k];
-                    if (host != $scope.model.show.selected) {
-                        allHosts[host] = allHosts[host] || {};
-                        allHosts[host].count = allHosts[host].count || 0;
-                        allHosts[host].count++;
-                        //allHosts[host].videos = allHosts[host].videos || [];
-                        //allHosts[host].videos.push(video);
-                    }
-                }
-            }
-
-            var topHosts = [null, null, null, null, null];
-            for (var host in allHosts) {
-                for (var k = 0; k < topHosts.length; k++) {
-                    if (topHosts[k] == null || allHosts[host].count > topHosts[k].count) {
-                        topHosts.splice(k, 0, {
-                            name: host,
-                            count: allHosts[host].count
-                                //videos: allHosts[host].videos
-                        });
-                        topHosts.length = topHosts.length - 1;
-                        k = topHosts.length;
-                    }
-                }
-            }
-
-            var values = [];
-            for (var j = 0; j < topHosts.length; j++) {
-                var topHost = topHosts[j];
-                if (topHost != null) {
-                    values.push({
-                        type: 'url',
-                        text: topHost.name,
-                        url: '#/hosts?' + topHost.name,
-                        info: topHost.count + ' Videos'
-                    });
-                }
-            }
-
-            stats.push({
-                title: 'Top ' + topHosts.length + ' Moderatoren',
-                value: values
-            });
-
-            //topVideos
-            var topVideos = [null, null, null, null, null];
-            for (var j = 0; j < data.length; j++) {
-                var video = data[j];
-                for (var k = 0; k < topVideos.length; k++) {
-                    if (topVideos[k] == null || video.stats.viewCount > topVideos[k].stats.viewCount) {
-                        topVideos.splice(k, 0, video);
-                        topVideos.length = topVideos.length - 1;
-                        k = topVideos.length;
-                    }
-                }
-            }
-
-            var values = [];
-            for (var j = 0; j < topVideos.length; j++) {
-                var video = topVideos[j];
-                if (video != null) {
-                    values.push({
-                        type: 'url',
-                        text: video.title,
-                        url: 'https://www.youtube.com/watch?v=' + video.id,
-                        info: video.stats.viewCount + ' Views'
-                    });
-                }
-            }
-
-            stats.push({
-                title: 'Top ' + topVideos.length + ' meiste Views',
-                value: values
-            });
-
-            //mostLikes + mostDislikes
-            var mostLikes = null;
-            var mostDislikes = null;
-            for (var j = 0; j < data.length; j++) {
-                var video = data[j];
-                if (mostLikes == null || video.stats.likeCount > mostLikes.stats.likeCount) {
-                    mostLikes = video;
-                }
-                if (mostDislikes == null || video.stats.dislikeCount > mostDislikes.stats.dislikeCount) {
-                    mostDislikes = video;
-                }
-            }
-
-            stats.push(stats.mostLikes = {
-                title: 'Meiste positive Bewertungen',
-                value: {
-                    type: 'url',
-                    text: mostLikes.title,
-                    url: 'https://www.youtube.com/watch?v=' + mostLikes.id,
-                    info: mostLikes.stats.likeCount + ' Bewertungen'
-                }
-            });
-            stats.push({
-                title: 'Meiste negative Bewertungen',
-                value: {
-                    type: 'url',
-                    text: mostDislikes.title,
-                    url: 'https://www.youtube.com/watch?v=' + mostDislikes.id,
-                    info: mostDislikes.stats.dislikeCount + ' Bewertungen'
-                }
-            });
-
-            $scope.model.stats = stats;
+        //averageViews
+        var totalViews = 0;
+        for (var j = 0; j < data.length; j++) {
+            totalViews += data[j].stats.viewCount;
         }
+        stats.push({
+            title: 'Ø Views pro Video',
+            value: {
+                type: 'number',
+                text: Math.round(totalViews / totalVideos)
+            }
+        });
+
+        //topHosts
+        var allHosts = {};
+        for (var j = 0; j < data.length; j++) {
+            var video = data[j];
+            var hosts = video.hosts || [];
+            for (var k = 0; k < hosts.length; k++) {
+                var host = hosts[k];
+                allHosts[host] = allHosts[host] || {};
+                allHosts[host].count = allHosts[host].count || 0;
+                allHosts[host].count++;
+                //allHosts[host].videos = allHosts[host].videos || [];
+                //allHosts[host].videos.push(video);
+            }
+        }
+
+        var topHosts = [null, null, null, null, null];
+        for (var host in allHosts) {
+            for (var k = 0; k < topHosts.length; k++) {
+                if (topHosts[k] == null || allHosts[host].count > topHosts[k].count) {
+                    topHosts.splice(k, 0, {
+                        name: host,
+                        count: allHosts[host].count
+                            //videos: allHosts[host].videos
+                    });
+                    topHosts.length = topHosts.length - 1;
+                    k = topHosts.length;
+                }
+            }
+        }
+
+        var values = [];
+        for (var j = 0; j < topHosts.length; j++) {
+            var topHost = topHosts[j];
+            if (topHost != null) {
+                values.push({
+                    type: 'url',
+                    text: topHost.name,
+                    url: '#/hosts?' + topHost.name,
+                    info: topHost.count + ' Videos'
+                });
+            }
+        }
+
+        stats.push({
+            title: 'Top ' + topHosts.length + ' Moderatoren',
+            value: values
+        });
+
+        //topVideos
+        var topVideos = [null, null, null, null, null];
+        for (var j = 0; j < data.length; j++) {
+            var video = data[j];
+            for (var k = 0; k < topVideos.length; k++) {
+                if (topVideos[k] == null || video.stats.viewCount > topVideos[k].stats.viewCount) {
+                    topVideos.splice(k, 0, video);
+                    topVideos.length = topVideos.length - 1;
+                    k = topVideos.length;
+                }
+            }
+        }
+
+        var values = [];
+        for (var j = 0; j < topVideos.length; j++) {
+            var video = topVideos[j];
+            if (video != null) {
+                values.push({
+                    type: 'url',
+                    text: video.title,
+                    url: 'https://www.youtube.com/watch?v=' + video.id,
+                    info: video.stats.viewCount + ' Views'
+                });
+            }
+        }
+
+        stats.push({
+            title: 'Top ' + topVideos.length + ' meiste Views',
+            value: values
+        });
+
+        //mostLikes + mostDislikes
+        var mostLikes = null;
+        var mostDislikes = null;
+        for (var j = 0; j < data.length; j++) {
+            var video = data[j];
+            if (mostLikes == null || video.stats.likeCount > mostLikes.stats.likeCount) {
+                mostLikes = video;
+            }
+            if (mostDislikes == null || video.stats.dislikeCount > mostDislikes.stats.dislikeCount) {
+                mostDislikes = video;
+            }
+        }
+
+        stats.push(stats.mostLikes = {
+            title: 'Meiste positive Bewertungen',
+            value: {
+                type: 'url',
+                text: mostLikes.title,
+                url: 'https://www.youtube.com/watch?v=' + mostLikes.id,
+                info: mostLikes.stats.likeCount + ' Bewertungen'
+            }
+        });
+        stats.push({
+            title: 'Meiste negative Bewertungen',
+            value: {
+                type: 'url',
+                text: mostDislikes.title,
+                url: 'https://www.youtube.com/watch?v=' + mostDislikes.id,
+                info: mostDislikes.stats.dislikeCount + ' Bewertungen'
+            }
+        });
+
+        $scope.model.stats = stats;
     };
 
     var configViewsDistribution = function() {
-        var data = $scope.filterShow($scope.videos, $scope.model.show.selected);
+        var data = $scope.filterShow($scope.videos, $scope.model.show);
         var chart = {};
         chart.labels = [];
         chart.series = [];
@@ -284,7 +284,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
             viewsData[bucket]++;
         }
 
-        chart.series.push($scope.model.show.selected);
+        chart.series.push($scope.model.show);
 
         var bucketCount = 0;
         var videosCount = 0;

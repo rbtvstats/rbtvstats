@@ -156,18 +156,24 @@ body {
 }
 
 .links {
+    display: inline-block;
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.links > * {
-    display: inline;
-    margin-right: 10px;
+.links > li {
+    display: inline-block;
+    margin-right: 20px;
 }
 
-@media (max-width: 600px) {
-    .links > * {
-        display: block;
-    }
+.links.left {
+    width: calc(100% - 110px);
 }
+
+.links.right {
+    width: 100px;
+    text-align: right;
+}
+
+@media (max-width: 750px) {}
