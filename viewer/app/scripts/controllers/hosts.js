@@ -16,7 +16,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
         $scope.model.charts = [];
         $scope.model.stats = {};
         $scope.model.host = {
-            selected: 'Eddy'
+            selected: null
         };
         $scope.model.videosTable = new NgTableParams({
             sorting: {
@@ -31,14 +31,41 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
         $scope.model.chartsConfig.push(configViewsDistribution);
 
         $scope.model = StateSrv.load($location.path(), $scope.model);
+        $scope.model.host.selected = $scope.getHost() || $scope.model.host.selected;
 
         $scope.$on('updateData', function(event, args) {
             $scope.update();
         });
 
-        if ($scope.model.dataLatest != $scope.metadata.time && $scope.metadata.time > 0) {
+        $scope.$watch('model.host.selected', function(newVal, oldVal) {
+            var param = {};
+            if ($scope.model.host.selected) {
+                param[$scope.model.host.selected] = true;
+            }
+            $location.search(param);
             $scope.update();
+        });
+
+        $scope.$on("$routeUpdate", function(event, route) {
+            var params = $location.search();
+            for (var host in params) {
+                $scope.model.host.selected = host;
+                break;
+            }
+        });
+
+        if (!$scope.model.host.selected) {
+            $scope.model.host.selected = 'Eddy';
         }
+    };
+
+    $scope.getHost = function() {
+        var params = $location.search();
+        for (var host in params) {
+            return host;
+        }
+
+        return null;
     };
 
     $scope.update = function() {
@@ -59,7 +86,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
 
     $scope.updateCharts = function() {
         $scope.model.charts = [];
-        if ($scope.model.host.selected) {
+        if ($scope.hosts.indexOf($scope.model.host.selected) > -1) {
             for (var i = 0; i < $scope.model.chartsConfig.length; i++) {
                 $scope.model.chartsConfig[i]();
             }
@@ -68,8 +95,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
 
     $scope.updateStats = function() {
         $scope.model.stats = {};
-
-        if ($scope.model.host.selected) {
+        if ($scope.hosts.indexOf($scope.model.host.selected) > -1) {
             var data = $scope.filterHost($scope.videos, $scope.model.host.selected);
             var stats = [];
 
@@ -178,8 +204,9 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
                 var topCohost = topCohosts[j];
                 if (topCohost != null) {
                     values.push({
-                        type: 'text',
+                        type: 'url',
                         text: topCohost.name,
+                        url: '#/hosts?' + window.encodeURIComponent(topCohost.name),
                         info: topCohost.count + ' Videos'
                     });
                 }
@@ -225,8 +252,9 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
                 var topShow = topShows[j];
                 if (topShow != null) {
                     values.push({
-                        type: 'text',
+                        type: 'url',
                         text: topShow.name,
+                        url: '#/shows?' + window.encodeURIComponent(topShow.name),
                         info: topShow.count + ' Videos'
                     });
                 }

@@ -13,7 +13,8 @@ var app = angular.module('rbtvstatsApp', [
     'ngTable',
     'chart.js',
     'ui.select',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'duScroll'
 ]);
 
 app.config(function($routeProvider, ChartJsProvider, cfpLoadingBarProvider) {
@@ -22,19 +23,20 @@ app.config(function($routeProvider, ChartJsProvider, cfpLoadingBarProvider) {
         templateUrl: 'views/channels.html',
         controller: 'ChannelsCtrl'
     })
+    .when('/shows/:show?', {
+        templateUrl: 'views/shows.html',
+        controller: 'ShowsCtrl'
+    })
     .when('/hosts', {
         templateUrl: 'views/hosts.html',
-        controller: 'HostsCtrl'
+        controller: 'HostsCtrl',
+        reloadOnSearch: false
     })
     .when('/videos', {
         templateUrl: 'views/videos.html',
         controller: 'VideosCtrl'
     })
-    .when('/shows', {
-        templateUrl: 'views/shows.html',
-        controller: 'ShowsCtrl'
-    }).
-    otherwise({
+    .otherwise({
         redirectTo: '/channels'
     });
 

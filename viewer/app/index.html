@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>RBTV Youtube Statistiken</title>
+    <title>Rocketbeans TV Youtube Statistiken</title>
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
@@ -21,7 +21,7 @@
 </head>
 
 <body ng-controller="DataCtrl" ng-app="rbtvstatsApp" ng-cloak>
-    <nav class="navbar navbar-default" ng-controller="NavigationCtrl">
+    <nav id="top" class="navbar navbar-default" ng-controller="NavigationCtrl">
         <div class="container-fluid max-width">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
@@ -30,7 +30,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#/channels">RBTV Youtube Statistiken</a>
+                <a class="navbar-brand" href="#/channels">Rocketbeans TV Youtube Statistiken</a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav">
@@ -38,9 +38,10 @@
                     <li ng-class="{ active: isActive('/shows')}"><a href="#/shows">Formate</a></li>
                     <li ng-class="{ active: isActive('/hosts')}"><a href="#/hosts">Moderatoren</a></li>
                     <li ng-class="{ active: isActive('/videos')}"><a href="#/videos">Videos</a></li>
+                    <li class="extern"><a href="http://www.rbtv-stats.de/" target="_blank">Twitch Statistiken</a></li>
                 </ul>
                 <p class="navbar-text navbar-right">
-                    <span ng-if="!loadingData">Daten aktualisiert: {{metadata.time | createDate | date:"dd.MM.yyyy HH:mm"}}</span>
+                    <span ng-if="!loadingData">Daten aktualisiert: {{metadata.time | createDate | date:"dd.MM.yyyy"}}</span>
                     <span ng-if="loadingData"><i class="fa fa-spinner fa-pulse fa-fw"></i>Lade Daten</span>
                 </p>
             </div>
@@ -53,7 +54,7 @@
                 <li><a href="https://www.rocketbeans.tv/" target="_blank">Rocketbeans Homepage</a></li>
                 <li><a href="https://www.twitch.tv/rocketbeanstv" target="_blank">Rocketbeans Twitch</a></li>
                 <li><a href="https://www.reddit.com/r/rocketbeans" target="_blank">Rocketbeans Reddit</a></li>
-                <li><a href="javascript:window.scrollTo(0,0)" class="pull-right">Nach oben</a></li>
+                <li><a href="javascript:void(0)" class="pull-right" ng-click="scrollTop()">Nach oben</a></li>
             </ol>
         </div>
     </footer>
@@ -80,6 +81,7 @@
     <script src="bower_components/ng-table/dist/ng-table.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+    <script src="bower_components/angular-scroll/angular-scroll.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -95,6 +97,7 @@
     <script src="scripts/controllers/videos.js"></script>
     <script src="scripts/controllers/data.js"></script>
     <script src="scripts/directives/stat.js"></script>
+    <script src="scripts/directives/blank.js"></script>
     <!-- endbuild -->
 </body>
 

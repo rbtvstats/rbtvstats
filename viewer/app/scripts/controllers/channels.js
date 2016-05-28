@@ -24,28 +24,6 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
 
         $scope.model = StateSrv.load($location.path(), $scope.model);
 
-        $scope.model.stats2 = [];
-        $scope.model.stats2.push({
-            title: 'A long title',
-            type: 'number',
-            value: {
-                text: 123456
-            }
-        });
-        $scope.model.stats2.push({
-            title: 'A long title 2',
-            type: 'list',
-            value: [{
-                text: 'foobar',
-                url: 'google.de',
-                info: '10 Videos'
-            }, {
-                text: 'foobar 2',
-                url: 'google.de',
-                info: '5 Videos'
-            }]
-        });
-
         $scope.$on('updateData', function(event, args) {
             $scope.update();
         });
@@ -362,7 +340,7 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
             }
         };
 
-        var bucketSize = 1000;
+        var bucketSize = 2000;
         var channelData = {};
         for (var i = 0; i < data.length; i++) {
             var channel = data[i].key;

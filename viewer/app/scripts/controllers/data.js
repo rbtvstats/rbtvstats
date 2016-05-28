@@ -7,7 +7,7 @@
  * # DataCtrl
  * Controller of the rbtvstatsApp
  */
-app.controller('DataCtrl', function($scope, $rootScope, $location, NgTableParams, StateSrv, DataSrv) {
+app.controller('DataCtrl', function($scope, $rootScope, $location, $document, NgTableParams, StateSrv, DataSrv) {
     $scope.init = function() {
         $rootScope.state = {};
         $scope.loadingData = true;
@@ -27,6 +27,19 @@ app.controller('DataCtrl', function($scope, $rootScope, $location, NgTableParams
         });
 
         $scope.update();
+    };
+
+    $scope.scrollTop = function() {
+        var top = angular.element(document.getElementById('top'));
+        $document.scrollToElementAnimated(top);
+    };
+
+    $scope.getType = function(obj) {
+        if ($.isArray(obj)) {
+            return 'array';
+        } else {
+            return typeof obj;
+        }
     };
 
     $scope.findByKey = function(output, key) {
@@ -192,11 +205,13 @@ app.controller('DataCtrl', function($scope, $rootScope, $location, NgTableParams
             var shows = videos[i].shows || [];
             for (var k = 0; k < shows.length; k++) {
                 var show = shows[k];
-                if (allShows.indexOf(show) < 0) {
+                if (show && allShows.indexOf(show) < 0) {
                     allShows.push(show);
                 }
             }
         }
+
+        allShows.sort();
 
         return allShows;
     };
@@ -208,11 +223,13 @@ app.controller('DataCtrl', function($scope, $rootScope, $location, NgTableParams
             var hosts = videos[i].hosts || [];
             for (var k = 0; k < hosts.length; k++) {
                 var host = hosts[k];
-                if (allHosts.indexOf(host) < 0) {
+                if (host && allHosts.indexOf(host) < 0) {
                     allHosts.push(host);
                 }
             }
         }
+
+        allHosts.sort();
 
         return allHosts;
     };
@@ -222,10 +239,12 @@ app.controller('DataCtrl', function($scope, $rootScope, $location, NgTableParams
 
         for (var i = 0; i < videos.length; i++) {
             var channel = videos[i].channel;
-            if (allChannels.indexOf(channel) < 0) {
+            if (channel && allChannels.indexOf(channel) < 0) {
                 allChannels.push(channel);
             }
         }
+
+        allChannels.sort();
 
         return allChannels;
     };

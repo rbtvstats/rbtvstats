@@ -107,6 +107,38 @@ body {
     }
 }
 
+.navbar-default .navbar-nav > li {
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+}
+
+.navbar-default .navbar-nav > li > a {
+    outline: none !important;
+}
+
+.navbar-default .navbar-nav > .active {
+    border-bottom: 2px solid #337ab7;
+    background-color: inherit !important;
+    -webkit-transition: border 500ms ease-in;
+    -moz-transition: border 500ms ease-in;
+    -o-transition: border 500ms ease-in;
+    transition: border 300ms ease-in;
+}
+
+.navbar-default .navbar-nav > .active a {
+    background-color: inherit !important;
+}
+
+.navbar-default .navbar-nav > li > a {
+    font-weight: bold;
+}
+
+.navbar-default .extern a {
+    color: #AAA !important;
+    font-weight: normal !important;
+    text-decoration: underline !important;
+}
+
 .ui-select-placeholder,
 .ui-select-match-text {
     width: 100%;

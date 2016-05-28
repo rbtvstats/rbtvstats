@@ -3,10 +3,10 @@
         <div class="panel-heading"><strong>{{channel}} Statistiken</strong></div>
         <div class="panel-body">
             <div class="container-fluid">
-                <div class="row" ng-repeat="stat in stats">
+                <div class="row" ng-init="value=stat.value" ng-repeat="stat in stats">
                     <div class="col-md-3"><strong>{{stat.title}}</strong></div>
                     <div class="col-md-9">
-                        <div stat="stat.value"></div>
+                        <div stat></div>
                     </div>
                 </div>
             </div>

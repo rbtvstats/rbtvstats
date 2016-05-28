@@ -16,7 +16,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
         $scope.model.charts = [];
         $scope.model.stats = {};
         $scope.model.show = {
-            selected: 'Bohn Jour'
+            selected: null
         };
         $scope.model.videosTable = new NgTableParams({
             sorting: {
@@ -30,14 +30,41 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
         $scope.model.chartsConfig.push(configViewsDistribution);
 
         $scope.model = StateSrv.load($location.path(), $scope.model);
+        $scope.model.show.selected = $scope.getShow() || $scope.model.show.selected;
 
         $scope.$on('updateData', function(event, args) {
             $scope.update();
         });
 
-        if ($scope.model.dataLatest != $scope.metadata.time && $scope.metadata.time > 0) {
+        $scope.$watch('model.show.selected', function(newVal, oldVal) {
+            var param = {};
+            if ($scope.model.show.selected) {
+                param[$scope.model.show.selected] = true;
+            }
+            $location.search(param);
             $scope.update();
+        });
+
+        $scope.$on("$routeUpdate", function(event, route) {
+            var params = $location.search();
+            for (var show in params) {
+                $scope.model.show.selected = show;
+                break;
+            }
+        });
+
+        if (!$scope.model.show.selected) {
+            $scope.model.show.selected = 'Bohn Jour';
         }
+    };
+
+    $scope.getShow = function() {
+        var params = $location.search();
+        for (var show in params) {
+            return show;
+        }
+
+        return null;
     };
 
     $scope.update = function() {
@@ -58,7 +85,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
 
     $scope.updateCharts = function() {
         $scope.model.charts = [];
-        if ($scope.model.show.selected) {
+        if ($scope.shows.indexOf($scope.model.show.selected) > -1) {
             for (var i = 0; i < $scope.model.chartsConfig.length; i++) {
                 $scope.model.chartsConfig[i]();
             }
@@ -67,8 +94,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
 
     $scope.updateStats = function() {
         $scope.model.stats = {};
-
-        if ($scope.model.show.selected) {
+        if ($scope.shows.indexOf($scope.model.show.selected) > -1) {
             var data = $scope.filterShow($scope.videos, $scope.model.show.selected);
             var stats = [];
 
@@ -132,8 +158,9 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
                 var topHost = topHosts[j];
                 if (topHost != null) {
                     values.push({
-                        type: 'text',
+                        type: 'url',
                         text: topHost.name,
+                        url: '#/hosts?' + topHost.name,
                         info: topHost.count + ' Videos'
                     });
                 }

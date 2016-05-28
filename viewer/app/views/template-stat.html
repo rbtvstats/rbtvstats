@@ -6,7 +6,7 @@
                 <strong>{{$index + 1}}.</strong>
             </div>
             <div>
-                <div stat="value"></div>
+                <div stat></div>
             </div>
         </div>
     </div>
@@ -15,7 +15,7 @@
         <div ng-switch="value.type">
             <!-- type: url -->
             <div ng-switch-when="url">
-                <a href="{{value.url}}" target="_blank">{{value.text}}</a>
+                <a ng-href="{{value.url}}" scroll-to="top" blank>{{value.text}}</a>
                 <span class="info" ng-if="value.info"> • {{value.info}}</span>
             </div>
             <!-- type: duration -->
