@@ -25,19 +25,24 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
         $scope.model = StateSrv.load($location.path(), $scope.model);
 
         $scope.$on('updateData', function(event, args) {
-            $scope.update();
+            setTimeout(function() {
+                $scope.update();
+            }, 0);
         });
 
-        if ($scope.model.dataLatest != $scope.metadata.time && $scope.metadata.time > 0) {
+
+        setTimeout(function() {
             $scope.update();
-        }
+        }, 0);
     };
 
     $scope.update = function() {
-        $scope.updateCharts();
-        $scope.updateStats();
+        if ($scope.model.dataLatest != $scope.metadata.time && $scope.metadata.time > 0) {
+            $scope.model.dataLatest = $scope.metadata.time;
 
-        $scope.model.dataLatest = $scope.metadata.time;
+            $scope.updateCharts();
+            $scope.updateStats();
+        }
     };
 
     $scope.updateCharts = function() {

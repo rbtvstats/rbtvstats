@@ -67,23 +67,24 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
     };
 
     $scope.update = function() {
-        if ($scope.show.selected != $scope.model.show) {
+        if ($scope.show.selected != $scope.model.show || ($scope.model.dataLatest != $scope.metadata.time && $scope.metadata.time > 0)) {
             if ($scope.shows.indexOf($scope.show.selected) > -1) {
-                $scope.model.dataLatest = $scope.metadata.time;
-                $scope.model.show = $scope.show.selected;
-                console.log('update: ', $scope.model.show);
+                setTimeout(function() {
+                    $scope.model.dataLatest = $scope.metadata.time;
+                    $scope.model.show = $scope.show.selected;
 
-                $scope.updateCharts();
-                $scope.updateStats();
+                    $scope.updateCharts();
+                    $scope.updateStats();
 
-                //filter videos
-                var filteredVideos = $scope.filterShow($scope.videos, $scope.model.show);
-                $scope.model.filteredVideos.length = 0;
-                for (var i = 0; i < filteredVideos.length; i++) {
-                    $scope.model.filteredVideos.push(filteredVideos[i]);
-                }
+                    //filter videos
+                    var filteredVideos = $scope.filterShow($scope.videos, $scope.model.show);
+                    $scope.model.filteredVideos.length = 0;
+                    for (var i = 0; i < filteredVideos.length; i++) {
+                        $scope.model.filteredVideos.push(filteredVideos[i]);
+                    }
 
-                $scope.model.videosTable.reload();
+                    $scope.model.videosTable.reload();
+                }, 0);
             }
         }
     };

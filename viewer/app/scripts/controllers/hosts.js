@@ -70,21 +70,22 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
     $scope.update = function() {
         if ($scope.host.selected != $scope.model.host) {
             if ($scope.hosts.indexOf($scope.host.selected) > -1) {
-                $scope.model.dataLatest = $scope.metadata.time;
-                $scope.model.host = $scope.host.selected;
-                console.log('update: ', $scope.model.host);
+                setTimeout(function() {
+                    $scope.model.dataLatest = $scope.metadata.time;
+                    $scope.model.host = $scope.host.selected;
 
-                $scope.updateCharts();
-                $scope.updateStats();
+                    $scope.updateCharts();
+                    $scope.updateStats();
 
-                //filter videos
-                var filteredVideos = $scope.filterHost($scope.videos, $scope.model.host);
-                $scope.model.filteredVideos.length = 0;
-                for (var i = 0; i < filteredVideos.length; i++) {
-                    $scope.model.filteredVideos.push(filteredVideos[i]);
-                }
+                    //filter videos
+                    var filteredVideos = $scope.filterHost($scope.videos, $scope.model.host);
+                    $scope.model.filteredVideos.length = 0;
+                    for (var i = 0; i < filteredVideos.length; i++) {
+                        $scope.model.filteredVideos.push(filteredVideos[i]);
+                    }
 
-                $scope.model.videosTable.reload();
+                    $scope.model.videosTable.reload();
+                }, 0);
             }
         }
     };

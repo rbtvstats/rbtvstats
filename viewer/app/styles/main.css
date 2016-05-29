@@ -4,7 +4,7 @@ html {
 }
 
 body {
-    margin-bottom: 80px;
+    margin-bottom: 50px;
 }
 
 [ng\:cloak],
@@ -98,6 +98,32 @@ body {
     }
 }
 
+.select-content-container {
+    overflow: hidden;
+}
+
+.select-content.changed-start {
+    opacity: 0;
+}
+
+.select-content.changed-end {
+    transition: all 100ms ease-in-out;
+    opacity: 1;
+}
+
+.view-container {
+    position: relative;
+}
+
+.view.ng-enter {
+    transition: all 300ms linear;
+    transform: scale(1.000) translateY(-30px);
+}
+
+.view.ng-enter.ng-enter-active {
+    transform: scale(1.0) translateY(0);
+}
+
 @media (min-width: 768px) {
     ul.nav > li:first-of-type {
         border-left: 1px solid #DFDFDF;
@@ -176,4 +202,11 @@ body {
     text-align: right;
 }
 
-@media (max-width: 750px) {}
+@media (max-width: 750px) {
+    body {
+        margin-bottom: 120px;
+    }
+    .links > li {
+        display: block;
+    }
+}

@@ -11,6 +11,7 @@
 var app = angular.module('rbtvstatsApp', [
     'ngRoute',
     'ngTable',
+    'ngAnimate',
     'chart.js',
     'ui.select',
     'angular-loading-bar',
@@ -23,9 +24,10 @@ app.config(function($routeProvider, ChartJsProvider, cfpLoadingBarProvider) {
         templateUrl: 'views/channels.html',
         controller: 'ChannelsCtrl'
     })
-    .when('/shows/:show?', {
+    .when('/shows', {
         templateUrl: 'views/shows.html',
-        controller: 'ShowsCtrl'
+        controller: 'ShowsCtrl',
+        reloadOnSearch: false
     })
     .when('/hosts', {
         templateUrl: 'views/hosts.html',
@@ -45,6 +47,7 @@ app.config(function($routeProvider, ChartJsProvider, cfpLoadingBarProvider) {
 
     ChartJsProvider.setOptions({
         responsive: true,
-        maintainAspectRatio: false
+        maintainAspectRatio: false,
+        responsiveAnimationDuration: 1000
     });
 });
