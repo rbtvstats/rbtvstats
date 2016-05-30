@@ -16,7 +16,10 @@ app.controller('VideosCtrl', function($scope, $rootScope, $location, NgTablePara
             },
             count: 25
         }, {
-            dataset: $scope.videos
+            dataset: $scope.videos,
+            filterOptions: {
+                filterFn: $scope.customFilter
+            }
         });
 
         $scope.model = StateSrv.load($location.path(), $scope.model);

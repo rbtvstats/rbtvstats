@@ -7,7 +7,7 @@
  * # DataCtrl
  * Controller of the rbtvstatsApp
  */
-app.controller('DataCtrl', function($scope, $rootScope, $location, $document, NgTableParams, StateSrv, DataSrv) {
+app.controller('DataCtrl', function($scope, $rootScope, $location, $document, $filter, ngTableDefaultGetData, NgTableParams, StateSrv, DataSrv) {
     $scope.init = function() {
         $rootScope.state = {};
         $scope.loadingData = true;
@@ -32,6 +32,48 @@ app.controller('DataCtrl', function($scope, $rootScope, $location, $document, Ng
     $scope.scrollTop = function() {
         var top = angular.element(document.getElementById('top'));
         $document.scrollToElementAnimated(top);
+    };
+
+    //HACK: filter only 'channel' property by EXACT match!
+    $scope.customFilter = function(data, parsedFilter, comparator) {
+        var filteredData = data;
+        var filterFn = $filter('filter');
+
+        for (var key in parsedFilter) {
+            var comp = (key == 'channel') || comparator;
+            var filter = {};
+            filter[key] = parsedFilter[key];
+            filteredData = filterFn(filteredData, filter, comp);
+        }
+
+        return filteredData;
+    }
+
+    $scope.getFilter = function(data) {
+        var filter = [];
+
+        var updateFilter = function() {
+            filter.length = 0;
+            for (var i = 0; i < data.length; i++) {
+                filter.push({
+                    id: data[i],
+                    title: data[i]
+                });
+            }
+
+            filter.unshift({
+                id: '',
+                title: ''
+            });
+        }
+
+        $scope.$on('updateData', function(event, args) {
+            updateFilter();
+        });
+
+        updateFilter();
+
+        return filter;
     };
 
     $scope.getType = function(obj) {
@@ -257,25 +299,26 @@ app.controller('DataCtrl', function($scope, $rootScope, $location, $document, Ng
         }
     };
 
+    $scope.assignArray = function(array1, array2) {
+        array1.length = 0;
+        for (var i = 0; i < array2.length; i++) {
+            array1.push(array2[i]);
+        }
+    };
+
     $scope.update = function() {
         $scope.loadingData = true;
 
         DataSrv.getData().then(function(data) {
-            var tmpVideos = [];
+            var videos = [];
             for (var key in data) {
-                tmpVideos.push(data[key]);
+                videos.push(data[key]);
             }
 
-            //filter videos
-            var filteredVideos = $scope.filterTime(tmpVideos, new Date(2015, 2, 3));
-            $scope.videos.length = 0;
-            for (var i = 0; i < filteredVideos.length; i++) {
-                $scope.videos.push(filteredVideos[i]);
-            }
-
-            $scope.shows = $scope.getAllShows($scope.videos);
-            $scope.hosts = $scope.getAllHosts($scope.videos);
-            $scope.channels = $scope.getAllChannels($scope.videos);
+            $scope.assignArray($scope.videos, $scope.filterTime(videos, new Date(2015, 2, 3)));
+            $scope.assignArray($scope.shows, $scope.getAllShows($scope.videos))
+            $scope.assignArray($scope.hosts, $scope.getAllHosts($scope.videos));
+            $scope.assignArray($scope.channels, $scope.getAllChannels($scope.videos));
 
             DataSrv.getMetadata().then(function(data) {
                 $scope.metadata = data;

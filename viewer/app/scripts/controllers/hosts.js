@@ -23,7 +23,10 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
             },
             count: 25
         }, {
-            dataset: $scope.model.filteredVideos
+            dataset: $scope.model.filteredVideos,
+            filterOptions: {
+                filterFn: $scope.customFilter
+            }
         });
 
         $scope.model.chartsConfig.push(configMonthlyContent);
