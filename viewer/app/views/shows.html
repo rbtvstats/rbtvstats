@@ -10,8 +10,8 @@
         </ui-select>
     </div>
     <div class="select-content-container">
-        <div class="select-content" ng-if="model.show == show.selected" animation-changed="model.show">
-            <div class="stats panel panel-default" ng-if="model.stats.length">
+        <div class="select-content" ng-if="model.show == show.selected">
+            <div class="stats panel panel-default" ng-if="model.stats.length" slide-in>
                 <div class="panel-heading"><strong>Statistiken</strong></div>
                 <div class="panel-body">
                     <div class="container-fluid">
@@ -24,13 +24,13 @@
                     </div>
                 </div>
             </div>
-            <div class="chart panel panel-default" ng-repeat="chart in model.charts">
+            <div class="chart panel panel-default" ng-repeat="chart in model.charts" slide-in>
                 <div class="panel-heading"><strong>{{chart.options.header}}</strong></div>
                 <div class="panel-body" style="width:{{chart.options.width}}; height: {{chart.options.height}}">
                     <canvas id="chart" class="chart-base" chart-type="chart.options.type" chart-options="chart.options" chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series"></canvas>
                 </div>
             </div>
-            <div class="panel panel-default" ng-if="model.filteredVideos.length">
+            <div class="panel panel-default" ng-if="model.filteredVideos.length" slide-in>
                 <div class="panel-heading"><strong>Videos</strong></div>
                 <div class="panel-body container-table">
                     <table class="table table-striped" ng-table="model.videosTable" show-filter="true">

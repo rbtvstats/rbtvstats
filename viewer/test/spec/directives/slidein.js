@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: animationChanged', function () {
+describe('Directive: slideIn', function () {
 
   // load the directive's module
   beforeEach(module('rbtvstatsApp'));
@@ -13,8 +13,8 @@ describe('Directive: animationChanged', function () {
   }));
 
   it('should make hidden element visible', inject(function ($compile) {
-    element = angular.element('<animation-changed></animation-changed>');
+    element = angular.element('<slide-in></slide-in>');
     element = $compile(element)(scope);
-    expect(element.text()).toBe('this is the animationChanged directive');
+    expect(element.text()).toBe('this is the slideIn directive');
   }));
 });

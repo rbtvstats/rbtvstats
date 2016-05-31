@@ -1,5 +1,5 @@
 <div class="content max-width">
-    <div class="stats panel panel-default" ng-repeat="(channel, stats) in model.stats">
+    <div class="stats panel panel-default" ng-repeat="(channel, stats) in model.stats" slide-in>
         <div class="panel-heading"><strong>{{channel}} Statistiken</strong></div>
         <div class="panel-body">
             <div class="container-fluid">
@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="chart panel panel-default" ng-repeat="chart in model.charts">
+    <div class="chart panel panel-default" ng-repeat="chart in model.charts" slide-in>
         <div class="panel-heading"><strong>{{chart.options.header}}</strong></div>
         <div class="panel-body" style="width:{{chart.options.width}}; height: {{chart.options.height}}">
             <canvas id="chart" class="chart-base" chart-type="chart.options.type" chart-options="chart.options" chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series"></canvas>

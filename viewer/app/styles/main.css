@@ -74,6 +74,10 @@ body {
     cursor: pointer;
 }
 
+.panel-body.container-table {
+    padding: 0;
+}
+
 .container-table {
     overflow-x: auto;
     margin: 5px;
@@ -98,17 +102,20 @@ body {
     }
 }
 
-.select-content-container {
-    overflow: hidden;
+.slide-in {
+    -webkit-transition: all 300ms ease-in;
+    -moz-transition: all 300ms ease-in;
+    -o-transition: all 300ms ease-in;
+    transition: all 300ms ease-in;
 }
 
-.select-content.changed-start {
+.slide-in.start {
+    transform: translateY(50px);
     opacity: 0;
 }
 
-.select-content.changed-end {
-    transition: all 100ms ease-in-out;
-    opacity: 1;
+.select-content-container {
+    overflow: hidden;
 }
 
 .view-container {
@@ -116,12 +123,15 @@ body {
 }
 
 .view.ng-enter {
-    transition: all 300ms linear;
-    transform: scale(1.000) translateY(-30px);
+    -webkit-transition: all 300ms ease-in;
+    -moz-transition: all 300ms ease-in;
+    -o-transition: all 300ms ease-in;
+    transition: all 300ms ease-in;
+    opacity: 0;
 }
 
 .view.ng-enter.ng-enter-active {
-    transform: scale(1.0) translateY(0);
+    opacity: 1;
 }
 
 @media (min-width: 768px) {
@@ -145,10 +155,6 @@ body {
 .navbar-default .navbar-nav > .active {
     border-bottom: 2px solid #337ab7;
     background-color: inherit !important;
-    -webkit-transition: border 500ms ease-in;
-    -moz-transition: border 500ms ease-in;
-    -o-transition: border 500ms ease-in;
-    transition: border 300ms ease-in;
 }
 
 .navbar-default .navbar-nav > .active a {
