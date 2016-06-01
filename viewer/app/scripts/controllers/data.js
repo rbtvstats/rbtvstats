@@ -7,7 +7,7 @@
  * # DataCtrl
  * Controller of the rbtvstatsApp
  */
-app.controller('DataCtrl', function($scope, $rootScope, $location, $document, $filter, ngTableDefaultGetData, NgTableParams, StateSrv, DataSrv) {
+app.controller('DataCtrl', function($scope, $rootScope, $document, StateSrv, DataSrv) {
     $scope.init = function() {
         $rootScope.state = {};
         $scope.loadingData = true;
@@ -27,53 +27,6 @@ app.controller('DataCtrl', function($scope, $rootScope, $location, $document, $f
         });
 
         $scope.update();
-    };
-
-    $scope.scrollTop = function() {
-        var top = angular.element(document.getElementById('top'));
-        $document.scrollToElementAnimated(top);
-    };
-
-    //HACK: filter only 'channel' property by EXACT match!
-    $scope.customFilter = function(data, parsedFilter, comparator) {
-        var filteredData = data;
-        var filterFn = $filter('filter');
-
-        for (var key in parsedFilter) {
-            var comp = (key == 'channel') || comparator;
-            var filter = {};
-            filter[key] = parsedFilter[key];
-            filteredData = filterFn(filteredData, filter, comp);
-        }
-
-        return filteredData;
-    }
-
-    $scope.getFilter = function(data) {
-        var filter = [];
-
-        var updateFilter = function() {
-            filter.length = 0;
-            for (var i = 0; i < data.length; i++) {
-                filter.push({
-                    id: data[i],
-                    title: data[i]
-                });
-            }
-
-            filter.unshift({
-                id: '',
-                title: ''
-            });
-        }
-
-        $scope.$on('updateData', function(event, args) {
-            updateFilter();
-        });
-
-        updateFilter();
-
-        return filter;
     };
 
     $scope.getType = function(obj) {

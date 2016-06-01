@@ -65,10 +65,14 @@ body {
 
 .chart {}
 
-.select {
+.select {}
+
+.select > .select-heading {
     max-width: 360px;
     margin-bottom: 20px;
 }
+
+.select > .select-body {}
 
 .pagination a {
     cursor: pointer;
@@ -112,10 +116,6 @@ body {
 .slide-in.start {
     transform: translateY(50px);
     opacity: 0;
-}
-
-.select-content-container {
-    overflow: hidden;
 }
 
 .view-container {

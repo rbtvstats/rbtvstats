@@ -7,27 +7,16 @@
  * # ShowsCtrl
  * Controller of the rbtvstatsApp
  */
-app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParams, StateSrv, DataSrv) {
+app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, DataSrv) {
     $scope.init = function() {
         //model (default)
         $scope.model = {};
         $scope.model.show = null;
-        $scope.model.filteredVideos = [];
+        $scope.model.videos = [];
         $scope.model.dataLatest = 0;
         $scope.model.chartsConfig = [];
         $scope.model.charts = [];
         $scope.model.stats = {};
-        $scope.model.videosTable = new NgTableParams({
-            sorting: {
-                published: 'desc'
-            },
-            count: 25
-        }, {
-            dataset: $scope.model.filteredVideos,
-            filterOptions: {
-                filterFn: $scope.customFilter
-            }
-        });
 
         $scope.model.chartsConfig.push(configViewsDistribution);
 
@@ -79,14 +68,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, NgTableParam
                     $scope.updateCharts();
                     $scope.updateStats();
 
-                    //filter videos
-                    var filteredVideos = $scope.filterShow($scope.videos, $scope.model.show);
-                    $scope.model.filteredVideos.length = 0;
-                    for (var i = 0; i < filteredVideos.length; i++) {
-                        $scope.model.filteredVideos.push(filteredVideos[i]);
-                    }
-
-                    $scope.model.videosTable.reload();
+                    $scope.assignArray($scope.model.videos, $scope.filterShow($scope.videos, $scope.model.show));
                 }, 0);
             }
         }

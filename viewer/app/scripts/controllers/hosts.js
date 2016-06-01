@@ -7,27 +7,16 @@
  * # HostsCtrl
  * Controller of the rbtvstatsApp
  */
-app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParams, StateSrv, DataSrv) {
+app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, DataSrv) {
     $scope.init = function() {
         //model (default)
         $scope.model = {};
         $scope.model.host = null;
-        $scope.model.filteredVideos = [];
+        $scope.model.videos = [];
         $scope.model.dataLatest = 0;
         $scope.model.chartsConfig = [];
         $scope.model.charts = [];
         $scope.model.stats = {};
-        $scope.model.videosTable = new NgTableParams({
-            sorting: {
-                published: 'desc'
-            },
-            count: 25
-        }, {
-            dataset: $scope.model.filteredVideos,
-            filterOptions: {
-                filterFn: $scope.customFilter
-            }
-        });
 
         $scope.model.chartsConfig.push(configMonthlyContent);
         $scope.model.chartsConfig.push(configViewsDistribution);
@@ -80,14 +69,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, NgTableParam
                     $scope.updateCharts();
                     $scope.updateStats();
 
-                    //filter videos
-                    var filteredVideos = $scope.filterHost($scope.videos, $scope.model.host);
-                    $scope.model.filteredVideos.length = 0;
-                    for (var i = 0; i < filteredVideos.length; i++) {
-                        $scope.model.filteredVideos.push(filteredVideos[i]);
-                    }
-
-                    $scope.model.videosTable.reload();
+                    $scope.assignArray($scope.model.videos, $scope.filterHost($scope.videos, $scope.model.host));
                 }, 0);
             }
         }
