@@ -42,6 +42,8 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
 
             $scope.updateCharts();
             $scope.updateStats();
+
+            $scope.$apply();
         }
     };
 
@@ -291,6 +293,8 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
             for (var j = 0; j < dataset.value.length; j++) {
                 var channel = dataset.value[j].channel;
                 totalViews[channel] = totalViews[channel] || 0;
+                if (!dataset.value[j].stats)
+                    console.log(dataset.value[j]);
                 totalViews[channel] += Number(dataset.value[j].stats.viewCount);
             }
 

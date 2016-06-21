@@ -23,6 +23,7 @@ app.directive('slideIn', function($timeout) {
                     };
 
                     $(window).on("scroll", scrollListener);
+                    scrollListener();
                 }
             }, 0);
         }

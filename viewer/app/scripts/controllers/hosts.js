@@ -70,6 +70,8 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
                     $scope.updateStats();
 
                     $scope.assignArray($scope.model.videos, $scope.filterHost($scope.videos, $scope.model.host));
+
+                    $scope.$apply();
                 }, 0);
             }
         }
@@ -439,7 +441,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         var averageViews = Math.floor((totalViews / data.length) / bucketSize) * bucketSize;
 
         //right (> averageViews)
-        var abortThreshold = 5;
+        var abortThreshold = 10;
         var abort = abortThreshold;
         var threshold = 0.1;
         for (var i = averageViews; abort > 0; i += bucketSize) {

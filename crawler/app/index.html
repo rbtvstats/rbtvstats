@@ -93,6 +93,7 @@
                             <button uib-tooltip="Show only videos without host" class="btn btn-default ignore" type="button" ng-click="filterNoHostVideos=!filterNoHostVideos"><i class="fa" ng-class="{'fa-eye-slash': !filterNoHostVideos, 'fa-eye': filterNoHostVideos}"></i></button>
                             <button uib-tooltip="Show only videos without show" class="btn btn-default ignore" type="button" ng-click="filterNoShowVideos=!filterNoShowVideos"><i class="fa" ng-class="{'fa-eye-slash': !filterNoShowVideos, 'fa-eye': filterNoShowVideos}"></i></button>
                             <button uib-tooltip="Show only ignored videos" class="btn btn-default ignore" type="button" ng-click="filterIgnoredVideos=!filterIgnoredVideos"><i class="fa" ng-class="{'fa-eye-slash': !filterIgnoredVideos, 'fa-eye': filterIgnoredVideos}"></i></button>
+                            <button uib-tooltip="Fix Stats" class="btn btn-default" type="button" ng-click="fixStats()"><i class="fa fa-asterisk"></i></button>
                             <input type="text" class="form-control" style="width: 50px;" ng-model="pageSize">
                             <input type="text" placeholder="Filter" class="form-control" style="width: 300px;" ng-model="search">
                             <i ng-show="loading" class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>

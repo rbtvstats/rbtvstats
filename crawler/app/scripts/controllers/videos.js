@@ -151,6 +151,19 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
         console.log(video);
     };
 
+    $scope.fixStats = function() {
+        for (var channel in $scope.videos) {
+            var channelVideos = $scope.videos[channel];
+            for (var videoID in channelVideos) {
+                var video = channelVideos[videoID];
+
+                if (!video.snippet.statistics) {
+                    console.log(videoID);
+                }
+            }
+        }
+    };
+
     $scope.importData = function() {
         var data = JSON.parse($scope.data);
         if (typeof data !== 'object') {
