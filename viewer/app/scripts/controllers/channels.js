@@ -17,6 +17,7 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
 
         $scope.model.chartsConfig.push(configMonthlyContent);
         $scope.model.chartsConfig.push(configMonthlyViews);
+        $scope.model.chartsConfig.push(configMonthlyAverageViews);
         $scope.model.chartsConfig.push(configViewsDistribution);
         $scope.model.chartsConfig.push(configMonthlyLikeRation);
         $scope.model.chartsConfig.push(configMonthlyContentPerson);
@@ -301,6 +302,71 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
             for (var channel in totalViews) {
                 channelData[channel] = channelData[channel] || [];
                 channelData[channel].push(totalViews[channel]);
+            }
+
+            chart.labels.push($scope.monthShortNames[date.getMonth()] + " " + date.getFullYear());
+        }
+
+        for (var channel in channelData) {
+            chart.series.push(channel);
+            chart.data.push(channelData[channel]);
+        }
+
+        $scope.model.charts.push(chart);
+    };
+
+    var configMonthlyAverageViews = function() {
+        var data = $scope.groupMonthly($scope.videos);
+        var chart = {};
+        chart.labels = [];
+        chart.series = [];
+        chart.data = [];
+        chart.options = {
+            type: 'bar',
+            header: 'Monatliche durchschnittliche Video Views pro Kanal',
+            width: '100%',
+            height: '500px',
+            legend: {
+                display: true
+            },
+            scales: {
+                xAxes: [{
+
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Views'
+                    },
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        };
+
+        data.sort($scope.orderKey);
+
+        var channelData = {};
+        for (var i = 0; i < data.length; i++) {
+            var dataset = data[i];
+            var dateParts = dataset.key.split(".");
+            var date = new Date(dateParts[0], (dateParts[1] - 1), 1);
+
+            var totalVideos = {};
+            var totalViews = {};
+            for (var j = 0; j < dataset.value.length; j++) {
+                var channel = dataset.value[j].channel;
+                totalVideos[channel] = totalVideos[channel] || 0;
+                totalVideos[channel]++;
+                totalViews[channel] = totalViews[channel] || 0;
+                totalViews[channel] += dataset.value[j].stats.viewCount;
+            }
+
+            for (var channel in totalViews) {
+                var averageViews = Math.round(totalViews[channel] / totalVideos[channel]);
+                channelData[channel] = channelData[channel] || [];
+                channelData[channel].push(averageViews);
             }
 
             chart.labels.push($scope.monthShortNames[date.getMonth()] + " " + date.getFullYear());
