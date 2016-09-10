@@ -15,7 +15,9 @@ var app = angular.module('rbtvstatsApp', [
     'chart.js',
     'ui.select',
     'angular-loading-bar',
-    'duScroll'
+    'duScroll',
+    'daterangepicker',
+    'angularMoment'
 ]);
 
 app.config(function($routeProvider, ChartJsProvider, cfpLoadingBarProvider) {
@@ -38,6 +40,10 @@ app.config(function($routeProvider, ChartJsProvider, cfpLoadingBarProvider) {
         templateUrl: 'views/videos.html',
         controller: 'VideosCtrl'
     })
+    .when('/live', {
+        templateUrl: 'views/live.html',
+        controller: 'LiveCtrl'
+    })
     .otherwise({
         redirectTo: '/channels'
     });
@@ -50,4 +56,8 @@ app.config(function($routeProvider, ChartJsProvider, cfpLoadingBarProvider) {
         maintainAspectRatio: false,
         responsiveAnimationDuration: 1000
     });
+});
+
+app.run(function(amMoment) {
+    amMoment.changeLocale('de');
 });

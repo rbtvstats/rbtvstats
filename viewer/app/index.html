@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -30,7 +31,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#/channels">RBTV Youtube Statistiken</a>
+                <a class="navbar-brand" href="#/channels">RBTV Statistiken</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
@@ -38,11 +39,12 @@
                     <li ng-class="{ active: isActive('/shows')}"><a href="#/shows" data-toggle="collapse" data-target=".navbar-collapse.in">Formate</a></li>
                     <li ng-class="{ active: isActive('/hosts')}"><a href="#/hosts" data-toggle="collapse" data-target=".navbar-collapse.in">Moderatoren</a></li>
                     <li ng-class="{ active: isActive('/videos')}"><a href="#/videos" data-toggle="collapse" data-target=".navbar-collapse.in">Videos</a></li>
-                    <li class="extern"><a href="http://www.rbtv-stats.de/" target="_blank" data-toggle="collapse" data-target=".navbar-collapse.in">Twitch Statistiken</a></li>
+                    <li ng-class="{ active: isActive('/live')}"><a href="#/live" data-toggle="collapse" data-target=".navbar-collapse.in">Live</a></li>
                 </ul>
                 <p class="navbar-text navbar-right">
-                    <span ng-if="!loadingData">Daten aktualisiert: {{metadata.time | createDate | date:"dd.MM.yyyy"}}</span>
-                    <span ng-if="loadingData"><i class="fa fa-spinner fa-pulse fa-fw"></i>Lade Daten</span>
+                    Video Daten: <span ng-if="loadingVideoData"><i class="fa fa-spinner fa-pulse fa-fw"></i></span><span ng-if="!loadingVideoData">{{videoMetadata.time | createDate | date:"dd.MM.yyyy HH:mm"}}</span>
+                    <br>
+                    Live Daten: <span ng-if="loadingLiveData"><i class="fa fa-spinner fa-pulse fa-fw"></i></span><span ng-if="!loadingLiveData">{{liveMetadata.time | createDate | date:"dd.MM.yyyy HH:mm"}}</span>
                 </p>
             </div>
         </div>
@@ -54,7 +56,6 @@
         <div class="content max-width">
             <ul class="links left">
                 <li><a href="https://www.rocketbeans.tv/" target="_blank"><i class="icon-rbtv"></i> Homepage</a></li>
-                <li><a href="https://www.twitch.tv/rocketbeanstv" target="_blank"><i class="fa fa-twitch"></i> Twitch</a></li>
                 <li><a href="https://www.youtube.com/channel/UCQvTDmHza8erxZqDkjQ4bQQ" target="_blank"><i class="fa fa-youtube-play"></i> Rocket Beans TV</a></li>
                 <li><a href="https://www.youtube.com/channel/UCtSP1OA6jO4quIGLae7Fb4g" target="_blank"><i class="fa fa-youtube-play"></i> Rocket Beans TV Let's Play</a></li>
                 <li><a href="https://www.reddit.com/r/rocketbeans" target="_blank"><i class="fa fa-reddit"></i> Reddit</a></li>
@@ -82,14 +83,19 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-ui-select/dist/select.js"></script>
-    <script src="bower_components/Chart.js/dist/Chart.js"></script>
-    <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
     <script src="bower_components/ng-table/dist/ng-table.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
     <script src="bower_components/angular-scroll/angular-scroll.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
+    <script src="bower_components/chart.js/dist/Chart.js"></script>
+    <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+    <script src="bower_components/angular-moment/angular-moment.js"></script>
     <!-- endbower -->
+    <script src="bower_components/moment/locale/de.js"></script>
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
@@ -102,6 +108,7 @@
     <script src="scripts/controllers/hosts.js"></script>
     <script src="scripts/controllers/shows.js"></script>
     <script src="scripts/controllers/videos.js"></script>
+    <script src="scripts/controllers/live.js"></script>
     <script src="scripts/controllers/data.js"></script>
     <script src="scripts/directives/stat.js"></script>
     <script src="scripts/directives/blank.js"></script>

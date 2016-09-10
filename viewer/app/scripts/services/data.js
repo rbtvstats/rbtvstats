@@ -10,14 +10,26 @@
 app.service('DataSrv', function($http) {
     var service = {};
 
-    service.getMetadata = function() {
-        return $http.get('/data/metadata.json').then(function(response) {
+    service.getVideoMetadata = function() {
+        return $http.get('/data/video_metadata.json').then(function(response) {
             return response.data;
         });
     };
 
-    service.getData = function() {
-        return $http.get('/data/data.json').then(function(response) {
+    service.getVideoData = function() {
+        return $http.get('/data/video_data.json').then(function(response) {
+            return response.data;
+        });
+    };
+
+    service.getLiveMetadata = function() {
+        return $http.get('/data/live_metadata.json').then(function(response) {
+            return response.data;
+        });
+    };
+
+    service.getLiveData = function() {
+        return $http.get('/data/live_data.csv').then(function(response) {
             return response.data;
         });
     };

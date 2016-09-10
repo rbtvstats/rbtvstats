@@ -63,7 +63,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         if ($scope.host.selected != $scope.model.host) {
             if ($scope.hosts.indexOf($scope.host.selected) > -1) {
                 setTimeout(function() {
-                    $scope.model.dataLatest = $scope.metadata.time;
+                    $scope.model.dataLatest = $scope.videoMetadata.time;
                     $scope.model.host = $scope.host.selected;
 
                     $scope.updateCharts();

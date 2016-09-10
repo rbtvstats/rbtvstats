@@ -122,18 +122,6 @@ body {
     position: relative;
 }
 
-.view.ng-enter {
-    -webkit-transition: all 300ms ease-in;
-    -moz-transition: all 300ms ease-in;
-    -o-transition: all 300ms ease-in;
-    transition: all 300ms ease-in;
-    opacity: 0;
-}
-
-.view.ng-enter.ng-enter-active {
-    opacity: 1;
-}
-
 @media (min-width: 768px) {
     ul.nav > li:first-of-type {
         border-left: 1px solid #DFDFDF;
@@ -165,10 +153,15 @@ body {
     font-weight: bold;
 }
 
-.navbar-default .extern a {
-    color: #AAA !important;
-    font-weight: normal !important;
-    text-decoration: underline !important;
+.navbar-right {
+    margin: 0;
+    padding: 5px;
+    min-width: 200px;
+}
+
+.navbar-right .loading {
+    display: block;
+    margin: 10px 0;
 }
 
 .ui-select-placeholder,
@@ -185,6 +178,16 @@ body {
 
 .ng-table-pagination {
     margin-bottom: 0;
+}
+
+.live-header {
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.live-chart {
+    padding-bottom: 30px;
 }
 
 .links {

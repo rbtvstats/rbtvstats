@@ -60,10 +60,10 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
     };
 
     $scope.update = function() {
-        if ($scope.show.selected != $scope.model.show || ($scope.model.dataLatest != $scope.metadata.time && $scope.metadata.time > 0)) {
+        if ($scope.show.selected != $scope.model.show || ($scope.model.dataLatest != $scope.videoMetadata.time && $scope.videoMetadata.time > 0)) {
             if ($scope.shows.indexOf($scope.show.selected) > -1) {
                 setTimeout(function() {
-                    $scope.model.dataLatest = $scope.metadata.time;
+                    $scope.model.dataLatest = $scope.videoMetadata.time;
                     $scope.model.show = $scope.show.selected;
 
                     $scope.updateCharts();

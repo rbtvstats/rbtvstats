@@ -7,12 +7,15 @@
  * # DataCtrl
  * Controller of the rbtvstatsApp
  */
-app.controller('DataCtrl', function($scope, $rootScope, $document, StateSrv, DataSrv) {
+app.controller('DataCtrl', function($scope, $rootScope, $document, $q, StateSrv, DataSrv) {
     $scope.init = function() {
         $rootScope.state = {};
-        $scope.loadingData = true;
-        $scope.metadata = {};
+        $scope.loadingVideoData = true;
+        $scope.loadingLiveData = true;
+        $scope.videoMetadata = {};
+        $scope.liveMetadata = {};
         $scope.videos = [];
+        $scope.live = [];
         $scope.channels = [];
         $scope.shows = [];
         $scope.hosts = [];
@@ -260,9 +263,12 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, StateSrv, Dat
     };
 
     $scope.update = function() {
-        $scope.loadingData = true;
+        $scope.loadingVideoData = true;
+        $scope.loadingLiveData = true;
 
-        DataSrv.getData().then(function(data) {
+        var promises = [];
+
+        promises.push(DataSrv.getVideoData().then(function(data) {
             var videos = [];
             for (var key in data) {
                 videos.push(data[key]);
@@ -273,12 +279,35 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, StateSrv, Dat
             $scope.assignArray($scope.hosts, $scope.getAllHosts($scope.videos));
             $scope.assignArray($scope.channels, $scope.getAllChannels($scope.videos));
 
-            DataSrv.getMetadata().then(function(data) {
-                $scope.metadata = data;
-
-                $scope.$broadcast('updateData');
-                $scope.loadingData = false;
+            return DataSrv.getVideoMetadata().then(function(data) {
+                $scope.videoMetadata = data;
+                $scope.loadingVideoData = false;
             });
+        }));
+
+        promises.push(DataSrv.getLiveData().then(function(data) {
+            var live = [];
+            var lines = data.split('\n');
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i].split(',');
+                if (line.length === 2) {
+                    live.push({
+                        time: new Date(parseInt(line[0], 10) * 1000),
+                        viewers: parseInt(line[1], 10)
+                    });
+                }
+            }
+
+            $scope.assignArray($scope.live, live);
+ 
+            return DataSrv.getLiveMetadata().then(function(data) {
+                $scope.liveMetadata = data;
+                $scope.loadingLiveData = false;
+            });
+        }));
+
+        $q.all(promises).then(function() {
+            $scope.$broadcast('updateData');
         });
     };
 
