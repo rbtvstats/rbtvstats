@@ -5,12 +5,13 @@ function binaryClosest(array, searchElement) {
     var maxIndex = array.length - 1;
     var currentIndex;
     var currentElement;
+    searchElement = searchElement._d.getTime();
 
     while (minIndex <= maxIndex) {
-        currentIndex = (minIndex + maxIndex) / 2 | 0;
-        currentElement = array[currentIndex].time;
+        currentIndex = Math.floor((minIndex + maxIndex) / 2);
+        currentElement = array[currentIndex].time.getTime();
 
-        if (maxIndex - minIndex <= 1) {
+        if (currentElement === searchElement || maxIndex - minIndex <= 1) {
             return currentIndex;
         } else if (currentElement < searchElement) {
             minIndex = currentIndex + 1;
@@ -285,7 +286,7 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, StateSrv, Dat
 
             for (var i = startIndex; i <= endIndex; i++) {
                 var data = $scope.live[i];
-                chart.labels.push(moment(data.time).format('LLLL'));
+                chart.labels.push(moment(data.time));
                 chart.data[0].push(data.viewers);
             }
         }
