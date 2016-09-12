@@ -18,8 +18,8 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         $scope.model.charts = [];
         $scope.model.stats = {};
 
-        $scope.model.chartsConfig.push(configMonthlyContent);
         $scope.model.chartsConfig.push(configViewsDistribution);
+        $scope.model.chartsConfig.push(configMonthlyContent);
 
         //load model state
         $scope.model = StateSrv.load($location.path(), $scope.model);
@@ -322,62 +322,6 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         $scope.model.stats = stats;
     };
 
-    var configMonthlyContent = function() {
-        var data = $scope.groupMonthly($scope.filterHost($scope.videos, $scope.model.host));
-        var chart = {};
-        chart.labels = [];
-        chart.series = [];
-        chart.data = [
-            []
-        ];
-        chart.options = {
-            type: 'bar',
-            header: 'Monatliche Inhalte in Stunden',
-            width: '100%',
-            height: '400px',
-            legend: {
-                display: false
-            },
-            scales: {
-                xAxes: [{
-
-                }],
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Stunden'
-                    },
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        };
-
-        data.sort($scope.orderKey);
-
-        for (var i = 0; i < data.length; i++) {
-            var dataset = data[i];
-            var dateParts = dataset.key.split(".");
-            var date = new Date(dateParts[0], (dateParts[1] - 1), 1);
-
-            var totalTime = 0;
-            for (var j = 0; j < dataset.value.length; j++) {
-                totalTime = totalTime || 0;
-                totalTime += dataset.value[j].length;
-            }
-
-            totalTime = Math.round((totalTime / 3600) * 100) / 100;
-
-            chart.labels.push($scope.monthShortNames[date.getMonth()] + " " + date.getFullYear());
-            chart.data[0].push(totalTime);
-        }
-
-        chart.series.push($scope.model.host);
-
-        $scope.model.charts.push(chart);
-    };
-
     var configViewsDistribution = function() {
         var data = $scope.filterHost($scope.videos, $scope.model.host);
         var chart = {};
@@ -467,6 +411,62 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
                 abort--;
             }
         }
+
+        $scope.model.charts.push(chart);
+    };
+
+    var configMonthlyContent = function() {
+        var data = $scope.groupMonthly($scope.filterHost($scope.videos, $scope.model.host));
+        var chart = {};
+        chart.labels = [];
+        chart.series = [];
+        chart.data = [
+            []
+        ];
+        chart.options = {
+            type: 'bar',
+            header: 'Monatliche Inhalte in Stunden',
+            width: '100%',
+            height: '400px',
+            legend: {
+                display: false
+            },
+            scales: {
+                xAxes: [{
+
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Stunden'
+                    },
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        };
+
+        data.sort($scope.orderKey);
+
+        for (var i = 0; i < data.length; i++) {
+            var dataset = data[i];
+            var dateParts = dataset.key.split(".");
+            var date = new Date(dateParts[0], (dateParts[1] - 1), 1);
+
+            var totalTime = 0;
+            for (var j = 0; j < dataset.value.length; j++) {
+                totalTime = totalTime || 0;
+                totalTime += dataset.value[j].length;
+            }
+
+            totalTime = Math.round((totalTime / 3600) * 100) / 100;
+
+            chart.labels.push($scope.monthShortNames[date.getMonth()] + " " + date.getFullYear());
+            chart.data[0].push(totalTime);
+        }
+
+        chart.series.push($scope.model.host);
 
         $scope.model.charts.push(chart);
     };
