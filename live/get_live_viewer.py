@@ -5,7 +5,7 @@ import time
 
 API_KEY = ''
 CHANNEL_ID = 'UCQvTDmHza8erxZqDkjQ4bQQ'
-DATA_FILEPATH = '/home/marcel/rbtvstats.github.io/data/live_data.csv'
+DATA_FILEPATH = '/home/marcel/rbtvdata/live/data.csv'
 
 if __name__ == "__main__":
     #find livestream video id

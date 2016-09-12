@@ -1,8 +1,8 @@
 #!/bin/sh
 
-WORKING_DIR='/home/marcel/rbtvstats.github.io/'
-LIVE_DATA_FILEPATH='data/live_data.csv'
-LIVE_METADATA_FILEPATH='data/live_metadata.json'
+WORKING_DIR='/home/marcel/rbtvdata/'
+LIVE_DATA_FILEPATH='live/data.csv'
+LIVE_METADATA_FILEPATH='live/metadata.json'
 
 cd $WORKING_DIR
 
