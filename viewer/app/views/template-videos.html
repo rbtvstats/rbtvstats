@@ -1,9 +1,15 @@
 <table class="table table-striped" ng-table="tableParams" show-filter="true">
     <tr ng-repeat="video in $data">
+        <td width="20"><a href="" title="Fehler melden" ng-click="openFlagDialog(video.id)"><i class="fa fa-flag"></i></a></td>
         <td title="'Titel'" filter="{ title: 'text'}" data-sortable="'title'"><a target="_blank" href="https://www.youtube.com/watch?v={{video.id}}">{{video.title}}</a></td>
         <td width="180" filter="{ hosts: 'text'}" title="'Personen'" data-sortable="'hosts'">
             <span ng-repeat="host in video.hosts | orderBy">
                 <a ng-href="#/hosts?{{host}}" ng-click="scrollTop()">{{host}}</a><span ng-if="$index < video.hosts.length - 1">,</span>
+            </span>
+        </td>
+        <td width="180" filter="{ shows: 'text'}" title="'Formate'" data-sortable="'shows'">
+            <span ng-repeat="show in video.shows | orderBy">
+                <a ng-href="#/shows?{{show}}" ng-click="scrollTop()">{{show}}</a><span ng-if="$index < video.shows.length - 1">,</span>
             </span>
         </td>
         <td width="200" filter="{ channel: 'select'}" filter-data="getSelectFilter('channel')" title="'Kanal'" data-sortable="'channel'">{{video.channel}}</td>

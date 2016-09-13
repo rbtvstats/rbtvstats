@@ -13,11 +13,13 @@ var app = angular.module('rbtvstatsApp', [
     'ngTable',
     'ngAnimate',
     'chart.js',
+    'ui.bootstrap',
     'ui.select',
     'angular-loading-bar',
     'duScroll',
     'daterangepicker',
-    'angularMoment'
+    'angularMoment',
+    'uuid4'
 ]);
 
 app.config(function($routeProvider, ChartJsProvider, cfpLoadingBarProvider) {

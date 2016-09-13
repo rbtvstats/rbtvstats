@@ -7,7 +7,7 @@
  * # DataCtrl
  * Controller of the rbtvstatsApp
  */
-app.controller('DataCtrl', function($scope, $rootScope, $document, $q, StateSrv, DataSrv) {
+app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout, uuid4, StateSrv, DataSrv) {
     $scope.init = function() {
         $rootScope.state = {};
         $scope.loadingVideoData = true;
@@ -20,6 +20,7 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, StateSrv,
         $scope.shows = [];
         $scope.hosts = [];
         $scope.monthShortNames = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+        $rootScope.alerts = [];
 
         $scope.$on("$routeChangeStart", function(event, next, current) {
             if (typeof current !== 'undefined') {
@@ -262,6 +263,21 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, StateSrv,
         }
     };
 
+    $rootScope.addAlert = function(alert) {
+        alert.id = uuid4.generate();
+        $rootScope.alerts.push(alert);
+        $timeout($rootScope.closeAlert, 3000, true, alert.id)
+    };
+
+    $rootScope.closeAlert = function(id) {
+        for (var i = 0; i < $rootScope.alerts.length; i++) {
+            var alert = $rootScope.alerts[i];
+            if (alert.id === id) {
+                $rootScope.alerts.splice(i, 1);
+            }
+        }
+    };
+
     $scope.update = function() {
         $scope.loadingVideoData = true;
         $scope.loadingLiveData = true;
@@ -299,7 +315,7 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, StateSrv,
             }
 
             $scope.assignArray($scope.live, live);
- 
+
             return DataSrv.getLiveMetadata().then(function(data) {
                 $scope.liveMetadata = data;
                 $scope.loadingLiveData = false;

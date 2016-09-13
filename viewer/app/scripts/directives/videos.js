@@ -6,7 +6,7 @@
  * @description
  * # videos
  */
-app.directive('videos', function() {
+app.directive('videos', function($rootScope, uuid4, FlagSrv) {
     return {
         templateUrl: 'views/template-videos.html',
         restrict: 'A',
@@ -14,7 +14,7 @@ app.directive('videos', function() {
             data: '=videos',
             tableParams: '=params'
         },
-        controller: function($scope, $rootScope, $timeout, $filter, $document, NgTableParams) {
+        controller: function($scope, $rootScope, $timeout, $filter, $document, $uibModal, NgTableParams) {
             $scope.init = function() {
                 if (!($scope.tableParams instanceof NgTableParams)) {
                     $scope.tableParams = new NgTableParams({
@@ -103,6 +103,38 @@ app.directive('videos', function() {
                 updateFilter();
 
                 return filter;
+            };
+
+            $scope.openFlagDialog = function(videoId) {
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    ariaLabelledBy: 'modal-title',
+                    ariaDescribedBy: 'modal-body',
+                    templateUrl: 'views/template-flag.html',
+                    controller: 'FlagCtrl'
+                });
+
+                modalInstance.result.then(function(reasons) {
+                    var data = {
+                        videoId: videoId,
+                        reasons: reasons
+                    };
+
+                    FlagSrv.flag(data).then(function() {
+                            $rootScope.addAlert({
+                                type: 'success',
+                                msg: 'Video erfolgreich gemeldet. Danke!'
+                            });
+                        },
+                        function(error) {
+                            $rootScope.addAlert({
+                                type: 'danger',
+                                msg: 'Ein Fehler ist beim Melden des Videos aufgetreten. (status: ' + error.status + ')'
+                            });
+                        });
+                }, function() {
+                    //ignore
+                });
             };
 
             $scope.update = function() {

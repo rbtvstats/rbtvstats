@@ -23,6 +23,11 @@
 </head>
 
 <body ng-controller="DataCtrl" ng-app="rbtvstatsApp" ng-cloak>
+    <div class="alert-container">
+        <div class="alert-animate" ng-repeat="alert in alerts">
+            <div uib-alert ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert(alert.id)">{{alert.msg}}</div>
+        </div>
+    </div>
     <nav id="top" class="navbar navbar-default" ng-controller="NavigationCtrl">
         <div class="container-fluid max-width">
             <div class="navbar-header">
@@ -94,6 +99,8 @@
     <script src="bower_components/chart.js/dist/Chart.js"></script>
     <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
     <script src="bower_components/angular-moment/angular-moment.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-uuid4/angular-uuid4.js"></script>
     <!-- endbower -->
     <script src="bower_components/moment/locale/de.js"></script>
     <!-- endbuild -->
@@ -103,6 +110,7 @@
     <script src="scripts/filters/createdate.js"></script>
     <script src="scripts/services/state.js"></script>
     <script src="scripts/services/data.js"></script>
+    <script src="scripts/services/flag.js"></script>
     <script src="scripts/controllers/navigation.js"></script>
     <script src="scripts/controllers/channels.js"></script>
     <script src="scripts/controllers/hosts.js"></script>
@@ -110,6 +118,7 @@
     <script src="scripts/controllers/videos.js"></script>
     <script src="scripts/controllers/live.js"></script>
     <script src="scripts/controllers/data.js"></script>
+    <script src="scripts/controllers/flag.js"></script>
     <script src="scripts/directives/stat.js"></script>
     <script src="scripts/directives/blank.js"></script>
     <script src="scripts/directives/slidein.js"></script>

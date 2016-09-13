@@ -13,6 +13,38 @@ body {
     display: none !important;
 }
 
+.alert-container {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 99;
+}
+
+.alert-animate.ng-enter, 
+.alert-animate.ng-leave
+{ 
+    -webkit-transition: 200ms ease-in-out all;
+    -moz-transition: 200ms ease-in-out all;
+    -ms-transition: 200ms ease-in-out all;
+    -o-transition: 200ms ease-in-out all;
+    transition: 200ms ease-in-out all;
+    position: relative;
+    display: block;
+} 
+ 
+.alert-animate.ng-enter.alert-animate.ng-enter-active, 
+.alert-animate.ng-leave {
+    top: 0;
+    height: 30px;
+}
+ 
+.alert-animate.ng-leave.alert-animate.ng-leave-active,
+.alert-animate.ng-enter {
+    top: -50px;
+    height: 0px;
+}
+
 .content {
     padding: 16px;
     margin-left: auto;
@@ -25,6 +57,10 @@ body {
     border: 1px solid #e7e7e7;
     bottom: 0;
     width: 100%;
+}
+
+.fa-flag {
+    color: #bcd3e6;
 }
 
 .max-width {
