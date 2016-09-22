@@ -1,0 +1,2 @@
+25 * * * * /home/marcel/rbtvstats/chat/get_chat_data_youtube.sh
+30 * * * * /home/marcel/rbtvstats/chat/update_chat_data.sh
