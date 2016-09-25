@@ -125,9 +125,6 @@
                                         <button class="btn btn-default btn-xs" type="button" uib-tooltip="Extract Hosts" ng-click="autoHosts(video)">
                                             <i class="fa fa-magic"></i>
                                         </button>
-                                        <button class="btn btn-default btn-xs" type="button" uib-tooltip="{{toList(lastEdited.snippet.metadata.hosts)}}" ng-if="lastEdited.snippet.metadata.hosts.length" ng-click="addHost(video, lastEdited.snippet.metadata.hosts)">
-                                            <i class="fa fa-paste"></i>
-                                        </button>
                                         <strong>Hosts:</strong>
                                         <span ng-repeat="host in video.snippet.metadata.hosts"><span ng-if="$index > 0">, </span><a href="javascript:void(0);" ng-click="removeHost(video, host)">{{host || 'ERROR'}}</a></span>
                                     </div>
@@ -135,18 +132,20 @@
                                         <button class="btn btn-default btn-xs" type="button" uib-tooltip="Extract Show" ng-click="autoShows(video)">
                                             <i class="fa fa-magic"></i>
                                         </button>
-                                        <button class="btn btn-default btn-xs" type="button" uib-tooltip="{{toList(lastEdited.snippet.metadata.shows)}}" ng-if="lastEdited.snippet.metadata.shows.length" ng-click="addShow(video, lastEdited.snippet.metadata.shows)">
-                                            <i class="fa fa-paste"></i>
-                                        </button>
                                         <strong>Shows:</strong>
                                         <span ng-repeat="show in video.snippet.metadata.shows"><span ng-if="$index > 0">, </span><a href="javascript:void(0);" ng-click="removeShow(video, show)">{{show || 'ERROR'}}</a></span>
                                     </div>
                                 </div>
                                 <div class="tumbnail">
                                     <button class="btn btn-default btn-xs ignore" type="button" uib-tooltip="Ignore" ng-click="toggleIgnore(video)"><i class="fa" ng-class="{'fa-eye-slash': !video.snippet.metadata.ignore, 'fa-eye': video.snippet.metadata.ignore}"></i></button>
-                                    <button class="btn btn-default btn-xs lastEdited" type="button" uib-tooltip="Copy" ng-click="$parent.lastEdited = video">
-                                        <i class="fa fa-copy"></i>
-                                    </button>
+                                    <div class="lastEdited">
+                                        <button class="btn btn-default btn-xs" type="button" uib-tooltip="Copy" ng-click="$parent.lastEdited = video">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                        <button class="btn btn-default btn-xs" type="button" uib-tooltip="Paste" ng-click="paste(video)" ng-if="lastEdited.snippet.metadata">
+                                            <i class="fa fa-paste"></i>
+                                        </button>
+                                    </div>
                                     <button class="btn btn-default btn-xs info" type="button" uib-tooltip="Info" ng-click="showVideoInfo(video)">
                                         <i class="fa fa-info"></i>
                                     </button>

@@ -68,10 +68,14 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
 
     $scope.autoHosts = function(video) {
         var hosts = [];
+        var title = video.snippet.title.toLowerCase();
+        title = title.replace('etienne', 'eddy');
+
+        console.log(title)
 
         for (var i = 0; i < $rootScope.config.hosts.length; i++) {
             var host = $rootScope.config.hosts[i];
-            if (video.snippet.title.toLowerCase().indexOf(host.toLowerCase()) > -1) {
+            if (title.indexOf(host.toLowerCase()) > -1) {
                 hosts.push(host);
             }
         }
@@ -110,9 +114,13 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
     };
 
     $scope.autoShows = function(video) {
+        var title = video.snippet.title.toLowerCase();
+        title = title.replace('Game Plus Daily', 'Game+ Daily');
+        title = title.replace('let\'s play', 'lets play');
+
         for (var i = 0; i < $rootScope.config.shows.length; i++) {
             var show = $rootScope.config.shows[i];
-            if (video.snippet.title.toLowerCase().indexOf(show.toLowerCase()) > -1) {
+            if (title.indexOf(show.toLowerCase()) > -1) {
                 $scope.addShow(video, show);
                 break;
             }
@@ -149,6 +157,13 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
 
     $scope.showVideoInfo = function(video) {
         console.log(video);
+    };
+
+    $scope.paste = function(video) {
+        var hosts = $scope.lastEdited.snippet.metadata.hosts;
+        var shows = $scope.lastEdited.snippet.metadata.shows;
+        $scope.addHost(video, hosts);
+        $scope.addShow(video, shows);
     };
 
     $scope.fixStats = function() {
