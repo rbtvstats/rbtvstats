@@ -115,7 +115,7 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
 
     $scope.autoShows = function(video) {
         var title = video.snippet.title.toLowerCase();
-        title = title.replace('Game Plus Daily', 'Game+ Daily');
+        title = title.replace('game plus daily', 'game+ daily');
         title = title.replace('let\'s play', 'lets play');
 
         for (var i = 0; i < $rootScope.config.shows.length; i++) {
