@@ -281,10 +281,17 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, StateSrv, Dat
 
             chart.series.push('Live Views');
 
+            var maxDatapoints = 2000;
             var startIndex = binaryClosest($scope.live, $scope.model.dateRange.startDate);
             var endIndex = binaryClosest($scope.live, $scope.model.dateRange.endDate);
+            var numDatapoints = endIndex - startIndex;
+            var step = 1;
 
-            for (var i = startIndex; i <= endIndex; i++) {
+            if (numDatapoints > maxDatapoints) {
+                step = Math.floor(numDatapoints / maxDatapoints);
+            }
+
+            for (var i = startIndex; i <= endIndex; i += step) {
                 var data = $scope.live[i];
                 chart.labels.push(moment(data.time));
                 chart.data[0].push(data.viewers);
