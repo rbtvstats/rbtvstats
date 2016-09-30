@@ -3,9 +3,8 @@ import re
 import os
 from datetime import datetime
 
-def load(dir, limit=None):
+def load(dir, start=None, end=None):
     #read chat files
-    i = 0
     chatTmp = []
     exp = re.compile('\[(.+?)\] <(.+?)> (.+)?')
     files = sorted(os.listdir(dir))
@@ -13,28 +12,25 @@ def load(dir, limit=None):
         if filename.endswith('.txt'):
             filepath = os.path.join(dir, filename)
             dateStr = filename.rstrip('.txt')
-            
-            #read file
-            openfile = open(filepath)
-            rawData = openfile.read()
-            openfile.close()
+            dateObj = datetime.strptime(dateStr, '%Y-%m-%d').date()
 
-            #process each chat message
-            splitRawData = rawData.split('\n')
-            for line in splitRawData:
-                match = exp.match(line)
-                if match is not None:
-                    timeStr = match.group(1)
-                    username = match.group(2)
-                    message = match.group(3)
-                    datetimeObj = datetime.strptime(dateStr + ' ' + timeStr, '%Y-%m-%d %H:%M:%S')
+            if (start is None or dateObj >= start) and (end is None or dateObj <= end):
+                #read file
+                openfile = open(filepath)
+                rawData = openfile.read()
+                openfile.close()
 
-                    chatTmp.append((datetimeObj, username, message))
+                #process each chat message
+                splitRawData = rawData.split('\n')
+                for line in splitRawData:
+                    match = exp.match(line)
+                    if match is not None:
+                        timeStr = match.group(1)
+                        username = match.group(2)
+                        message = match.group(3)
+                        datetimeObj = datetime.strptime(dateStr + ' ' + timeStr, '%Y-%m-%d %H:%M:%S')
 
-            #limit
-            i = i + 1
-            if limit is not None and i >= limit:
-                break
+                        chatTmp.append((datetimeObj, username, message))
 
     #create data frame
     columns = ['datetime', 'username', 'message']

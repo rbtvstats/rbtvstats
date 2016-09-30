@@ -2,7 +2,7 @@ import pandas as pd
 import os
 from datetime import datetime
 
-def load(dir, limit=None):
+def load(dir):
     #read live files
     liveTmp = []
     files = sorted(os.listdir(dir))
@@ -37,6 +37,6 @@ def load(dir, limit=None):
     live.sort_index(inplace=True)
 
     #resample
-    live = live.resample('1min').mean().fillna(method='pad', limit=5)
+    live = live.resample('1min').mean().fillna(method='pad', limit=15)
 
     return live
