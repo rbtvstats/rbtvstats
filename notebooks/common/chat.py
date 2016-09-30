@@ -3,7 +3,7 @@ import re
 import os
 from datetime import datetime
 
-def load(dir, start=None, end=None):
+def load(dir):
     #read chat files
     chatTmp = []
     exp = re.compile('\[(.+?)\] <(.+?)> (.+)?')
@@ -14,23 +14,22 @@ def load(dir, start=None, end=None):
             dateStr = filename.rstrip('.txt')
             dateObj = datetime.strptime(dateStr, '%Y-%m-%d').date()
 
-            if (start is None or dateObj >= start) and (end is None or dateObj <= end):
-                #read file
-                openfile = open(filepath)
-                rawData = openfile.read()
-                openfile.close()
+            #read file
+            openfile = open(filepath)
+            rawData = openfile.read()
+            openfile.close()
 
-                #process each chat message
-                splitRawData = rawData.split('\n')
-                for line in splitRawData:
-                    match = exp.match(line)
-                    if match is not None:
-                        timeStr = match.group(1)
-                        username = match.group(2)
-                        message = match.group(3)
-                        datetimeObj = datetime.strptime(dateStr + ' ' + timeStr, '%Y-%m-%d %H:%M:%S')
+            #process each chat message
+            splitRawData = rawData.split('\n')
+            for line in splitRawData:
+                match = exp.match(line)
+                if match is not None:
+                    timeStr = match.group(1)
+                    username = match.group(2)
+                    message = match.group(3)
+                    datetimeObj = datetime.strptime(dateStr + ' ' + timeStr, '%Y-%m-%d %H:%M:%S')
 
-                        chatTmp.append((datetimeObj, username, message))
+                    chatTmp.append((datetimeObj, username, message))
 
     #create data frame
     columns = ['datetime', 'username', 'message']
