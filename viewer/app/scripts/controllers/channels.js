@@ -20,7 +20,6 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
         $scope.model.chartsConfig.push(configMonthlyAverageViews);
         $scope.model.chartsConfig.push(configViewsDistribution);
         $scope.model.chartsConfig.push(configMonthlyLikeRation);
-        $scope.model.chartsConfig.push(configMonthlyContentPerson);
         $scope.model.chartsConfig.push(configTotalContentPerson);
 
         $scope.model = StateSrv.load($location.path(), $scope.model);
@@ -543,70 +542,6 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
         for (var channel in channelData) {
             chart.series.push(channel);
             chart.data.push(channelData[channel]);
-        }
-
-        $scope.model.charts.push(chart);
-    };
-
-    var configMonthlyContentPerson = function() {
-        var data = $scope.groupMonthly($scope.videos);
-        var chart = {};
-        chart.labels = [];
-        chart.series = [];
-        chart.data = [];
-        chart.options = {
-            type: 'bar',
-            header: 'Monatliche Inhalte in Stunden pro Person',
-            width: '100%',
-            height: '500px',
-            legend: {
-                display: true
-            },
-            scales: {
-                xAxes: [{
-                    stacked: true,
-                }],
-                yAxes: [{
-                    stacked: true,
-                    display: false
-                }]
-            }
-        };
-
-        data.sort($scope.orderKey);
-
-        var hostData = {};
-        for (var i = 0; i < data.length; i++) {
-            var dataset = data[i];
-            var dateParts = dataset.key.split(".");
-            var date = new Date(dateParts[0], (dateParts[1] - 1), 1);
-
-            var totalTime = {};
-
-            for (var j = 0; j < $scope.hosts.length; j++) {
-                totalTime[$scope.hosts[j]] = 0;
-            }
-
-            for (var j = 0; j < dataset.value.length; j++) {
-                var hosts = dataset.value[j].hosts || [];
-                for (var k = 0; k < hosts.length; k++) {
-                    var host = hosts[k];
-                    totalTime[host] += dataset.value[j].length;
-                }
-            }
-
-            for (var host in totalTime) {
-                totalTime[host] = Math.round((totalTime[host] / 3600) * 100) / 100;
-                hostData[host] = hostData[host] || [];
-                hostData[host].push(totalTime[host]);
-            }
-
-            chart.labels.push($scope.monthShortNames[date.getMonth()] + " " + date.getFullYear());
-        }
-
-        for (var host in hostData) {
-            chart.series.push(host);
-            chart.data.push(hostData[host]);
         }
 
         $scope.model.charts.push(chart);
