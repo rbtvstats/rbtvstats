@@ -1,0 +1,21 @@
+{
+    "manifest_version": 2,
+    "name": "Twitter Exporter",
+    "description": "",
+    "version": "0.0.1",
+    "permissions": [
+        "tabs",
+        "http://127.0.0.1:8842/*",
+        "https://*.twitter.com/*"
+    ],
+    "devtools_page": "devtools.html",
+    "content_scripts": [{
+        "js": ["includes/jquery.js", "includes/content.js"],
+        "matches": ["https://tweetdeck.twitter.com/"],
+        "run_at": "document_end"
+    }],
+    "background": {
+        "scripts": ["includes/background.js"],
+        "persistent": false
+    }
+}
