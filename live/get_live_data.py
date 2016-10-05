@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
 import requests
+import datetime
 import time
+import os
 
 API_KEY = ''
 CHANNEL_ID = 'UCQvTDmHza8erxZqDkjQ4bQQ'
-DATA_FILEPATH = '/home/marcel/rbtvdata/live/data.csv'
+OUTPUT_FOLDER = '/home/marcel/rbtvdata/live'
 
 if __name__ == "__main__":
     #find livestream video id
@@ -19,6 +21,9 @@ if __name__ == "__main__":
     viewerCount = videoResultContent['items'][0]['liveStreamingDetails']['concurrentViewers']
 
     #save datapoint
-    fd = open(DATA_FILEPATH, 'a')
-    fd.write('%s,%s\n' % (int(time.time()), viewerCount))
+    date = datetime.datetime.now()
+    timestamp = int(time.mktime(date.timetuple()))
+    filepath = os.path.join(OUTPUT_FOLDER, date.strftime('%Y-%m.csv'))
+    fd = open(filepath, 'a')
+    fd.write('%s,%s\n' % (timestamp, viewerCount))
     fd.close()
