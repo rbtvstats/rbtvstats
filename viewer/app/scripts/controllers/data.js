@@ -301,7 +301,7 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout,
             });
         }));
 
-        promises.push(DataSrv.getLiveData().then(function(data) {
+        promises.push(DataSrv.getLiveData(new Date(2016, 8)).then(function(data) {
             var live = [];
             var lines = data.split('\n');
             for (var i = 0; i < lines.length; i++) {
