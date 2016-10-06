@@ -218,7 +218,9 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
             }
         }
 
-        $scope.data = JSON.stringify(data, null, "\t");
+        var str = JSON.stringify(data, null, "\t");
+        var file = new File([str], 'data.json', { type: 'text/plain;charset=utf-8' });
+        saveAs(file);
     };
 
     $scope.updateChannel = function() {
