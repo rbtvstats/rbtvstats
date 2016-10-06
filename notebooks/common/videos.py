@@ -1,33 +1,41 @@
 import pandas as pd
 import datetime
 import json
+import os
 
-def load(fielpath):
-    #read video file
-    openfile = open(fielpath)
-    dataJson = json.load(openfile)
-    openfile.close()
-
+def load(dir):
+    #read video files
     videosTmp = []
     videosHostsTmp = []
     videosShowsTmp = []
-    for video in dataJson.itervalues():
-        for host in video['hosts']:
-            videosHostsTmp.append((video['id'], host))
+    files = sorted(os.listdir(dir))
+    for filename in files:
+        if filename != 'metadata.json':
+            filepath = os.path.join(dir, filename)
+            
+            #read file
+            openfile = open(filepath)
+            dataJson = json.load(openfile)
+            openfile.close()
+            
+            #process each video
+            for video in dataJson:
+                for host in video['hosts']:
+                    videosHostsTmp.append((video['id'], host))
 
-        for show in video['shows']:
-            videosShowsTmp.append((video['id'], show))
+                for show in video['shows']:
+                    videosShowsTmp.append((video['id'], show))
 
-        videosTmp.append((video['id'], 
-                          video['title'], 
-                          video['channel'], 
-                          datetime.timedelta(seconds=video['length']), 
-                          datetime.datetime.fromtimestamp(video['published']), 
-                          video['stats']['viewCount'], 
-                          video['stats']['likeCount'], 
-                          video['stats']['dislikeCount'], 
-                          video['stats']['favoriteCount'], 
-                          video['stats']['commentCount']))
+                videosTmp.append((video['id'], 
+                                  video['title'], 
+                                  video['channel'], 
+                                  datetime.timedelta(seconds=video['length']), 
+                                  datetime.datetime.fromtimestamp(video['published']), 
+                                  video['stats']['viewCount'], 
+                                  video['stats']['likeCount'], 
+                                  video['stats']['dislikeCount'], 
+                                  video['stats']['favoriteCount'], 
+                                  video['stats']['commentCount']))
 
     #videos dataframe
     videos = pd.DataFrame(videosTmp, columns=['id', 
@@ -42,6 +50,7 @@ def load(fielpath):
                                               'commentCount'])
     videos.set_index(videos['id'], inplace=True)
     videos.drop('id', axis=1, inplace=True)
+    videos.sort_values('published', inplace=True)
 
     #videosHosts dataframe
     videosHosts = pd.DataFrame(videosHostsTmp, columns=['id', 
