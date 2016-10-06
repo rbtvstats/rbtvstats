@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import datetime
+import time
 import simplejson as json
 import os
 import sys
@@ -18,6 +19,15 @@ def saveVideoData(month, videos):
     filepath = os.path.join(OUTPUT_FOLDER, month + '.json')
     fd = open(filepath, 'w')
     json.dump(videos, fd, indent='\t')
+    fd.close()
+
+def updateMetadata():
+    metadata = {
+        'time': int(time.time())
+    }
+    filepath = os.path.join(OUTPUT_FOLDER, 'metadata.json')
+    fd = open(filepath, 'w')
+    json.dump(metadata, fd, indent='\t')
     fd.close()
 
 def sortByDate(video):
@@ -41,3 +51,5 @@ if __name__ == '__main__':
     for month, videos in groupedVideos.iteritems():
         videos = sorted(videos, key=sortByDate)
         saveVideoData(month, videos)
+
+    updateMetadata()
