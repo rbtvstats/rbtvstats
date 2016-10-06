@@ -284,12 +284,7 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout,
 
         var promises = [];
 
-        promises.push(DataSrv.getVideoData().then(function(data) {
-            var videos = [];
-            for (var key in data) {
-                videos.push(data[key]);
-            }
-
+        promises.push(DataSrv.getVideoData(new Date(2015, 2)).then(function(videos) {
             $scope.assignArray($scope.videos, $scope.filterTime(videos, new Date(2015, 2, 3)));
             $scope.assignArray($scope.shows, $scope.getAllShows($scope.videos))
             $scope.assignArray($scope.hosts, $scope.getAllHosts($scope.videos));

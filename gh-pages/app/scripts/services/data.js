@@ -16,9 +16,27 @@ app.service('DataSrv', function($http, $q) {
         });
     };
 
-    service.getVideoData = function() {
-        return $http.get('https://raw.githubusercontent.com/rbtvstats/rbtvdata/master/video/data.json').then(function(response) {
-            return response.data;
+    service.getVideoData = function(date) {
+        var requests = [];
+
+        function pad(n) {
+            return (n < 10) ? ("0" + n) : n;
+        }
+
+        var now = new Date();
+        while (date < now) {
+            var filename = date.getFullYear() + '-' + pad(date.getMonth() + 1) + '.json';
+            requests.push($http.get('https://raw.githubusercontent.com/rbtvstats/rbtvdata/master/video/' + filename));
+            date.setMonth(date.getMonth() + 1);
+        }
+
+        return $q.all(requests).then(function(responses) {
+            var data = [];
+            for (var i = 0; i < responses.length; i++) {
+                data = data.concat(responses[i].data);
+            }
+
+            return data;
         });
     };
 

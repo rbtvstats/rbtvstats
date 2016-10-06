@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import json
+import simplejson as json
 import time
 import datetime
 import os
@@ -25,7 +25,7 @@ def saveTweets(day, tweets):
     print('save %d tweets from %s...' % (len(tweets), day))
     filepath = os.path.join(OUTPUT_FOLDER, fileId, day + '.json')
     fd = open(filepath, 'w')
-    json.dump(tweets, fd, indent=4)
+    json.dump(tweets, fd, indent='\t')
     fd.close()
 
 def sortByDate(tweet):
