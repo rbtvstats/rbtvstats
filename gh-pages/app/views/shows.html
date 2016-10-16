@@ -1,14 +1,30 @@
 <div class="content max-width">
     <div class="select">
-        <div class="select-heading">
-            <ui-select ng-if="shows.length" ng-model="show.selected" on-select="update()">
-                <ui-select-match placeholder="Auswählen..">
-                    <span ng-bind="$select.selected"></span>
-                </ui-select-match>
-                <ui-select-choices repeat="item in (shows | filter: $select.search | orderBy)">
-                    <span ng-bind="item"></span>
-                </ui-select-choices>
-            </ui-select>
+        <div class="select-heading container-fluid">
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <label>Format</label>
+                    <ui-select ng-if="shows.length" ng-model="show.selected" on-select="update()">
+                        <ui-select-match placeholder="Auswählen..">
+                            <span ng-bind="$select.selected"></span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="item in (shows | filter: $select.search | orderBy)">
+                            <span ng-bind="item"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class="col-md-3 form-group" ng-if="model.seriesList.length">
+                    <label>Serie</label>
+                    <ui-select ng-model="series.selected" on-select="update()">
+                        <ui-select-match allow-clear="true" placeholder="Auswählen..">
+                            <span ng-bind="$select.selected"></span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="item in (model.seriesList | filter: $select.search | orderBy)">
+                            <span ng-bind="item"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
         </div>
         <div class="select-body">
             <div class="select-content" ng-if="model.show == show.selected">

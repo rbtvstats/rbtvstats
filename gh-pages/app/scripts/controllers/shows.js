@@ -12,6 +12,8 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         //model (default)
         $scope.model = {};
         $scope.model.show = null;
+        $scope.model.series = null;
+        $scope.model.seriesList = [];
         $scope.model.videos = [];
         $scope.model.dataLatest = 0;
         $scope.model.chartsConfig = [];
@@ -26,6 +28,10 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
 
         $scope.show = {
             selected: $scope.getShow() || $scope.model.show || 'Bohn Jour'
+        };
+
+        $scope.series = {
+            selected: $scope.getSeries() || $scope.model.series || null
         };
 
         $scope.$on('updateData', function(event, args) {
@@ -59,22 +65,59 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         return null;
     };
 
+    $scope.getSeries = function() {
+        return null;
+    };
+
     $scope.update = function() {
-        if ($scope.show.selected != $scope.model.show || ($scope.model.dataLatest != $scope.videoMetadata.time && $scope.videoMetadata.time > 0)) {
+        if ($scope.show.selected != $scope.model.show) {
+            $scope.model.seriesList = [];
+            $scope.series = {
+                selected: null
+            };
+        }
+
+        if (($scope.show.selected != $scope.model.show) ||
+            ($scope.series.selected != $scope.model.series) ||
+            ($scope.model.dataLatest != $scope.videoMetadata.time && $scope.videoMetadata.time > 0)) {
             if ($scope.shows.indexOf($scope.show.selected) > -1) {
                 setTimeout(function() {
                     $scope.model.dataLatest = $scope.videoMetadata.time;
                     $scope.model.show = $scope.show.selected;
-
-                    $scope.updateCharts();
-                    $scope.updateStats();
+                    $scope.model.series = $scope.series.selected;
 
                     $scope.assignArray($scope.model.videos, $scope.filterShow($scope.videos, $scope.model.show));
+
+                    if ($scope.model.series) {
+                        $scope.assignArray($scope.model.videos, $scope.filterSeries($scope.model.videos, $scope.model.series));
+                    }
+
+                    $scope.updateSeries();
+                    $scope.updateCharts();
+                    $scope.updateStats();
 
                     $scope.$apply();
                 }, 0);
             }
         }
+    };
+
+    $scope.updateSeries = function() {
+        var seriesList = [];
+
+        var data = $scope.filterShow($scope.videos, $scope.model.show);
+        for (var i = 0; i < data.length; i++) {
+            var show = data[i];
+            var series = show.series || [];
+            for (var j = 0; j < series.length; j++) {
+                var s = series[j];
+                if (seriesList.indexOf(s) == -1) {
+                    seriesList.push(s);
+                }
+            }
+        }
+
+        $scope.model.seriesList = seriesList;
     };
 
     $scope.updateCharts = function() {
@@ -87,7 +130,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
     $scope.updateStats = function() {
         $scope.model.stats = {};
 
-        var data = $scope.filterShow($scope.videos, $scope.model.show);
+        var data = $scope.model.videos;
         var stats = [];
 
         //totalVideos
@@ -228,7 +271,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
     };
 
     var configViewsDistribution = function() {
-        var data = $scope.filterShow($scope.videos, $scope.model.show);
+        var data = $scope.model.videos;
         var chart = {};
         chart.labels = [];
         chart.series = [];
@@ -321,7 +364,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
     };
 
     var configMonthlyAverageViews = function() {
-        var data = $scope.groupMonthly($scope.filterShow($scope.videos, $scope.model.show));
+        var data = $scope.groupMonthly($scope.model.videos);
         var chart = {};
         chart.labels = [];
         chart.series = [];

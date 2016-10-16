@@ -21,9 +21,8 @@ body {
     z-index: 99;
 }
 
-.alert-animate.ng-enter, 
-.alert-animate.ng-leave
-{ 
+.alert-animate.ng-enter,
+.alert-animate.ng-leave {
     -webkit-transition: 200ms ease-in-out all;
     -moz-transition: 200ms ease-in-out all;
     -ms-transition: 200ms ease-in-out all;
@@ -31,14 +30,14 @@ body {
     transition: 200ms ease-in-out all;
     position: relative;
     display: block;
-} 
- 
-.alert-animate.ng-enter.alert-animate.ng-enter-active, 
+}
+
+.alert-animate.ng-enter.alert-animate.ng-enter-active,
 .alert-animate.ng-leave {
     top: 0;
     height: 30px;
 }
- 
+
 .alert-animate.ng-leave.alert-animate.ng-leave-active,
 .alert-animate.ng-enter {
     top: -50px;
@@ -104,8 +103,16 @@ body {
 .select {}
 
 .select > .select-heading {
-    max-width: 360px;
-    margin-bottom: 20px;
+    padding: 0;
+}
+
+.select > .select-heading .ui-select-container input {
+    width: 100% !important;
+}
+
+.select > .select-heading .ui-select-container .ui-select-placeholder,
+.select > .select-heading .ui-select-container .ui-select-match-text {
+    width: auto !important;
 }
 
 .select > .select-body {}

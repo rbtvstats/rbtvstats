@@ -99,6 +99,22 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout,
         return output;
     };
 
+    $scope.filterSeries = function(videos, series) {
+        var output = [];
+
+        for (var i = 0; i < videos.length; i++) {
+            var video = videos[i];
+
+            if (video.series) {
+                if (video.series.indexOf(series) > -1) {
+                    output.push(video);
+                }
+            }
+        }
+
+        return output;
+    };
+
     $scope.filterTime = function(videos, min, max) {
         var output = [];
 
