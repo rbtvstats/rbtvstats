@@ -17,6 +17,10 @@ app.controller('FlagCtrl', function($scope, $uibModalInstance) {
             id: 'shows',
             title: 'Format(e) fehlerhaft oder unvollständig',
             selected: false
+        }, {
+            id: 'series',
+            title: 'Serie(n) fehlerhaft oder unvollständig',
+            selected: false
         }];
         $scope.description = '';
     };
