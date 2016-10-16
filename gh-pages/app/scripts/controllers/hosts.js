@@ -9,6 +9,9 @@
  */
 app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, DataSrv) {
     $scope.init = function() {
+        $scope.default = {};
+        $scope.default.host = 'Eddy';
+
         //model (default)
         $scope.model = {};
         $scope.model.host = null;
@@ -26,7 +29,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         $scope.model = StateSrv.load($location.path(), $scope.model);
 
         $scope.host = {
-            selected: $scope.getHost() || $scope.model.host || 'Eddy'
+            selected: $scope.getHost() || $scope.model.host || $scope.default.host
         };
 
         $scope.$on('updateData', function(event, args) {
@@ -34,46 +37,49 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         });
 
         $scope.$watch('host.selected', function(newVal, oldVal) {
-            var param = {};
+            var params = {};
+
             if ($scope.host.selected) {
-                param[$scope.host.selected] = true;
+                params.host = $scope.host.selected;
             }
-            $location.search(param);
+
+            $location.search(params);
             $scope.update();
         });
 
-        $scope.$on("$routeUpdate", function(event, route) {
-            var params = $location.search();
-            for (var host in params) {
-                $scope.host.selected = host;
-                break;
-            }
+        $scope.$on('$routeUpdate', function(event, route) {
+            $scope.host.selected = $scope.getHost() || $scope.model.host || $scope.default.host;
         });
     };
 
     $scope.getHost = function() {
+        var host = null;
         var params = $location.search();
-        for (var host in params) {
-            return host;
+
+        //legacy parameter
+        for (var param in params) {
+            if (typeof params[param] === 'boolean') {
+                host = param;
+            }
         }
 
-        return null;
+        if (typeof params.host !== 'undefined') {
+            host = params.host;
+        }
+
+        return host;
     };
 
     $scope.update = function() {
         if ($scope.host.selected != $scope.model.host) {
             if ($scope.hosts.indexOf($scope.host.selected) > -1) {
-                setTimeout(function() {
-                    $scope.model.dataLatest = $scope.videoMetadata.time;
-                    $scope.model.host = $scope.host.selected;
+                $scope.model.dataLatest = $scope.videoMetadata.time;
+                $scope.model.host = $scope.host.selected;
+                
+                $scope.assignArray($scope.model.videos, $scope.filterHost($scope.videos, $scope.model.host));
 
-                    $scope.updateCharts();
-                    $scope.updateStats();
-
-                    $scope.assignArray($scope.model.videos, $scope.filterHost($scope.videos, $scope.model.host));
-
-                    $scope.$apply();
-                }, 0);
+                $scope.updateCharts();
+                $scope.updateStats();
             }
         }
     };
@@ -88,7 +94,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
     $scope.updateStats = function() {
         $scope.model.stats = {};
 
-        var data = $scope.filterHost($scope.videos, $scope.model.host);
+        var data = $scope.model.videos
         var stats = [];
 
         //totalVideos
@@ -198,7 +204,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
                 values.push({
                     type: 'url',
                     text: topCohost.name,
-                    url: '#/hosts?' + window.encodeURIComponent(topCohost.name),
+                    url: '#/hosts?host=' + window.encodeURIComponent(topCohost.name),
                     info: topCohost.count + ' Videos'
                 });
             }
@@ -246,7 +252,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
                 values.push({
                     type: 'url',
                     text: topShow.name,
-                    url: '#/shows?' + window.encodeURIComponent(topShow.name),
+                    url: '#/shows?show=' + window.encodeURIComponent(topShow.name),
                     info: topShow.count + ' Videos'
                 });
             }
@@ -324,7 +330,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
     };
 
     var configViewsDistribution = function() {
-        var data = $scope.filterHost($scope.videos, $scope.model.host);
+        var data = $scope.model.videos
         var chart = {};
         chart.labels = [];
         chart.series = [];
@@ -417,7 +423,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
     };
 
     var configMonthlyAverageViews = function() {
-        var data = $scope.groupMonthly($scope.filterHost($scope.videos, $scope.model.host));
+        var data = $scope.groupMonthly($scope.model.videos);
         var chart = {};
         chart.labels = [];
         chart.series = [];
@@ -478,7 +484,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
     };
 
     var configMonthlyContent = function() {
-        var data = $scope.groupMonthly($scope.filterHost($scope.videos, $scope.model.host));
+        var data = $scope.groupMonthly($scope.model.videos);
         var chart = {};
         chart.labels = [];
         chart.series = [];

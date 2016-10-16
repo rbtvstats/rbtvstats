@@ -9,6 +9,9 @@
  */
 app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, DataSrv) {
     $scope.init = function() {
+        $scope.default = {};
+        $scope.default.show = 'Bohn Jour';
+
         //model (default)
         $scope.model = {};
         $scope.model.show = null;
@@ -27,77 +30,90 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         $scope.model = StateSrv.load($location.path(), $scope.model);
 
         $scope.show = {
-            selected: $scope.getShow() || $scope.model.show || 'Bohn Jour'
+            selected: $scope.getShow() || $scope.model.show || $scope.default.show
         };
 
         $scope.series = {
-            selected: $scope.getSeries() || $scope.model.series || null
+            selected: $scope.getSeries() || $scope.model.series
         };
 
         $scope.$on('updateData', function(event, args) {
             $scope.update();
         });
 
-        $scope.$watch('show.selected', function(newVal, oldVal) {
-            var param = {};
+        $scope.$watchGroup(['show.selected', 'series.selected'], function(newVal, oldVal) {
+            var params = {};
+
             if ($scope.show.selected) {
-                param[$scope.show.selected] = true;
+                params.show = $scope.show.selected;
             }
-            $location.search(param);
+
+            if ($scope.series.selected) {
+                params.series = $scope.series.selected;
+            }
+
+            $location.search(params);
             $scope.update();
         });
 
-        $scope.$on("$routeUpdate", function(event, route) {
-            var params = $location.search();
-            for (var show in params) {
-                $scope.show.selected = show;
-                break;
-            }
+        $scope.$on('$routeUpdate', function(event, route) {
+            $scope.show.selected = $scope.getShow();
+            $scope.series.selected = $scope.getSeries();
         });
     };
 
     $scope.getShow = function() {
+        var show = null;
         var params = $location.search();
-        for (var show in params) {
-            return show;
+
+        //legacy parameter
+        for (var param in params) {
+            if (typeof params[param] === 'boolean') {
+                show = param;
+            }
         }
 
-        return null;
+        if (typeof params.show !== 'undefined') {
+            show = params.show;
+        }
+
+        return show;
     };
 
     $scope.getSeries = function() {
-        return null;
+        var series = null;
+        var params = $location.search();
+
+        if (typeof params.series !== 'undefined') {
+            series = params.series;
+        }
+
+        return series;
     };
 
     $scope.update = function() {
-        if ($scope.show.selected != $scope.model.show) {
-            $scope.model.seriesList = [];
-            $scope.series = {
-                selected: null
-            };
-        }
-
         if (($scope.show.selected != $scope.model.show) ||
             ($scope.series.selected != $scope.model.series) ||
             ($scope.model.dataLatest != $scope.videoMetadata.time && $scope.videoMetadata.time > 0)) {
             if ($scope.shows.indexOf($scope.show.selected) > -1) {
-                setTimeout(function() {
-                    $scope.model.dataLatest = $scope.videoMetadata.time;
-                    $scope.model.show = $scope.show.selected;
-                    $scope.model.series = $scope.series.selected;
+                $scope.model.dataLatest = $scope.videoMetadata.time;
+                $scope.model.show = $scope.show.selected;
+                $scope.model.series = $scope.series.selected;
 
-                    $scope.assignArray($scope.model.videos, $scope.filterShow($scope.videos, $scope.model.show));
+                $scope.updateSeries();
 
-                    if ($scope.model.series) {
-                        $scope.assignArray($scope.model.videos, $scope.filterSeries($scope.model.videos, $scope.model.series));
-                    }
+                $scope.assignArray($scope.model.videos, $scope.filterShow($scope.videos, $scope.model.show));
 
-                    $scope.updateSeries();
-                    $scope.updateCharts();
-                    $scope.updateStats();
+                if ($scope.model.seriesList.indexOf($scope.series.selected) > -1) {
+                    $scope.assignArray($scope.model.videos, $scope.filterSeries($scope.model.videos, $scope.model.series));
+                } else {
+                    setTimeout(function() {
+                        $scope.series.selected = null;
+                    }, 0);
+                }
 
-                    $scope.$apply();
-                }, 0);
+                $scope.updateCharts();
+                $scope.updateStats();
             }
         }
     };
@@ -193,7 +209,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
                 values.push({
                     type: 'url',
                     text: topHost.name,
-                    url: '#/hosts?' + topHost.name,
+                    url: '#/hosts?host=' + topHost.name,
                     info: topHost.count + ' Videos'
                 });
             }

@@ -112,10 +112,13 @@ body {
 
 .select > .select-heading .ui-select-container .ui-select-placeholder,
 .select > .select-heading .ui-select-container .ui-select-match-text {
-    width: auto !important;
+    padding-right: 0;
 }
 
-.select > .select-body {}
+.select > .select-heading .ui-select-container .btn-link {
+    position: absolute !important;
+    right: 10px;
+}
 
 .pagination a {
     cursor: pointer;
