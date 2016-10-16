@@ -7,7 +7,7 @@
  * # VideosCtrl
  * Controller of the rbtvstatsApp
  */
-app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv) {
+app.controller('VideosCtrl', function($scope, $rootScope, $window, storageSrv, videosSrv) {
     var init = function() {
         $rootScope.config = storageSrv.getConfig();
         $scope.filterIgnoredVideos = false;
@@ -16,11 +16,28 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
         $scope.loading = false;
         $scope.pageSize = 50;
         $scope.lastEdited = null;
+        $scope.shiftPressed = false;
+        $scope.selectedVideo = null;
+        $scope.selectedVideos = [];
         $scope.selectedChannel = $rootScope.config.channels[0];
         $scope.channelDetails = {};
         $scope.nextPageToken = {};
         $scope.videos = {};
-        $scope.metadata = storageSrv.getMetadata();;
+        $scope.metadata = storageSrv.getMetadata();
+
+        angular.element($window).bind("keyup", function($event) {
+            if ($event.shiftKey !== $scope.shiftPressed) {
+                $scope.shiftPressed = $event.shiftKey;
+                $scope.$apply();
+            }
+        });
+
+        angular.element($window).bind("keydown", function($event) {
+            if ($event.shiftKey !== $scope.shiftPressed) {
+                $scope.shiftPressed = $event.shiftKey;
+                $scope.$apply();
+            }
+        });
 
         $scope.updateChannel();
     };
@@ -52,6 +69,67 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
         return $scope.metadata[videoID];
     };
 
+    var findSelectedVideo = function(video) {
+        for (var i = 0; i < $scope.selectedVideos.length; i++) {
+            if ($scope.selectedVideos[i].id == video.id) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    $scope.selectVideo = function(video, selected) {
+        if ($scope.shiftPressed) {
+            function compare(a, b) {
+                if (a.snippet.publishedAt < b.snippet.publishedAt)
+                    return -1;
+                if (a.snippet.publishedAt > b.snippet.publishedAt)
+                    return 1;
+                return 0;
+            }
+
+            function find(videos, video) {
+                for (var i = 0; i < videos.length; i++) {
+                    if (videos[i].id === video.id) {
+                        return i;
+                    }
+                }
+
+                return -1;
+            }
+
+            var videos = $scope.videos[$scope.selectedChannel].concat();
+            videos.sort(compare);
+
+            var i1 = find(videos, video);
+            var i2 = find(videos, $scope.selectedVideo);
+            if (i1 > -1 && i2 > -1) {
+                $scope.selectedVideos = videos.splice(Math.min(i1, i2), Math.abs(i1 - i2) + 1);
+            }
+        } else {
+            if (selected) {
+                if (findSelectedVideo(video) == -1) {
+                    $scope.selectedVideos.push(video);
+                    $scope.selectedVideo = video;
+                }
+            } else {
+                var i = findSelectedVideo(video);
+                if (i > -1) {
+                    $scope.selectedVideos.splice(i, 1);
+                }
+            }
+        }
+    };
+
+    $scope.deselectVideos = function(video) {
+        $scope.selectedVideos = [];
+    };
+
+    $scope.isSelectedVideo = function(video) {
+        return findSelectedVideo(video) > -1;
+    };
+
     $scope.toList = function(array) {
         return array.join(", ");
     };
@@ -62,16 +140,12 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
         } else {
             video.snippet.metadata.ignore = true;
         }
-
-        storageSrv.setMetadata($scope.metadata);
     };
 
     $scope.autoHosts = function(video) {
         var hosts = [];
         var title = video.snippet.title.toLowerCase();
         title = title.replace('etienne', 'eddy');
-
-        console.log(title)
 
         for (var i = 0; i < $rootScope.config.hosts.length; i++) {
             var host = $rootScope.config.hosts[i];
@@ -84,20 +158,24 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
     };
 
     $scope.addHost = function(video, hosts) {
-        if (typeof video.snippet.metadata.hosts === 'undefined') {
-            video.snippet.metadata.hosts = [];
-
-            //var metadata = getMetadataById(video.snippet.resourceId.videoId);
-            //metadata.hosts = video.snippet.metadata.hosts;
-        }
-
         if (!$.isArray(hosts)) {
             hosts = [hosts];
         }
 
-        for (var i = 0; i < hosts.length; i++) {
-            if (video.snippet.metadata.hosts.indexOf(hosts[i]) == -1 && hosts[i]) {
-                video.snippet.metadata.hosts.push(hosts[i]);
+        var videos = [video];
+        if ($scope.selectedVideos.length > 0) {
+            videos = videos.concat($scope.selectedVideos);
+        }
+
+        for (var i = 0; i < videos.length; i++) {
+            var video = videos[i];
+            video.snippet.metadata.hosts = video.snippet.metadata.hosts || [];
+
+            for (var j = 0; j < hosts.length; j++) {
+                var h = hosts[j];
+                if (video.snippet.metadata.hosts.indexOf(h) == -1 && h) {
+                    video.snippet.metadata.hosts.push(h);
+                }
             }
         }
 
@@ -105,12 +183,21 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
     };
 
     $scope.removeHost = function(video, host) {
-        video.snippet.metadata.hosts = video.snippet.metadata.hosts || [];
-        video.snippet.metadata.hosts.splice(video.snippet.metadata.hosts.indexOf(host), 1);
+        var videos = [video];
+        if ($scope.selectedVideos.length > 0) {
+            videos = videos.concat($scope.selectedVideos);
+        }
+
+        for (var i = 0; i < videos.length; i++) {
+            var video = videos[i];
+            video.snippet.metadata.hosts = video.snippet.metadata.hosts || [];
+            var index = video.snippet.metadata.hosts.indexOf(host);
+            if (index > -1) {
+                video.snippet.metadata.hosts.splice(index, 1);
+            }
+        }
 
         $scope.lastEdited = video;
-
-        storageSrv.setMetadata($scope.metadata);
     };
 
     $scope.autoShows = function(video) {
@@ -128,29 +215,98 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
     };
 
     $scope.addShow = function(video, shows) {
-        if (typeof video.snippet.metadata.shows === 'undefined') {
-            video.snippet.metadata.shows = [];
-
-            //var metadata = getMetadataById(video.snippet.resourceId.videoId);
-            //metadata.shows = video.snippet.metadata.shows;
-        }
-
         if (!$.isArray(shows)) {
             shows = [shows];
         }
 
-        for (var i = 0; i < shows.length; i++) {
-            if (video.snippet.metadata.shows.indexOf(shows[i]) == -1 && shows[i]) {
-                video.snippet.metadata.shows.push(shows[i]);
+        var videos = [video];
+        if ($scope.selectedVideos.length > 0) {
+            videos = videos.concat($scope.selectedVideos);
+        }
+
+        for (var i = 0; i < videos.length; i++) {
+            var video = videos[i];
+            video.snippet.metadata.shows = video.snippet.metadata.shows || [];
+
+            for (var j = 0; j < shows.length; j++) {
+                var s = shows[j];
+                if (video.snippet.metadata.shows.indexOf(s) == -1 && s) {
+                    video.snippet.metadata.shows.push(s);
+                }
+            }
+        }
+    };
+
+    $scope.removeShow = function(video, show) {
+        var videos = [video];
+        if ($scope.selectedVideos.length > 0) {
+            videos = videos.concat($scope.selectedVideos);
+        }
+
+        for (var i = 0; i < videos.length; i++) {
+            var video = videos[i];
+            video.snippet.metadata.shows = video.snippet.metadata.shows || [];
+            var index = video.snippet.metadata.shows.indexOf(show);
+            if (index > -1) {
+                video.snippet.metadata.shows.splice(index, 1);
             }
         }
 
         $scope.lastEdited = video;
     };
 
-    $scope.removeShow = function(video, show) {
-        video.snippet.metadata.shows = video.snippet.metadata.shows || [];
-        video.snippet.metadata.shows.splice(video.snippet.metadata.shows.indexOf(show), 1);
+    $scope.autoSeries = function(video) {
+        var title = video.snippet.title.toLowerCase();
+        title = title.replace('dark souls III', 'dark souls 3');
+
+        for (var i = 0; i < $rootScope.config.series.length; i++) {
+            var series = $rootScope.config.series[i];
+            if (title.indexOf(series.toLowerCase()) > -1) {
+                $scope.addSeries(video, series);
+                break;
+            }
+        }
+    };
+
+    $scope.addSeries = function(video, series) {
+        if (!$.isArray(series)) {
+            series = [series];
+        }
+
+        var videos = [video];
+        if ($scope.selectedVideos.length > 0) {
+            videos = videos.concat($scope.selectedVideos);
+        }
+
+        for (var i = 0; i < videos.length; i++) {
+            var video = videos[i];
+            video.snippet.metadata.series = video.snippet.metadata.series || [];
+
+            for (var j = 0; j < series.length; j++) {
+                var s = series[j];
+                if (video.snippet.metadata.series.indexOf(s) == -1 && s) {
+                    video.snippet.metadata.series.push(s);
+                }
+            }
+        }
+
+        $scope.lastEdited = video;
+    };
+
+    $scope.removeSeries = function(video, series) {
+        var videos = [video];
+        if ($scope.selectedVideos.length > 0) {
+            videos = videos.concat($scope.selectedVideos);
+        }
+
+        for (var i = 0; i < videos.length; i++) {
+            var video = videos[i];
+            video.snippet.metadata.series = video.snippet.metadata.series || [];
+            var index = video.snippet.metadata.series.indexOf(series);
+            if (index > -1) {
+                video.snippet.metadata.series.splice(index, 1);
+            }
+        }
 
         $scope.lastEdited = video;
     };
@@ -162,8 +318,10 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
     $scope.paste = function(video) {
         var hosts = $scope.lastEdited.snippet.metadata.hosts;
         var shows = $scope.lastEdited.snippet.metadata.shows;
+        var series = $scope.lastEdited.snippet.metadata.series;
         $scope.addHost(video, hosts);
         $scope.addShow(video, shows);
+        $scope.addSeries(video, series);
     };
 
     $scope.fixStats = function() {
@@ -214,6 +372,7 @@ app.controller('VideosCtrl', function($scope, $rootScope, storageSrv, videosSrv)
                 data[videoID].title = video.snippet.title;
                 data[videoID].hosts = video.snippet.metadata.hosts || [];
                 data[videoID].shows = video.snippet.metadata.shows || [];
+                data[videoID].series = video.snippet.metadata.series || [];
                 data[videoID].stats = video.snippet.statistics;
             }
         }

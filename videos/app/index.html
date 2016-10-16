@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css" />
     <!-- endbower -->
+    <link rel="stylesheet" href="bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" />
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
@@ -58,6 +59,20 @@
                                 </ul>
                             </div>
                         </fieldset>
+                        <fieldset class="form-group">
+                            <label>Series</label>
+                            <div class="">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" ng-model="filterSeries">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="config.series.push(filterSeries)"><i class="fa fa-plus"></i></button>
+                                    </span>
+                                </div>
+                                <ul class="list-group scrollable-list">
+                                    <button type="button" class="list-group-item" ng-click="config.series.splice(config.series.indexOf(series), 1)" ng-repeat="series in (config.series | filter:filterSeries | orderBy) track by $index">{{series}}</button>
+                                </ul>
+                            </div>
+                        </fieldset>
                     </div>
                 </div>
                 <!-- Data -->
@@ -101,39 +116,75 @@
                         <div class="videos">
                             <div class="video" dir-paginate="video in videos[selectedChannel] | filter:search | ignore:filterIgnoredVideos | noHost:filterNoHostVideos:lastEdited | noShow:filterNoShowVideos:lastEdited | orderBy:'snippet.publishedAt':true | itemsPerPage: pageSize" ng-class="{'highlight': (!video.snippet.metadata.hosts.length || !video.snippet.metadata.shows.length) && !video.snippet.metadata.ignore}">
                                 <span class="published">{{video.snippet.publishedAt | date}}</span>
-                                <span class="duration">{{video.snippet.duration | duration}}</span>
-                                <div style="margin-bottom: 2px;" class="hosts">
-                                    <div class="selection">
-                                        <ui-select ng-model="selectedHost" on-select="addHost(video, $select.selected)">
-                                            <ui-select-match placeholder="Hosts...">
-                                                Hosts...
-                                            </ui-select-match>
-                                            <ui-select-choices repeat="item in (config.hosts | filter: $select.search | orderBy)">
-                                                <span ng-bind="item"></span>
-                                            </ui-select-choices>
-                                        </ui-select>
-                                        <ui-select ng-model="selectedShow" on-select="addShow(video, $select.selected)">
-                                            <ui-select-match placeholder="Shows...">
-                                                Shows...
-                                            </ui-select-match>
-                                            <ui-select-choices repeat="item in (config.shows | filter: $select.search | orderBy) track by $index">
-                                                <span ng-bind="item"></span>
-                                            </ui-select-choices>
-                                        </ui-select>
+                                <span class="duration">
+                                    {{video.snippet.duration | duration}}
+                                    <div class="checkbox checkbox-primary checkbox-inline">
+                                        <input type="checkbox" ng-checked="isSelectedVideo(video)" ng-model="checked" ng-change="selectVideo(video, checked)"><label></label>
                                     </div>
+                                </span>
+                                <div style="margin-bottom: 2px;" class="hosts">
                                     <div class="line">
+                                        <div class="btn-group" on-toggle="open && (isFocusInput=true) && (filterHost='')" uib-dropdown keyboard-nav>
+                                            <button id="single-button" type="button" class="btn btn-default btn-xs" uib-dropdown-toggle ng-disabled="disabled">
+                                                <i class="fa fa-bars"></i>
+                                            </button>
+                                            <ul class="dropdown-menu scrollable-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                                <li>
+                                                    <input type="text" class="form-control" placeholder="Host" ng-model="filterHost" ng-click="$event.stopPropagation();" focus="isFocusInput" ng-blur="isFocusInput=false">
+                                                </li>
+                                                <li role="menuitem" ng-repeat="host in (config.hosts | filter: filterHost | orderBy) track by $index"><a href="javascript:void(0);" ng-click="addHost(video, host); $event.stopPropagation(); $parent.isFocusInput=true">{{host}}</a></li>
+                                            </ul>
+                                        </div>
                                         <button class="btn btn-default btn-xs" type="button" uib-tooltip="Extract Hosts" ng-click="autoHosts(video)">
                                             <i class="fa fa-magic"></i>
+                                        </button>
+                                        <button class="btn btn-default btn-xs" type="button" uib-tooltip="Paste" ng-click="addHost(video, lastEdited.snippet.metadata.hosts)">
+                                            <i class="fa fa-paste"></i>
                                         </button>
                                         <strong>Hosts:</strong>
                                         <span ng-repeat="host in video.snippet.metadata.hosts"><span ng-if="$index > 0">, </span><a href="javascript:void(0);" ng-click="removeHost(video, host)">{{host || 'ERROR'}}</a></span>
                                     </div>
                                     <div class="line">
+                                        <div class="btn-group" on-toggle="open && (isFocusInput=true) && (filterShow='')" uib-dropdown keyboard-nav>
+                                            <button id="single-button" type="button" class="btn btn-default btn-xs" uib-dropdown-toggle ng-disabled="disabled">
+                                                <i class="fa fa-bars"></i>
+                                            </button>
+                                            <ul class="dropdown-menu scrollable-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                                <li>
+                                                    <input type="text" class="form-control" placeholder="Show" ng-model="filterShow" ng-click="$event.stopPropagation();" focus="isFocusInput" ng-blur="isFocusInput=false">
+                                                </li>
+                                                <li role="menuitem" ng-repeat="show in (config.shows | filter: filterShow | orderBy) track by $index"><a href="javascript:void(0);" ng-click="addShow(video, show); $event.stopPropagation(); $parent.isFocusInput=true">{{show}}</a></li>
+                                            </ul>
+                                        </div>
                                         <button class="btn btn-default btn-xs" type="button" uib-tooltip="Extract Show" ng-click="autoShows(video)">
                                             <i class="fa fa-magic"></i>
                                         </button>
+                                        <button class="btn btn-default btn-xs" type="button" uib-tooltip="Paste" ng-click="addShow(video, lastEdited.snippet.metadata.shows)">
+                                            <i class="fa fa-paste"></i>
+                                        </button>
                                         <strong>Shows:</strong>
                                         <span ng-repeat="show in video.snippet.metadata.shows"><span ng-if="$index > 0">, </span><a href="javascript:void(0);" ng-click="removeShow(video, show)">{{show || 'ERROR'}}</a></span>
+                                    </div>
+                                    <div class="line">
+                                        <div class="btn-group" on-toggle="open && (isFocusInput=true) && (filterSeries='')" uib-dropdown keyboard-nav>
+                                            <button id="single-button" type="button" class="btn btn-default btn-xs" uib-dropdown-toggle ng-disabled="disabled">
+                                                <i class="fa fa-bars"></i>
+                                            </button>
+                                            <ul class="dropdown-menu scrollable-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                                <li>
+                                                    <input type="text" class="form-control" placeholder="Series" ng-model="filterSeries" ng-click="$event.stopPropagation();" focus="isFocusInput" ng-blur="isFocusInput=false">
+                                                </li>
+                                                <li role="menuitem" ng-repeat="series in (config.series | filter: filterSeries | orderBy) track by $index"><a href="javascript:void(0);" ng-click="addSeries(video, series); $event.stopPropagation(); $parent.isFocusInput=true">{{series}}</a></li>
+                                            </ul>
+                                        </div>
+                                        <button class="btn btn-default btn-xs" type="button" uib-tooltip="Extract Series" ng-click="autoSeries(video)">
+                                            <i class="fa fa-magic"></i>
+                                        </button>
+                                        <button class="btn btn-default btn-xs" type="button" uib-tooltip="Paste" ng-click="addSeries(video, lastEdited.snippet.metadata.series)">
+                                            <i class="fa fa-paste"></i>
+                                        </button>
+                                        <strong>Series:</strong>
+                                        <span ng-repeat="series in video.snippet.metadata.series"><span ng-if="$index > 0">, </span><a href="javascript:void(0);" ng-click="removeSeries(video, series)">{{series || 'ERROR'}}</a></span>
                                     </div>
                                 </div>
                                 <div class="tumbnail">
@@ -142,7 +193,7 @@
                                         <button class="btn btn-default btn-xs" type="button" uib-tooltip="Copy" ng-click="$parent.lastEdited = video">
                                             <i class="fa fa-copy"></i>
                                         </button>
-                                        <button class="btn btn-default btn-xs" type="button" uib-tooltip="Paste" ng-click="paste(video)" ng-if="lastEdited.snippet.metadata">
+                                        <button class="btn btn-default btn-xs" type="button" uib-tooltip="Paste" ng-click="paste(video)">
                                             <i class="fa fa-paste"></i>
                                         </button>
                                     </div>
@@ -164,6 +215,7 @@
                     </div>
                 </div>
             </div>
+            <div class="selected-videos" ng-if="selectedVideos.length > 0">{{selectedVideos.length}} selected (<a href="javascript:void(0);" ng-click="deselectVideos()">deselect</a>)</div>
         </div>
     </div>
     <footer class="footer content">
@@ -188,6 +240,7 @@
     <script src="scripts/filters/nohost.js"></script>
     <script src="scripts/filters/noshow.js"></script>
     <script src="scripts/filters/ignore.js"></script>
+    <script src="scripts/directives/focus.js"></script>
     <script src="scripts/services/videos.js"></script>
     <script src="scripts/controllers/videos.js"></script>
     <script src="scripts/services/storage.js"></script>
