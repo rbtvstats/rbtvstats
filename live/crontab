@@ -1,2 +1,2 @@
-* * * * * /home/marcel/rbtvstats/live/get_live_data.py
-0 * * * * /home/marcel/rbtvstats/live/update_live_data.sh
+* * * * * /home/marcel/rbtv/rbtvstats/live/get_live_data.py
+0 * * * * /home/marcel/rbtv/rbtvstats/live/update_live_data.py

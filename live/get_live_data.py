@@ -7,7 +7,7 @@ import os
 
 API_KEY = ''
 CHANNEL_ID = 'UCQvTDmHza8erxZqDkjQ4bQQ'
-OUTPUT_FOLDER = '/home/marcel/rbtvdata/live'
+OUTPUT_FOLDER = '/home/marcel/rbtv/rbtvdata/live'
 
 if __name__ == "__main__":
     #find livestream video id

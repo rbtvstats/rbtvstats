@@ -12,7 +12,7 @@ import json
 import sys
 
 BASE_URL = 'http://overrustlelogs.net/Rocketbeanstv chatlog'
-OUTPUT_FOLDER = '/home/marcel/Development/rbtvdata/chat'
+OUTPUT_FOLDER = '/home/marcel/rbtv/rbtvdata/chat'
 
 def print2(str):
     print(str)

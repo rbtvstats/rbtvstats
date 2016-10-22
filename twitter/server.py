@@ -5,7 +5,7 @@ import json
 import os
 import sys
 
-OUTPUT_FOLDER = '/home/marcel/Development/rbtvdata/twitter/raw'
+OUTPUT_FOLDER = '/home/marcel/rbtv/rbtvdata/twitter/raw'
 
 app = Flask(__name__)
 CORS(app)

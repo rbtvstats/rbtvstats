@@ -1,7 +1,7 @@
 #!/bin/sh
 
-CHAT_REPO_DIR='/home/marcel/RBTVChatLogs/'
-CHAT_DATA_DIR='/home/marcel/rbtvdata/chat/'
+CHAT_REPO_DIR='/home/marcel/rbtv/RBTVChatLogs/'
+CHAT_DATA_DIR='/home/marcel/rbtv/rbtvdata/chat/'
 
 #pull chat data
 cd $CHAT_REPO_DIR

@@ -6,8 +6,8 @@ import os
 import sys
 import pytz
 
-RAW_DATA_FOLDER = '/home/marcel/Development/rbtvdata/twitter/raw'
-OUTPUT_FOLDER = '/home/marcel/Development/rbtvdata/twitter'
+RAW_DATA_FOLDER = '/home/marcel/rbtv/rbtvdata/twitter/raw'
+OUTPUT_FOLDER = '/home/marcel/rbtv/rbtvdata/twitter'
 fileId = 'data'
 
 def loadTweets():
