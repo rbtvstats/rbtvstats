@@ -47,6 +47,6 @@ if __name__ == "__main__":
 
     os.system('git pull')
     updateMetadata()
-    os.system('git add $LIVE_DATA_DIR')
+    os.system('git add %s' % LIVE_DATA_DIR)
     os.system('git commit -m "update live data"')
     os.system('git push')

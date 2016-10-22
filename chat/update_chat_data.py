@@ -51,6 +51,6 @@ if __name__ == "__main__":
 
     os.system('git pull')
     updateMetadata()
-    os.system('git add $CHAT_DATA_DIR')
+    os.system('git add %s' % CHAT_DATA_DIR)
     os.system('git commit -m "update chat data"')
     os.system('git push')
