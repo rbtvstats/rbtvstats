@@ -114,16 +114,6 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
             $scope.update();
         });
 
-        $scope.$on('updateChartStart', function(event, args) {
-            console.log('updateChartStart');
-            $scope.updateChartState = true;
-        });
-
-        $scope.$on('updateChartEnd', function(event, args) {
-            console.log('updateChartEnd');
-            $scope.updateChartState = false;
-        });
-
         $scope.$watch('dateRange', function(newVal, oldVal) {
             var param = {};
 
@@ -289,11 +279,9 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
 
                     $scope.model.chart = chart;
 
-                    $timeout(function() {
-                        $scope.updateChartState = false;
-                    }, 200);
+                    $scope.updateChartState = false;
                 });
-            }, 500);
+            }, 0);
         }
     };
 

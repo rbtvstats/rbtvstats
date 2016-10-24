@@ -361,9 +361,6 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout,
 
         $scope.fetchLiveMetadata()
             .then(function() {
-                return $scope.fetchLiveData();
-            })
-            .then(function() {
                 $scope.$broadcast('updateLiveData');
             })
     };
