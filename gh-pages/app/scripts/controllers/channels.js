@@ -24,10 +24,8 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
 
         $scope.model = StateSrv.load($location.path(), $scope.model);
 
-        $scope.$on('updateData', function(event, args) {
-            setTimeout(function() {
-                $scope.update();
-            }, 0);
+        $scope.$on('updateVideoData', function(event, args) {
+            $scope.update();
         });
 
         setTimeout(function() {
@@ -41,8 +39,6 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
 
             $scope.updateCharts();
             $scope.updateStats();
-
-            $scope.$apply();
         }
     };
 

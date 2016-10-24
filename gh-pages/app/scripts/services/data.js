@@ -8,6 +8,8 @@
  * Service in the rbtvstatsApp.
  */
 app.service('DataSrv', function($http, $q) {
+    var fetchedVideoData = [];
+    var fetchedLiveData = [];
     var service = {};
 
     service.getVideoMetadata = function() {
@@ -16,24 +18,32 @@ app.service('DataSrv', function($http, $q) {
         });
     };
 
-    service.getVideoData = function(date) {
+    service.getVideoData = function(from, to) {
         var requests = [];
 
         function pad(n) {
-            return (n < 10) ? ("0" + n) : n;
+            return (n < 10) ? ('0' + n) : n;
         }
 
-        var now = new Date();
-        while (date < now) {
-            var filename = date.getFullYear() + '-' + pad(date.getMonth() + 1) + '.json';
-            requests.push($http.get('https://raw.githubusercontent.com/rbtvstats/rbtvdata/master/video/' + filename));
-            date.setMonth(date.getMonth() + 1);
+        to = to || new Date();
+        while (from <= to) {
+            var filename = from.getFullYear() + '-' + pad(from.getMonth() + 1) + '.json';
+            if (fetchedVideoData.indexOf(filename) == -1) {
+                fetchedVideoData.push(filename);
+
+                requests.push($http.get('https://raw.githubusercontent.com/rbtvstats/rbtvdata/master/video/' + filename));
+            }
+
+            from.setMonth(from.getMonth() + 1);
         }
 
         return $q.all(requests).then(function(responses) {
             var data = [];
-            for (var i = 0; i < responses.length; i++) {
-                data = data.concat(responses[i].data);
+
+            if (responses) {
+                for (var i = 0; i < responses.length; i++) {
+                    data = data.concat(responses[i].data);
+                }
             }
 
             return data;
@@ -46,27 +56,45 @@ app.service('DataSrv', function($http, $q) {
         });
     };
 
-    service.getLiveData = function(date) {
+    service.getLiveData = function(from, to) {
         var requests = [];
 
         function pad(n) {
-            return (n < 10) ? ("0" + n) : n;
+            return (n < 10) ? ('0' + n) : n;
         }
 
-        var now = new Date();
-        while (date < now) {
-            var filename = date.getFullYear() + '-' + pad(date.getMonth() + 1) + '.csv';
-            requests.push($http.get('https://raw.githubusercontent.com/rbtvstats/rbtvdata/master/live/' + filename))
-            date.setMonth(date.getMonth() + 1);
+        to = to || new Date();
+        while (from <= to) {
+            var filename = from.getFullYear() + '-' + pad(from.getMonth() + 1) + '.csv';
+            if (fetchedLiveData.indexOf(filename) == -1) {
+                fetchedLiveData.push(filename);
+
+                requests.push($http.get('https://raw.githubusercontent.com/rbtvstats/rbtvdata/master/live/' + filename))
+            }
+
+            from.setMonth(from.getMonth() + 1);
         }
 
         return $q.all(requests).then(function(responses) {
-            var data = '';
-            for (var i = 0; i < responses.length; i++) {
-                data += responses[i].data;
+            var live = [];
+
+            if (responses) {
+                for (var i = 0; i < responses.length; i++) {
+                    var data = responses[i].data;
+                    var lines = data.split('\n');
+                    for (var j = 0; j < lines.length; j++) {
+                        var line = lines[j].split(',');
+                        if (line.length === 2) {
+                            live.push({
+                                time: new Date(parseInt(line[0], 10) * 1000),
+                                viewers: parseInt(line[1], 10)
+                            });
+                        }
+                    }
+                }
             }
 
-            return data;
+            return live;
         });
     };
 

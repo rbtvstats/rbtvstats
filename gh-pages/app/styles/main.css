@@ -100,6 +100,17 @@ body {
 
 .chart {}
 
+.update-chart {
+    position: absolute;
+    top: calc(50% - 50px);
+    left: 30px;
+    right: 30px;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #337ab7;
+}
+
 .select {}
 
 .select > .select-heading {
@@ -122,6 +133,10 @@ body {
 
 .pagination a {
     cursor: pointer;
+}
+
+.panel-body {
+    position: relative;
 }
 
 .panel-body.container-table {

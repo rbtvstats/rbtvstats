@@ -18,7 +18,6 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         $scope.model.series = null;
         $scope.model.seriesList = [];
         $scope.model.videos = [];
-        $scope.model.dataLatest = 0;
         $scope.model.chartsConfig = [];
         $scope.model.charts = [];
         $scope.model.stats = {};
@@ -37,7 +36,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
             selected: $scope.getSeries() || $scope.model.series
         };
 
-        $scope.$on('updateData', function(event, args) {
+        $scope.$on('updateVideoData', function(event, args) {
             $scope.update();
         });
 
@@ -92,11 +91,8 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
     };
 
     $scope.update = function() {
-        if (($scope.show.selected != $scope.model.show) ||
-            ($scope.series.selected != $scope.model.series) ||
-            ($scope.model.dataLatest != $scope.videoMetadata.time && $scope.videoMetadata.time > 0)) {
+        if (($scope.show.selected != $scope.model.show) || ($scope.series.selected != $scope.model.series)) {
             if ($scope.shows.indexOf($scope.show.selected) > -1) {
-                $scope.model.dataLatest = $scope.videoMetadata.time;
                 $scope.model.show = $scope.show.selected;
                 $scope.model.series = $scope.series.selected;
 

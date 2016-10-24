@@ -1,6 +1,10 @@
 'use strict';
 
 function binaryClosest(array, searchElement) {
+    if (!searchElement) {
+        return -1;
+    }
+
     var minIndex = 0;
     var maxIndex = array.length - 1;
     var currentIndex;
@@ -30,10 +34,16 @@ function binaryClosest(array, searchElement) {
  * # LiveCtrl
  * Controller of the rbtvstatsApp
  */
-app.controller('LiveCtrl', function($scope, $rootScope, $location, StateSrv, DataSrv) {
+app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, StateSrv, DataSrv) {
     $scope.init = function() {
+        $scope.updateChartState = false;
+
+        //model (default)
         $scope.model = {};
-        $scope.model.dataLatest = 0;
+        $scope.model.dateRange = {
+            startDate: null,
+            endDate: null
+        };
         $scope.model.dateRangeOptions = {
             showDropdowns: true,
             timePicker: true,
@@ -70,235 +80,221 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, StateSrv, Dat
                     'November',
                     'Dezember'
                 ],
-                'firstDay': 1
+                firstDay: 1
             },
             ranges: {}
         };
-        $scope.model.dateRange = $scope.getDateRange();
-        $scope.model.stats = {};
 
+        //load model state
         $scope.model = StateSrv.load($location.path(), $scope.model);
 
-        $scope.$on('updateData', function(event, args) {
-            setTimeout(function() {
-                $scope.update();
-            }, 0);
-        });
+        $scope.dateRange = {
+            startDate: $scope.getFrom() || $scope.model.dateRange.startDate,
+            endDate: $scope.getTo() || $scope.model.dateRange.endDate
+        };
 
-        $scope.$watch('model.dateRange', function(newVal, oldVal) {
-            var param = {};
+        if ($scope.liveMetadata.last && !$scope.dateRange.startDate) {
+            $scope.dateRange.startDate = moment($scope.liveMetadata.last * 1000).subtract(24, 'h');
+        }
 
-            if ($scope.model.dateRange.startDate) {
-                param.from = $scope.model.dateRange.startDate.unix();
+        if ($scope.liveMetadata.last && !$scope.dateRange.endDate) {
+            $scope.dateRange.endDate = moment($scope.liveMetadata.last * 1000);
+        }
+
+        $scope.$on('updateLiveData', function(event, args) {
+            if ($scope.liveMetadata.last && !$scope.dateRange.startDate) {
+                $scope.dateRange.startDate = moment($scope.liveMetadata.last * 1000).subtract(24, 'h');
             }
 
-            if ($scope.model.dateRange.endDate) {
-                param.to = $scope.model.dateRange.endDate.unix();
+            if ($scope.liveMetadata.last && !$scope.dateRange.endDate) {
+                $scope.dateRange.endDate = moment($scope.liveMetadata.last * 1000);
+            }
+
+            $scope.updateDatePicker();
+            $scope.update();
+        });
+
+        $scope.$on('updateChartStart', function(event, args) {
+            console.log('updateChartStart');
+            $scope.updateChartState = true;
+        });
+
+        $scope.$on('updateChartEnd', function(event, args) {
+            console.log('updateChartEnd');
+            $scope.updateChartState = false;
+        });
+
+        $scope.$watch('dateRange', function(newVal, oldVal) {
+            var param = {};
+
+            if ($scope.dateRange.startDate) {
+                param.from = $scope.dateRange.startDate.unix();
+            }
+
+            if ($scope.dateRange.endDate) {
+                param.to = $scope.dateRange.endDate.unix();
             }
 
             $location.search(param);
-            $scope.updateChart();
+            $scope.update();
         }, true);
 
         $scope.$on("$routeUpdate", function(event, route) {
-            var params = $location.search();
-            var maxDate = moment($scope.live[$scope.live.length - 1].time);
-
-            if (!params.from) {
-                $scope.model.dateRange.startDate = moment(maxDate).subtract(24, 'h');
-            } else {
-                $scope.model.dateRange.startDate = moment().unix(params.from);
-            }
-
-            if ($scope.model.dateRange.endDate) {
-                $scope.model.dateRange.endDate = moment(maxDate);
-            } else {
-                $scope.model.dateRange.endDate = moment().unix(params.from);
-            }
+            $scope.dateRange = {
+                startDate: $scope.getFrom() || $scope.model.dateRange.startDate,
+                endDate: $scope.getTo() || $scope.model.dateRange.endDate
+            };
         });
 
-        setTimeout(function() {
-            $scope.update();
-        }, 0);
+        $scope.updateDatePicker();
+        $scope.update();
     };
 
-    $scope.getDateRange = function() {
+    $scope.getFrom = function() {
+        var from = null;
         var params = $location.search();
-        var dateRange = {
-            startDate: null,
-            endDate: null
-        };
 
-        if (params.from) {
-            dateRange.startDate = moment.unix(parseInt(params.from, 10));
+        if (typeof params.from !== 'undefined') {
+            from = moment.unix(parseInt(params.from, 10));
         }
 
-        if (params.to) {
-            dateRange.endDate = moment.unix(parseInt(params.to, 10));
+        return from;
+    };
+
+    $scope.getTo = function() {
+        var to = null;
+        var params = $location.search();
+
+        if (typeof params.to !== 'undefined') {
+            to = moment.unix(parseInt(params.to, 10));
         }
 
-        return dateRange;
+        return to;
     };
 
     $scope.update = function() {
-        if ($scope.model.dataLatest != $scope.liveMetadata.time && $scope.liveMetadata.time > 0) {
-            $scope.model.dataLatest = $scope.liveMetadata.time;
+        if ($scope.dateRange.startDate && $scope.dateRange.endDate) {
+            if (!$scope.dateRange.startDate.isSame($scope.model.dateRange.startDate) || !$scope.dateRange.endDate.isSame($scope.model.dateRange.endDate)) {
+                $scope.model.dateRange.startDate = $scope.dateRange.startDate;
+                $scope.model.dateRange.endDate = $scope.dateRange.endDate;
 
-            $scope.updateDatePicker();
-            $scope.updateStats();
-            $scope.updateChart();
-
-            $scope.$apply();
+                $scope.updateChart();
+            }
         }
     };
 
     $scope.updateDatePicker = function() {
-        if ($scope.live.length > 0) {
-            var minDate = moment($scope.live[0].time);
-            var maxDate = moment($scope.live[$scope.live.length - 1].time);
+        $scope.model.dateRangeOptions.minDate = moment($scope.liveMetadata.first * 1000);
+        $scope.model.dateRangeOptions.maxDate = moment($scope.liveMetadata.last * 1000);
 
-            $scope.model.dateRangeOptions.minDate = minDate;
-            $scope.model.dateRangeOptions.maxDate = maxDate;
+        $scope.model.dateRangeOptions.ranges = {};
 
-            $scope.model.dateRangeOptions.ranges = {};
+        var momentMax = moment($scope.model.dateRangeOptions.maxDate);
+        var momentStart = moment(momentMax).subtract(8, 'h');
+        $scope.model.dateRangeOptions.ranges['Letzten 8 Stunden'] = [momentStart, momentMax];
 
-            var momentMax = moment(maxDate);
-            var momentStart = moment(momentMax).subtract(8, 'h');
-            $scope.model.dateRangeOptions.ranges['Letzten 8 Stunden'] = [momentStart, momentMax];
+        momentStart = moment(momentMax).subtract(24, 'h');
+        $scope.model.dateRangeOptions.ranges['Letzten 24 Stunden'] = [momentStart, momentMax];
 
-            momentStart = moment(momentMax).subtract(24, 'h');
-            $scope.model.dateRangeOptions.ranges['Letzten 24 Stunden'] = [momentStart, momentMax];
+        momentStart = moment(momentMax).subtract(7, 'd');
+        $scope.model.dateRangeOptions.ranges['Letzten 7 Tage'] = [momentStart, momentMax];
 
-            momentStart = moment(momentMax).subtract(7, 'd');
-            $scope.model.dateRangeOptions.ranges['Letzten 7 Tage'] = [momentStart, momentMax];
+        momentStart = moment(momentMax).subtract(1, 'M');
+        $scope.model.dateRangeOptions.ranges['Letzter Monat'] = [momentStart, momentMax];
 
-            momentStart = moment(momentMax).subtract(1, 'M');
-            $scope.model.dateRangeOptions.ranges['Letzter Monat'] = [momentStart, momentMax];
-
-            momentStart = moment(momentMax).subtract(1, 'y');
-            $scope.model.dateRangeOptions.ranges['Letztes Jahr'] = [momentStart, momentMax];
-
-            if (!$scope.model.dateRange.startDate) {
-                $scope.model.dateRange.startDate = moment(momentMax).subtract(24, 'h');
-            }
-
-            if (!$scope.model.dateRange.endDate) {
-                $scope.model.dateRange.endDate = moment(momentMax);
-            }
-        }
-    };
-
-    $scope.updateStats = function() {
-        $scope.model.stats = [];
-
-        if ($scope.live.length > 0) {
-            $scope.model.stats.push({
-                title: 'Ältester Datenpunkt',
-                value: {
-                    type: 'text',
-                    text: moment($scope.live[0].time).format('LLLL')
-                }
-            });
-
-            $scope.model.stats.push({
-                title: 'Neuster Datenpunkt',
-                value: {
-                    type: 'text',
-                    text: moment($scope.live[$scope.live.length - 1].time).format('LLLL')
-                }
-            });
-
-            $scope.model.stats.push({
-                title: 'Anzahl gesamter Datenpunkte',
-                value: {
-                    type: 'number',
-                    text: $scope.live.length
-                }
-            });
-
-            $scope.model.stats.push({
-                title: 'Ø Anzahl Datenpunkte pro Stunde',
-                value: {
-                    type: 'number',
-                    text: Math.round($scope.live.length / (($scope.live[$scope.live.length - 1].time.getTime() - $scope.live[0].time.getTime()) / 3600000))
-                }
-            });
-        }
+        momentStart = moment(momentMax).subtract(1, 'y');
+        $scope.model.dateRangeOptions.ranges['Letztes Jahr'] = [momentStart, momentMax];
     };
 
     $scope.updateChart = function() {
-        var chart = {};
+        if (!$scope.updateChartState) {
+            $scope.updateChartState = true;
 
-        if ($scope.live.length > 0) {
-            chart.labels = [];
-            chart.series = [];
-            chart.data = [
-                []
-            ];
-            chart.options = {
-                type: 'line',
-                header: 'Live Views',
-                width: '100%',
-                height: '430px',
-                legend: {
-                    display: false
-                },
-                elements: {
-                    point: {
-                        radius: 0,
-                        hitRadius: 5
-                    }
-                },
-                scales: {
-                    xAxes: [{
-                        type: 'time',
-                        ticks: {
-                            minRotation: 60,
-                            maxRotation: 60
-                        },
-                        time: {
-                            displayFormats: {
-                                second: 'HH:mm',
-                                minute: 'HH:mm',
-                                hour: 'HH:mm',
-                                day: 'DD.MM.YY',
-                                week: 'DD.MM.YY',
-                                month: 'DD.MM.YY',
-                                quarter: 'DD.MM.YY',
-                                year: 'DD.MM.YY',
+            $timeout(function() {
+                var from = $scope.dateRange.startDate.toDate();
+                var to = $scope.dateRange.endDate.toDate();
+                $scope.fetchLiveData(from, to).then(function() {
+                    var chart = {};
+
+                    if ($scope.live.length > 0) {
+                        chart.labels = [];
+                        chart.series = [];
+                        chart.data = [
+                            []
+                        ];
+                        chart.options = {
+                            type: 'line',
+                            header: 'Live Views',
+                            width: '100%',
+                            height: '430px',
+                            legend: {
+                                display: false
+                            },
+                            elements: {
+                                point: {
+                                    radius: 0,
+                                    hitRadius: 5
+                                }
+                            },
+                            scales: {
+                                xAxes: [{
+                                    type: 'time',
+                                    ticks: {
+                                        minRotation: 60,
+                                        maxRotation: 60
+                                    },
+                                    time: {
+                                        displayFormats: {
+                                            second: 'HH:mm',
+                                            minute: 'HH:mm',
+                                            hour: 'HH:mm',
+                                            day: 'DD.MM.YY',
+                                            week: 'DD.MM.YY',
+                                            month: 'DD.MM.YY',
+                                            quarter: 'DD.MM.YY',
+                                            year: 'DD.MM.YY',
+                                        }
+                                    }
+                                }],
+                                yAxes: [{
+                                    stacked: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Views'
+                                    }
+                                }]
+                            }
+                        };
+
+                        chart.series.push('Live Views');
+
+                        var maxDatapoints = 4000;
+                        var startIndex = binaryClosest($scope.live, $scope.dateRange.startDate);
+                        var endIndex = binaryClosest($scope.live, $scope.dateRange.endDate);
+                        var numDatapoints = endIndex - startIndex;
+                        var step = 1;
+
+                        if (numDatapoints > maxDatapoints) {
+                            step = Math.floor(numDatapoints / maxDatapoints);
+                        }
+
+                        if (startIndex > -1 && endIndex > -1) {
+                            for (var i = startIndex; i <= endIndex; i += step) {
+                                var data = $scope.live[i];
+                                chart.labels.push(moment(data.time));
+                                chart.data[0].push(data.viewers);
                             }
                         }
-                    }],
-                    yAxes: [{
-                        stacked: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Views'
-                        }
-                    }]
-                }
-            };
+                    }
 
-            chart.series.push('Live Views');
+                    $scope.model.chart = chart;
 
-            var maxDatapoints = 2000;
-            var startIndex = binaryClosest($scope.live, $scope.model.dateRange.startDate);
-            var endIndex = binaryClosest($scope.live, $scope.model.dateRange.endDate);
-            var numDatapoints = endIndex - startIndex;
-            var step = 1;
-
-            if (numDatapoints > maxDatapoints) {
-                step = Math.floor(numDatapoints / maxDatapoints);
-            }
-
-            for (var i = startIndex; i <= endIndex; i += step) {
-                var data = $scope.live[i];
-                chart.labels.push(moment(data.time));
-                chart.data[0].push(data.viewers);
-            }
+                    $timeout(function() {
+                        $scope.updateChartState = false;
+                    }, 200);
+                });
+            }, 500);
         }
-
-        $scope.model.chart = chart;
     };
 
     $scope.init();

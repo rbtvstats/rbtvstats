@@ -47,9 +47,9 @@
                     <li ng-class="{ active: isActive('/live')}"><a href="#/live" data-toggle="collapse" data-target=".navbar-collapse.in">Live</a></li>
                 </ul>
                 <p class="navbar-text navbar-right">
-                    Video Daten: <span ng-if="loadingVideoData"><i class="fa fa-spinner fa-pulse fa-fw"></i></span><span ng-if="!loadingVideoData">{{videoMetadata.time | createDate | date:"dd.MM.yyyy HH:mm"}}</span>
+                    Video Daten: <span ng-if="fetchVideoDataState"><i class="fa fa-spinner fa-pulse fa-fw"></i></span><span ng-if="!fetchVideoDataState">{{videoMetadata.time | createDate | date:"dd.MM.yyyy HH:mm"}}</span>
                     <br>
-                    Live Daten: <span ng-if="loadingLiveData"><i class="fa fa-spinner fa-pulse fa-fw"></i></span><span ng-if="!loadingLiveData">{{liveMetadata.time | createDate | date:"dd.MM.yyyy HH:mm"}}</span>
+                    Live Daten: <span ng-if="fetchLiveDataState"><i class="fa fa-spinner fa-pulse fa-fw"></i></span><span ng-if="!fetchLiveDataState">{{liveMetadata.time | createDate | date:"dd.MM.yyyy HH:mm"}}</span>
                 </p>
             </div>
         </div>

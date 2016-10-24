@@ -7,11 +7,11 @@
  * # DataCtrl
  * Controller of the rbtvstatsApp
  */
-app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout, uuid4, StateSrv, DataSrv) {
+app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout, $filter, uuid4, StateSrv, DataSrv) {
     $scope.init = function() {
         $rootScope.state = {};
-        $scope.loadingVideoData = true;
-        $scope.loadingLiveData = true;
+        $scope.fetchVideoDataState = false;
+        $scope.fetchLiveDataState = false;
         $scope.videoMetadata = {};
         $scope.liveMetadata = {};
         $scope.videos = [];
@@ -19,10 +19,10 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout,
         $scope.channels = [];
         $scope.shows = [];
         $scope.hosts = [];
-        $scope.monthShortNames = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+        $scope.monthShortNames = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
         $rootScope.alerts = [];
 
-        $scope.$on("$routeChangeStart", function(event, next, current) {
+        $scope.$on('$routeChangeStart', function(event, next, current) {
             if (typeof current !== 'undefined') {
                 if (typeof current.scope !== 'undefined') {
                     StateSrv.save(current.originalPath, current.scope.model);
@@ -266,7 +266,7 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout,
 
     $scope.toList = function(array) {
         if ($.isArray(array)) {
-            return array.join(", ");
+            return array.join(', ');
         } else {
             return '';
         }
@@ -294,48 +294,78 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout,
         }
     };
 
-    $scope.update = function() {
-        $scope.loadingVideoData = true;
-        $scope.loadingLiveData = true;
-
-        var promises = [];
-
-        promises.push(DataSrv.getVideoData(new Date(2015, 2)).then(function(videos) {
-            $scope.assignArray($scope.videos, $scope.filterTime(videos, new Date(2015, 2, 3)));
-            $scope.assignArray($scope.shows, $scope.getAllShows($scope.videos))
-            $scope.assignArray($scope.hosts, $scope.getAllHosts($scope.videos));
-            $scope.assignArray($scope.channels, $scope.getAllChannels($scope.videos));
-
-            return DataSrv.getVideoMetadata().then(function(data) {
-                $scope.videoMetadata = data;
-                $scope.loadingVideoData = false;
-            });
-        }));
-
-        promises.push(DataSrv.getLiveData(new Date(2016, 8)).then(function(data) {
-            var live = [];
-            var lines = data.split('\n');
-            for (var i = 0; i < lines.length; i++) {
-                var line = lines[i].split(',');
-                if (line.length === 2) {
-                    live.push({
-                        time: new Date(parseInt(line[0], 10) * 1000),
-                        viewers: parseInt(line[1], 10)
-                    });
-                }
-            }
-
-            $scope.assignArray($scope.live, live);
-
-            return DataSrv.getLiveMetadata().then(function(data) {
-                $scope.liveMetadata = data;
-                $scope.loadingLiveData = false;
-            });
-        }));
-
-        $q.all(promises).then(function() {
-            $scope.$broadcast('updateData');
+    $scope.fetchVideoMetadata = function() {
+        return DataSrv.getVideoMetadata().then(function(metadata) {
+            $scope.videoMetadata = metadata;
         });
+    };
+
+    $scope.fetchVideoData = function(from, to) {
+        if (!$scope.fetchVideoDataState) {
+            $scope.fetchVideoDataState = true;
+
+            from = from || new Date($scope.videoMetadata.first * 1000);
+            from = new Date(from.getTime());
+            to = to || new Date();
+            to = new Date(to.getTime());
+
+            return DataSrv.getVideoData(from, to).then(function(videos) {
+                $scope.assignArray($scope.videos, videos);
+                $scope.assignArray($scope.shows, $scope.getAllShows($scope.videos))
+                $scope.assignArray($scope.hosts, $scope.getAllHosts($scope.videos));
+                $scope.assignArray($scope.channels, $scope.getAllChannels($scope.videos));
+
+                $scope.fetchVideoDataState = false;
+            });
+        } else {
+            return $q.resolve();
+        }
+    };
+
+    $scope.fetchLiveMetadata = function() {
+        return DataSrv.getLiveMetadata().then(function(metadata) {
+            $scope.liveMetadata = metadata;
+        });
+    };
+
+    $scope.fetchLiveData = function(from, to) {
+        if (!$scope.fetchLiveDataState) {
+            $scope.fetchLiveDataState = true;
+
+            from = from || new Date();
+            from = new Date(from.getTime());
+            to = to || new Date();
+            to = new Date(to.getTime());
+
+            return DataSrv.getLiveData(from, to).then(function(live) {
+                live = live.concat($scope.live);
+                live = $filter('orderBy')(live, 'time');
+
+                $scope.assignArray($scope.live, live);
+
+                $scope.fetchLiveDataState = false;
+            });
+        } else {
+            return $q.resolve();
+        }
+    };
+
+    $scope.update = function() {
+        $scope.fetchVideoMetadata()
+            .then(function() {
+                return $scope.fetchVideoData();
+            })
+            .then(function() {
+                $scope.$broadcast('updateVideoData');
+            })
+
+        $scope.fetchLiveMetadata()
+            .then(function() {
+                return $scope.fetchLiveData();
+            })
+            .then(function() {
+                $scope.$broadcast('updateLiveData');
+            })
     };
 
     $scope.init();

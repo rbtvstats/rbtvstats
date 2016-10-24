@@ -16,7 +16,6 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         $scope.model = {};
         $scope.model.host = null;
         $scope.model.videos = [];
-        $scope.model.dataLatest = 0;
         $scope.model.chartsConfig = [];
         $scope.model.charts = [];
         $scope.model.stats = {};
@@ -32,7 +31,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
             selected: $scope.getHost() || $scope.model.host || $scope.default.host
         };
 
-        $scope.$on('updateData', function(event, args) {
+        $scope.$on('updateVideoData', function(event, args) {
             $scope.update();
         });
 
@@ -73,7 +72,6 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
     $scope.update = function() {
         if ($scope.host.selected != $scope.model.host) {
             if ($scope.hosts.indexOf($scope.host.selected) > -1) {
-                $scope.model.dataLatest = $scope.videoMetadata.time;
                 $scope.model.host = $scope.host.selected;
                 
                 $scope.assignArray($scope.model.videos, $scope.filterHost($scope.videos, $scope.model.host));

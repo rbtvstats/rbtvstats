@@ -44,7 +44,8 @@ app.config(function($routeProvider, ChartJsProvider, cfpLoadingBarProvider) {
     })
     .when('/live', {
         templateUrl: 'views/live.html',
-        controller: 'LiveCtrl'
+        controller: 'LiveCtrl',
+        reloadOnSearch: false
     })
     .otherwise({
         redirectTo: '/channels'
@@ -56,7 +57,7 @@ app.config(function($routeProvider, ChartJsProvider, cfpLoadingBarProvider) {
     ChartJsProvider.setOptions({
         responsive: true,
         maintainAspectRatio: false,
-        responsiveAnimationDuration: 1000
+        responsiveAnimationDuration: 500
     });
 });
 
