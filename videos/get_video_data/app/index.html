@@ -115,7 +115,7 @@
                         </div>
                         <div class="videos">
                             <div class="video" dir-paginate="video in videos[selectedChannel] | filter:search | ignore:filterIgnoredVideos | noHost:filterNoHostVideos:lastEdited | noShow:filterNoShowVideos:lastEdited | orderBy:'snippet.publishedAt':true | itemsPerPage: pageSize" ng-class="{'highlight': (!video.snippet.metadata.hosts.length || !video.snippet.metadata.shows.length) && !video.snippet.metadata.ignore}">
-                                <span class="published">{{video.snippet.publishedAt | date}}</span>
+                                <span class="published">{{video.snippet.publishedAt | date:"dd.MM.yyyy HH:mm"}}</span>
                                 <span class="duration">
                                     {{video.snippet.duration | duration}}
                                     <div class="checkbox checkbox-primary checkbox-inline">
