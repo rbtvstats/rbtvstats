@@ -13,4 +13,17 @@
             </div>
         </div>
     </div>
+    <div class="stats panel panel-default">
+        <div class="panel-heading"><strong>Statistiken</strong></div>
+        <div class="panel-body">
+            <div class="container-fluid">
+                <div class="row" ng-init="value=stat.value" ng-repeat="stat in model.stats">
+                    <div class="col-md-3"><strong>{{stat.title}}</strong></div>
+                    <div class="col-md-9">
+                        <div stat="stat.value"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

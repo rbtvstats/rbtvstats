@@ -27,6 +27,18 @@ function binaryClosest(array, searchElement) {
     return -1; //should not happen
 }
 
+function getPercentile(percentile, data) {
+    var i = (percentile / 100) * data.length;
+    var result = -1;
+    if (Math.floor(i) == i) {
+        result = (data[i - 1].viewers + data[i].viewers) / 2;
+    } else {
+        result = data[Math.floor(i)].viewers;
+    }
+
+    return result;
+}
+
 /**
  * @ngdoc function
  * @name rbtvstatsApp.controller:LiveCtrl
@@ -40,6 +52,7 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
 
         //model (default)
         $scope.model = {};
+        $scope.model.stats = {};
         $scope.model.dateRange = {
             startDate: null,
             endDate: null
@@ -200,6 +213,8 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
         if (!$scope.updateChartState) {
             $scope.updateChartState = true;
 
+            $scope.model.stats = [];
+
             $timeout(function() {
                 var from = $scope.dateRange.startDate.toDate();
                 var to = $scope.dateRange.endDate.toDate();
@@ -274,6 +289,8 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
                                 chart.labels.push(moment(data.time));
                                 chart.data[0].push(data.viewers);
                             }
+
+                            $scope.updateStats($scope.live.slice(startIndex, endIndex));
                         }
                     }
 
@@ -283,6 +300,123 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
                 });
             }, 0);
         }
+    };
+
+    $scope.updateStats = function(data) {
+        $scope.model.stats = {};
+
+        var stats = [];
+
+        //oldestDatapoints
+        var oldestDatapoints = data.length;
+        stats.push({
+            title: 'Ältester Datenpunkt',
+            value: {
+                type: 'text',
+                text: moment(data[0].time).format('LLLL')
+            }
+        });
+
+        //newestDatapoints
+        var oldestDatapoints = data.length;
+        stats.push({
+            title: 'Neuster Datenpunkt',
+            value: {
+                type: 'text',
+                text: moment(data[data.length - 1].time).format('LLLL')
+            }
+        });
+
+        //totalDatapoints
+        var totalDatapoints = data.length;
+        stats.push({
+            title: 'Anzahl Datenpunkte',
+            value: {
+                type: 'number',
+                text: totalDatapoints
+            }
+        });
+
+        //minDatapoint + maxDatapoint
+        var min = Number.POSITIVE_INFINITY;
+        var minIndex = -1;
+        var max = Number.NEGATIVE_INFINITY;
+        var maxIndex = -1;
+        for (var j = 0; j < data.length; j++) {
+            var tmp = data[j].viewers;
+            if (tmp < min) {
+                minIndex = j;
+                min = tmp;
+            }
+            if (tmp > max) {
+                maxIndex = j;
+                max = tmp;
+            }
+        }
+
+        var minDatapoint = data[minIndex];
+        stats.push({
+            title: 'Minimum',
+            value: {
+                type: 'number',
+                text: moment(minDatapoint.time).format('LLLL') + ' - ' + minDatapoint.viewers
+            }
+        });
+
+        var maxDatapoint = data[maxIndex];
+        stats.push({
+            title: 'Maximum',
+            value: {
+                type: 'number',
+                text: moment(maxDatapoint.time).format('LLLL') + ' - ' + maxDatapoint.viewers
+            }
+        });
+
+        //meanViews
+        var totalViews = 0;
+        for (var j = 0; j < data.length; j++) {
+            totalViews += data[j].viewers;
+        }
+        var meanViews = Math.round(totalViews / totalDatapoints);
+        stats.push({
+            title: 'Durchschnitt',
+            value: {
+                type: 'number',
+                text: meanViews
+            }
+        });
+
+        //q1Views
+        var q1Views = getPercentile(25, data);
+        stats.push({
+            title: 'Quartil 25%',
+            value: {
+                type: 'number',
+                text: q1Views
+            }
+        });
+
+        //q2Views
+        var q2Views = getPercentile(50, data);
+        stats.push({
+            title: 'Quartil 50% (Median)',
+            value: {
+                type: 'number',
+                text: q2Views
+            }
+        });
+
+        //q3Views
+        var q3Views = getPercentile(75, data);
+        stats.push({
+            title: 'Quartil 75%',
+            value: {
+                type: 'number',
+                text: q3Views
+            }
+        });
+
+        $scope.model.stats = stats;
     };
 
     $scope.init();
