@@ -28,6 +28,16 @@ function binaryClosest(array, searchElement) {
 }
 
 function getPercentile(percentile, data) {
+    function compare(a, b) {
+        if (a.viewers < b.viewers)
+            return -1;
+        if (a.viewers > b.viewers)
+            return 1;
+        return 0;
+    }
+
+    data = data.concat().sort(compare);
+
     var i = (percentile / 100) * data.length;
     var result = -1;
     if (Math.floor(i) == i) {
