@@ -313,118 +313,118 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
     };
 
     $scope.updateStats = function(data) {
-        $scope.model.stats = {};
-
         var stats = [];
 
-        //oldestDatapoints
-        var oldestDatapoints = data.length;
-        stats.push({
-            title: 'Ältester Datenpunkt',
-            value: {
-                type: 'text',
-                text: moment(data[0].time).format('LLLL')
-            }
-        });
+        if (data.length > 0) {
+            //oldestDatapoints
+            var oldestDatapoints = data[0];
+            stats.push({
+                title: 'Ältester Datenpunkt',
+                value: {
+                    type: 'text',
+                    text: moment(oldestDatapoints.time).format('LLLL')
+                }
+            });
 
-        //newestDatapoints
-        var oldestDatapoints = data.length;
-        stats.push({
-            title: 'Neuster Datenpunkt',
-            value: {
-                type: 'text',
-                text: moment(data[data.length - 1].time).format('LLLL')
-            }
-        });
+            //newestDatapoints
+            var newestDatapoints = data[data.length - 1];
+            stats.push({
+                title: 'Neuster Datenpunkt',
+                value: {
+                    type: 'text',
+                    text: moment(newestDatapoints.time).format('LLLL')
+                }
+            });
 
-        //totalDatapoints
-        var totalDatapoints = data.length;
-        stats.push({
-            title: 'Anzahl Datenpunkte',
-            value: {
-                type: 'number',
-                text: totalDatapoints
-            }
-        });
+            //totalDatapoints
+            var totalDatapoints = data.length;
+            stats.push({
+                title: 'Anzahl Datenpunkte',
+                value: {
+                    type: 'number',
+                    text: totalDatapoints
+                }
+            });
 
-        //minDatapoint + maxDatapoint
-        var min = Number.POSITIVE_INFINITY;
-        var minIndex = -1;
-        var max = Number.NEGATIVE_INFINITY;
-        var maxIndex = -1;
-        for (var j = 0; j < data.length; j++) {
-            var tmp = data[j].viewers;
-            if (tmp < min) {
-                minIndex = j;
-                min = tmp;
+            //minDatapoint + maxDatapoint
+            var min = Number.POSITIVE_INFINITY;
+            var minIndex = -1;
+            var max = Number.NEGATIVE_INFINITY;
+            var maxIndex = -1;
+            for (var j = 0; j < data.length; j++) {
+                var tmp = data[j].viewers;
+                if (tmp < min) {
+                    minIndex = j;
+                    min = tmp;
+                }
+                if (tmp > max) {
+                    maxIndex = j;
+                    max = tmp;
+                }
             }
-            if (tmp > max) {
-                maxIndex = j;
-                max = tmp;
+
+            var minDatapoint = data[minIndex];
+            stats.push({
+                title: 'Minimum',
+                value: {
+                    type: 'number',
+                    text: moment(minDatapoint.time).format('LLLL') + ' - ' + minDatapoint.viewers
+                }
+            });
+
+            var maxDatapoint = data[maxIndex];
+            stats.push({
+                title: 'Maximum',
+                value: {
+                    type: 'number',
+                    text: moment(maxDatapoint.time).format('LLLL') + ' - ' + maxDatapoint.viewers
+                }
+            });
+
+            //meanViews
+            var totalViews = 0;
+            for (var j = 0; j < data.length; j++) {
+                totalViews += data[j].viewers;
             }
+            var meanViews = Math.round(totalViews / totalDatapoints);
+            stats.push({
+                title: 'Durchschnitt',
+                value: {
+                    type: 'number',
+                    text: meanViews
+                }
+            });
+
+            //q1Views
+            var q1Views = getPercentile(25, data);
+            stats.push({
+                title: 'Quartil 25%',
+                value: {
+                    type: 'number',
+                    text: q1Views
+                }
+            });
+
+            //q2Views
+            var q2Views = getPercentile(50, data);
+            stats.push({
+                title: 'Quartil 50% (Median)',
+                value: {
+                    type: 'number',
+                    text: q2Views
+                }
+            });
+
+            //q3Views
+            var q3Views = getPercentile(75, data);
+            stats.push({
+                title: 'Quartil 75%',
+                value: {
+                    type: 'number',
+                    text: q3Views
+                }
+            });
         }
-
-        var minDatapoint = data[minIndex];
-        stats.push({
-            title: 'Minimum',
-            value: {
-                type: 'number',
-                text: moment(minDatapoint.time).format('LLLL') + ' - ' + minDatapoint.viewers
-            }
-        });
-
-        var maxDatapoint = data[maxIndex];
-        stats.push({
-            title: 'Maximum',
-            value: {
-                type: 'number',
-                text: moment(maxDatapoint.time).format('LLLL') + ' - ' + maxDatapoint.viewers
-            }
-        });
-
-        //meanViews
-        var totalViews = 0;
-        for (var j = 0; j < data.length; j++) {
-            totalViews += data[j].viewers;
-        }
-        var meanViews = Math.round(totalViews / totalDatapoints);
-        stats.push({
-            title: 'Durchschnitt',
-            value: {
-                type: 'number',
-                text: meanViews
-            }
-        });
-
-        //q1Views
-        var q1Views = getPercentile(25, data);
-        stats.push({
-            title: 'Quartil 25%',
-            value: {
-                type: 'number',
-                text: q1Views
-            }
-        });
-
-        //q2Views
-        var q2Views = getPercentile(50, data);
-        stats.push({
-            title: 'Quartil 50% (Median)',
-            value: {
-                type: 'number',
-                text: q2Views
-            }
-        });
-
-        //q3Views
-        var q3Views = getPercentile(75, data);
-        stats.push({
-            title: 'Quartil 75%',
-            value: {
-                type: 'number',
-                text: q3Views
-            }
-        });
 
         $scope.model.stats = stats;
     };
