@@ -37,6 +37,24 @@ app.directive('videos', function($rootScope, uuid4, FlagSrv) {
                 });
             };
 
+            $scope.getLiveFrom = function(video) {
+                if (video.aired) {
+                    var date = new Date(video.aired * 1000);
+                    date.setHours(0, 0, 0);
+
+                    return date.getTime() / 1000;
+                }
+            };
+
+            $scope.getLiveTo = function(video) {
+                if (video.aired) {
+                    var date = new Date(video.aired * 1000);
+                    date.setHours(23, 59, 59);
+
+                    return date.getTime() / 1000;
+                }
+            };
+
             $scope.scrollTop = function() {
                 var top = angular.element(document.getElementById('top'));
                 $document.scrollToElementAnimated(top);

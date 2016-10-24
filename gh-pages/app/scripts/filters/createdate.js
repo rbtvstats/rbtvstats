@@ -10,6 +10,8 @@
  */
 app.filter('createDate', function() {
     return function(seconds) {
-        return new Date(seconds * 1000);
+        if (seconds) {
+            return new Date(seconds * 1000);
+        }
     }
 });

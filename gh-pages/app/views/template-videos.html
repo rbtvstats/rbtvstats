@@ -2,21 +2,22 @@
     <tr ng-repeat="video in $data">
         <td width="20"><a href="" title="Fehler melden" ng-click="openFlagDialog(video.id)"><i class="fa fa-flag"></i></a></td>
         <td title="'Titel'" filter="{ title: 'text'}" data-sortable="'title'"><a target="_blank" href="https://www.youtube.com/watch?v={{video.id}}">{{video.title}}</a></td>
-        <td width="180" filter="{ hosts: 'text'}" title="'Personen'" data-sortable="'hosts'">
+        <td width="140" filter="{ hosts: 'text'}" title="'Personen'" data-sortable="'hosts'">
             <span ng-repeat="host in video.hosts | orderBy">
                 <a ng-href="#/hosts?host={{host}}" ng-click="scrollTop()">{{host}}</a><span ng-if="$index < video.hosts.length - 1">,</span>
             </span>
         </td>
-        <td width="180" filter="{ shows: 'text'}" title="'Formate'" data-sortable="'shows'">
+        <td width="140" filter="{ shows: 'text'}" title="'Formate'" data-sortable="'shows'">
             <span ng-repeat="show in video.shows | orderBy">
                 <a ng-href="#/shows?show={{show | escape}}" ng-click="scrollTop()">{{show}}</a><span ng-if="$index < video.shows.length - 1">,</span>
             </span>
         </td>
-        <td width="200" filter="{ channel: 'select'}" filter-data="getSelectFilter('channel')" title="'Kanal'" data-sortable="'channel'">{{video.channel}}</td>
+        <td width="140" filter="{ channel: 'select'}" filter-data="getSelectFilter('channel')" title="'Kanal'" data-sortable="'channel'">{{video.channel}}</td>
         <td width="80" title="'Laufzeit'" data-sortable="'length'">{{video.length | duration}}</td>
-        <td width="80" title="'Datum'" data-sortable="'published'">{{video.published | createDate | date:"dd.MM.yyyy"}}</td>
-        <td width="80" title="'Views'" data-sortable="'stats.viewCount'">{{video.stats.viewCount}}</td>
-        <td width="80" title="'Likes'" data-sortable="'stats.likeCount'">{{video.stats.likeCount}}</td>
-        <td width="80" title="'Dislikes'" data-sortable="'stats.dislikeCount'">{{video.stats.dislikeCount}}</td>
+        <td width="80" title="'Upload'" data-sortable="'published'">{{video.published | createDate | date:"dd.MM.yyyy"}}</td>
+        <td width="80" title="'Ausstrahlung'" data-sortable="'aired'"><a ng-href="#/live?from={{getLiveFrom(video)}}&to={{getLiveTo(video)}}">{{video.aired | createDate | date:"dd.MM.yyyy"}}</a></td>
+        <td width="60" title="'Views'" data-sortable="'stats.viewCount'">{{video.stats.viewCount}}</td>
+        <td width="60" title="'Likes'" data-sortable="'stats.likeCount'">{{video.stats.likeCount}}</td>
+        <td width="60" title="'Dislikes'" data-sortable="'stats.dislikeCount'">{{video.stats.dislikeCount}}</td>
     </tr>
 </table>
