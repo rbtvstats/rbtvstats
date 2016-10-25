@@ -308,7 +308,7 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
 
                     $scope.updateChartState = false;
                 });
-            }, 0);
+            }, 100);
         }
     };
 

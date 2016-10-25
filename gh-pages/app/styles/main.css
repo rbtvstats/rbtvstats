@@ -68,6 +68,11 @@ body {
 
 .stats {}
 
+.stats .panel-body {
+    position: relative;
+    min-height: 100px;
+}
+
 .stats .info {
     color: #888;
 }
@@ -102,7 +107,7 @@ body {
 
 .update-chart {
     position: absolute;
-    top: calc(50% - 50px);
+    top: calc(50% - 20px);
     left: 30px;
     right: 30px;
     text-align: center;
