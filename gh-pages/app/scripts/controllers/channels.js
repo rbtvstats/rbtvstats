@@ -28,13 +28,11 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
             $scope.update();
         });
 
-        setTimeout(function() {
-            $scope.update();
-        }, 0);
+        $scope.update();
     };
 
     $scope.update = function() {
-        if ($scope.model.dataLatest != $scope.videoMetadata.time && $scope.videoMetadata.time > 0) {
+        if ($scope.model.dataLatest != $scope.videoMetadata.time && $scope.videoMetadata.time > 0 && $scope.videos.length > 0) {
             $scope.model.dataLatest = $scope.videoMetadata.time;
 
             $scope.updateCharts();
