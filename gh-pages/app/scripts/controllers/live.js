@@ -185,11 +185,33 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
         return to;
     };
 
+    $scope.changeDate = function(num, type) {
+        if (num < 0) {
+            num = Math.abs(num);
+            $scope.dateRange.startDate.subtract(num, type);
+            $scope.dateRange.endDate.subtract(num, type);
+        } else {
+            $scope.dateRange.startDate.add(num, type);
+            $scope.dateRange.endDate.add(num, type);
+        }
+
+        var diff = $scope.dateRange.endDate.diff($scope.dateRange.startDate) / 1000;
+        if ($scope.dateRange.startDate < $scope.model.dateRangeOptions.minDate || $scope.dateRange.endDate < $scope.model.dateRangeOptions.minDate) {
+            $scope.dateRange.startDate = moment($scope.model.dateRangeOptions.minDate);
+            $scope.dateRange.endDate = moment($scope.model.dateRangeOptions.minDate).add(diff, 's');
+        }
+
+        if ($scope.dateRange.startDate > $scope.model.dateRangeOptions.maxDate || $scope.dateRange.endDate > $scope.model.dateRangeOptions.maxDate) {
+            $scope.dateRange.startDate = moment($scope.model.dateRangeOptions.maxDate).subtract(diff, 's');
+            $scope.dateRange.endDate = moment($scope.model.dateRangeOptions.maxDate);
+        }
+    };
+
     $scope.update = function() {
         if ($scope.dateRange.startDate && $scope.dateRange.endDate) {
             if (!$scope.dateRange.startDate.isSame($scope.model.dateRange.startDate) || !$scope.dateRange.endDate.isSame($scope.model.dateRange.endDate)) {
-                $scope.model.dateRange.startDate = $scope.dateRange.startDate;
-                $scope.model.dateRange.endDate = $scope.dateRange.endDate;
+                $scope.model.dateRange.startDate = moment($scope.dateRange.startDate);
+                $scope.model.dateRange.endDate = moment($scope.dateRange.endDate);
 
                 $scope.updateChart();
             }

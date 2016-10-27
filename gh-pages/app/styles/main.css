@@ -250,10 +250,15 @@ body {
     text-align: center;
     font-size: 1.3em;
     font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.live-header table {
+    width: 100%;
 }
 
 .live-chart {
-    padding-bottom: 30px;
+    padding-bottom: 50px;
 }
 
 .links {

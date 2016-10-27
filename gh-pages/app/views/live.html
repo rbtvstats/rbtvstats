@@ -4,8 +4,22 @@
         <div class="panel-body" style="width:{{model.chart.options.width}}; height: 500px">
             <div class="live-header">
                 <a href="javascript:void(0);" date-range-picker class="date-picker" options="model.dateRangeOptions" ng-model="dateRange">
-                    <i class="fa fa-clock-o"></i> {{dateRange.startDate | amDateFormat:'DD. MMMM YYYY HH:mm'}} — {{dateRange.endDate | amDateFormat:'DD. MMMM YYYY HH:mm'}} <i class="fa fa-clock-o"></i>
+                    {{dateRange.startDate | amDateFormat:'DD. MMMM YYYY HH:mm'}} — {{dateRange.endDate | amDateFormat:'DD. MMMM YYYY HH:mm'}}
                 </a>
+                <table>
+                    <tr>
+                        <td class="text-left">
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="changeDate(-1, 'M')"><i class="fa fa-chevron-left"></i> 1M</button>
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="changeDate(-1, 'w')"><i class="fa fa-chevron-left"></i> 1W</button>
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="changeDate(-1, 'd')"><i class="fa fa-chevron-left"></i> 1T</button>
+                        </td>
+                        <td class="text-right">
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="changeDate(1, 'd')">1T <i class="fa fa-chevron-right"></i></button>
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="changeDate(1, 'w')">1W <i class="fa fa-chevron-right"></i></button>
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="changeDate(1, 'M')">1M <i class="fa fa-chevron-right"></i></button>
+                        </td>
+                    </tr>
+                </table>
             </div>
             <canvas class="chart-base live-chart" chart-type="model.chart.options.type" chart-options="model.chart.options" chart-data="model.chart.data" chart-labels="model.chart.labels" chart-series="model.chart.series"></canvas>
             <div class="update-chart" ng-hide="!updateChartState">
