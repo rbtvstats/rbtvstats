@@ -1,6 +1,7 @@
 html {
     position: relative;
     min-height: 100%;
+    overflow-y: scroll;
 }
 
 body {
@@ -42,6 +43,23 @@ body {
 .alert-animate.ng-enter {
     top: -50px;
     height: 0px;
+}
+
+.fade-animate.change-add,
+.fade-animate.ng-enter {
+    -webkit-transition: 200ms ease-in-out all;
+    -moz-transition: 200ms ease-in-out all;
+    -ms-transition: 200ms ease-in-out all;
+    -o-transition: 200ms ease-in-out all;
+    transition: 200ms ease-in-out all;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.fade-animate.change-add-active,
+.fade-animate.ng-enter.fade-animate.ng-enter-active {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .content {
@@ -170,18 +188,6 @@ body {
     .container-table .table tr th:nth-of-type(8) {
         display: none;
     }
-}
-
-.slide-in {
-    -webkit-transition: all 300ms ease-in;
-    -moz-transition: all 300ms ease-in;
-    -o-transition: all 300ms ease-in;
-    transition: all 300ms ease-in;
-}
-
-.slide-in.start {
-    transform: translateY(50px);
-    opacity: 0;
 }
 
 .view-container {

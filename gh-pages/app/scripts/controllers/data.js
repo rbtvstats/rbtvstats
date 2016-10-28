@@ -33,14 +33,6 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout,
         $scope.update();
     };
 
-    $scope.getType = function(obj) {
-        if ($.isArray(obj)) {
-            return 'array';
-        } else {
-            return typeof obj;
-        }
-    };
-
     $scope.findByKey = function(output, key) {
         for (var i = 0; i < output.length; i++) {
             if (output[i].key == key) {

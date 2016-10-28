@@ -7,7 +7,9 @@
  * # ShowsCtrl
  * Controller of the rbtvstatsApp
  */
-app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, DataSrv) {
+app.controller('ShowsCtrl', function($scope, $rootScope, $location, $timeout, StateSrv, DataSrv) {
+    $scope.initFinished = false;
+
     $scope.init = function() {
         $scope.default = {};
         $scope.default.show = 'Bohn Jour';
@@ -56,9 +58,13 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         });
 
         $scope.$on('$routeUpdate', function(event, route) {
-            $scope.show.selected = $scope.getShow();
+            $scope.show.selected = $scope.getShow() || $scope.model.show || $scope.default.show;
             $scope.series.selected = $scope.getSeries();
         });
+
+        $timeout(function() {
+            $scope.initFinished = true;
+        }, 100);
     };
 
     $scope.getShow = function() {
@@ -436,5 +442,5 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         $scope.model.charts.push(chart);
     };
 
-    $scope.init();
+    $timeout($scope.init, 0);
 });

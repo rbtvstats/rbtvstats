@@ -7,7 +7,9 @@
  * # HostsCtrl
  * Controller of the rbtvstatsApp
  */
-app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, DataSrv) {
+app.controller('HostsCtrl', function($scope, $rootScope, $location, $timeout, StateSrv, DataSrv) {
+    $scope.initFinished = false;
+
     $scope.init = function() {
         $scope.default = {};
         $scope.default.host = 'Eddy';
@@ -49,6 +51,10 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         $scope.$on('$routeUpdate', function(event, route) {
             $scope.host.selected = $scope.getHost() || $scope.model.host || $scope.default.host;
         });
+
+        $timeout(function () {
+            $scope.initFinished = true;
+        }, 100);
     };
 
     $scope.getHost = function() {
@@ -73,7 +79,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         if ($scope.host.selected != $scope.model.host) {
             if ($scope.hosts.indexOf($scope.host.selected) > -1) {
                 $scope.model.host = $scope.host.selected;
-                
+
                 $scope.assignArray($scope.model.videos, $scope.filterHost($scope.videos, $scope.model.host));
 
                 $scope.updateCharts();
@@ -537,5 +543,5 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, StateSrv, Da
         $scope.model.charts.push(chart);
     };
 
-    $scope.init();
+    $timeout($scope.init, 0);
 });

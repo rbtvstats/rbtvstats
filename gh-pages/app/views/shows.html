@@ -1,4 +1,4 @@
-<div class="content max-width">
+<div class="content max-width fade-animate" ng-if="initFinished">
     <div class="select">
         <div class="select-heading container-fluid" ng-if="shows.length">
             <div class="row">
@@ -27,12 +27,12 @@
             </div>
         </div>
         <div class="select-body">
-            <div class="select-content" ng-if="model.show == show.selected">
-                <div class="stats panel panel-default" ng-if="model.stats.length" slide-in>
+            <div class="select-content fade-animate" animate-change="model.show" ng-if="model.show == show.selected">
+                <div class="stats panel panel-default" ng-if="model.stats.length">
                     <div class="panel-heading"><strong>Statistiken</strong></div>
                     <div class="panel-body">
                         <div class="container-fluid">
-                            <div class="row" ng-init="value=stat.value" ng-repeat="stat in model.stats">
+                            <div class="row" ng-repeat="stat in model.stats">
                                 <div class="col-md-3"><strong>{{stat.title}}</strong></div>
                                 <div class="col-md-9">
                                     <div stat="stat.value"></div>
@@ -41,13 +41,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="chart panel panel-default" ng-repeat="chart in model.charts" slide-in>
+                <div class="chart panel panel-default" ng-repeat="chart in model.charts">
                     <div class="panel-heading"><strong>{{chart.options.header}}</strong></div>
                     <div class="panel-body" style="width:{{chart.options.width}}; height: {{chart.options.height}}">
                         <canvas class="chart-base" chart-type="chart.options.type" chart-options="chart.options" chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series"></canvas>
                     </div>
                 </div>
-                <div class="panel panel-default" ng-if="model.videos.length" slide-in>
+                <div class="panel panel-default" ng-if="model.videos.length">
                     <div class="panel-heading"><strong>Videos</strong></div>
                     <div class="panel-body container-table">
                         <div params="model.tableParams" videos="model.videos"></div>

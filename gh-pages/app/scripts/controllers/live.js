@@ -57,6 +57,8 @@ function getPercentile(percentile, data) {
  * Controller of the rbtvstatsApp
  */
 app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, StateSrv, DataSrv) {
+    $scope.initFinished = false;
+
     $scope.init = function() {
         $scope.updateChartState = false;
 
@@ -160,7 +162,10 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
         });
 
         $scope.updateDatePicker();
-        $scope.update();
+
+        $timeout(function() {
+            $scope.initFinished = true;
+        }, 100);
     };
 
     $scope.getFrom = function() {
@@ -451,5 +456,5 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
         $scope.model.stats = stats;
     };
 
-    $scope.init();
+    $timeout($scope.init, 0);
 });

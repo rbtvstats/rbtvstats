@@ -7,7 +7,9 @@
  * # ChannelsCtrl
  * Controller of the rbtvstatsApp
  */
-app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv, DataSrv) {
+app.controller('ChannelsCtrl', function($scope, $rootScope, $location, $timeout, StateSrv, DataSrv) {
+    $scope.initFinished = false;
+
     $scope.init = function() {
         $scope.model = {};
         $scope.model.dataLatest = 0;
@@ -29,6 +31,10 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
         });
 
         $scope.update();
+
+        $timeout(function() {
+            $scope.initFinished = true;
+        }, 100);
     };
 
     $scope.update = function() {
@@ -580,5 +586,5 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, StateSrv,
         $scope.model.charts.push(chart);
     };
 
-    $scope.init();
+    $timeout($scope.init, 0);
 });
