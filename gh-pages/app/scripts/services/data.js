@@ -64,6 +64,9 @@ app.service('DataSrv', function($http, $q) {
         }
 
         to = to || new Date();
+        to.setDate(1);
+        from.setDate(1);
+
         while (from <= to) {
             var filename = from.getFullYear() + '-' + pad(from.getMonth() + 1) + '.csv';
             if (fetchedLiveData.indexOf(filename) == -1) {
