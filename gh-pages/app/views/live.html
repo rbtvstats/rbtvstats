@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <div class="stats panel panel-default" ng-if="model.stats.length">
+    <div class="stats panel panel-default" ng-if="!updateChartState && model.stats.length">
         <div class="panel-heading"><strong>Statistiken</strong></div>
         <div class="panel-body">
             <div class="container-fluid" ng-hide="updateChartState">
@@ -38,6 +38,12 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="panel panel-default" ng-if="!updateChartState && model.videos.length">
+        <div class="panel-heading"><strong>Videos</strong></div>
+        <div class="panel-body container-table">
+            <div params="model.tableParams" videos="model.videos"></div>
         </div>
     </div>
 </div>

@@ -64,6 +64,7 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
 
         //model (default)
         $scope.model = {};
+        $scope.model.videos = [];
         $scope.model.stats = {};
         $scope.model.dateRange = {
             startDate: null,
@@ -217,6 +218,10 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
             if (!$scope.dateRange.startDate.isSame($scope.model.dateRange.startDate) || !$scope.dateRange.endDate.isSame($scope.model.dateRange.endDate)) {
                 $scope.model.dateRange.startDate = moment($scope.dateRange.startDate);
                 $scope.model.dateRange.endDate = moment($scope.dateRange.endDate);
+
+                var from = $scope.model.dateRange.startDate.toDate();
+                var to = $scope.model.dateRange.endDate.toDate();
+                $scope.assignArray($scope.model.videos, $scope.filterAired($scope.videos, from, to));
 
                 $scope.updateChart();
             }

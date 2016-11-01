@@ -107,7 +107,7 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout,
         return output;
     };
 
-    $scope.filterTime = function(videos, min, max) {
+    $scope.filterPublished = function(videos, min, max) {
         var output = [];
 
         min = min || new Date();
@@ -116,6 +116,24 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout,
         for (var i = 0; i < videos.length; i++) {
             var video = videos[i];
             var date = new Date(video.published * 1000);
+
+            if (date > min && date < max) {
+                output.push(video);
+            }
+        }
+
+        return output;
+    };
+
+    $scope.filterAired = function(videos, min, max) {
+        var output = [];
+
+        min = min || new Date();
+        max = max || new Date();
+
+        for (var i = 0; i < videos.length; i++) {
+            var video = videos[i];
+            var date = new Date(video.aired * 1000);
 
             if (date > min && date < max) {
                 output.push(video);
