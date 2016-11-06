@@ -1,5 +1,16 @@
 'use strict';
 
+Date.prototype.getMY = function() {
+    var monthShortNames = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+    var m = this.getMonth();
+    var y = this.getFullYear();
+
+    m = monthShortNames[m];
+    y = y - 2000;
+
+    return m + ' ' + y;
+}
+
 /**
  * @ngdoc function
  * @name rbtvstatsApp.controller:DataCtrl
@@ -19,7 +30,6 @@ app.controller('DataCtrl', function($scope, $rootScope, $document, $q, $timeout,
         $scope.channels = [];
         $scope.shows = [];
         $scope.hosts = [];
-        $scope.monthShortNames = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
         $rootScope.alerts = [];
 
         $scope.$on('$routeChangeStart', function(event, next, current) {

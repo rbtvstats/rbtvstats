@@ -241,7 +241,7 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, $timeout,
                 channelData[channel].push(totalTime[channel]);
             }
 
-            chart.labels.push($scope.monthShortNames[date.getMonth()] + " " + date.getFullYear());
+            chart.labels.push(date.getMY());
         }
 
         for (var channel in channelData) {
@@ -302,7 +302,7 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, $timeout,
                 channelData[channel].push(totalViews[channel]);
             }
 
-            chart.labels.push($scope.monthShortNames[date.getMonth()] + " " + date.getFullYear());
+            chart.labels.push(date.getMY());
         }
 
         for (var channel in channelData) {
@@ -367,7 +367,7 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, $timeout,
                 channelData[channel].push(averageViews);
             }
 
-            chart.labels.push($scope.monthShortNames[date.getMonth()] + " " + date.getFullYear());
+            chart.labels.push(date.getMY());
         }
 
         for (var channel in channelData) {
@@ -536,7 +536,7 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, $timeout,
                 channelData[channel].push(ratio);
             }
 
-            chart.labels.push($scope.monthShortNames[date.getMonth()] + " " + date.getFullYear());
+            chart.labels.push(date.getMY());
         }
 
         for (var channel in channelData) {

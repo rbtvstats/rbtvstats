@@ -434,7 +434,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, $timeout, St
             var averageViews = Math.round(totalViews / totalVideos);
             videoData.push(averageViews);
 
-            chart.labels.push($scope.monthShortNames[date.getMonth()] + " " + date.getFullYear());
+            chart.labels.push(date.getMY());
         }
 
         chart.data.push(videoData);

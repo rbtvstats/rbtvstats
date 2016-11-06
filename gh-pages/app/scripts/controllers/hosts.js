@@ -52,7 +52,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, $timeout, St
             $scope.host.selected = $scope.getHost() || $scope.model.host || $scope.default.host;
         });
 
-        $timeout(function () {
+        $timeout(function() {
             $scope.initFinished = true;
         }, 100);
     };
@@ -479,7 +479,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, $timeout, St
             var averageViews = Math.round(totalViews / totalVideos);
             videoData.push(averageViews);
 
-            chart.labels.push($scope.monthShortNames[date.getMonth()] + " " + date.getFullYear());
+            chart.labels.push(date.getMY());
         }
 
         chart.data.push(videoData);
@@ -534,7 +534,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, $timeout, St
 
             totalTime = Math.round((totalTime / 3600) * 100) / 100;
 
-            chart.labels.push($scope.monthShortNames[date.getMonth()] + " " + date.getFullYear());
+            chart.labels.push(date.getMY());
             chart.data[0].push(totalTime);
         }
 
