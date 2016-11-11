@@ -26,11 +26,16 @@ def load(dir):
                 for show in video['shows']:
                     videosShowsTmp.append((video['id'], show))
 
+                aired = video['aired']
+                if aired is not None:
+                    aired = datetime.datetime.fromtimestamp(aired)
+
                 videosTmp.append((video['id'], 
                                   video['title'], 
                                   video['channel'], 
                                   datetime.timedelta(seconds=video['length']), 
                                   datetime.datetime.fromtimestamp(video['published']), 
+                                  aired, 
                                   video['stats']['viewCount'], 
                                   video['stats']['likeCount'], 
                                   video['stats']['dislikeCount'], 
@@ -43,6 +48,7 @@ def load(dir):
                                               'channel', 
                                               'length', 
                                               'published', 
+                                              'aired', 
                                               'viewCount', 
                                               'likeCount', 
                                               'dislikeCount', 
