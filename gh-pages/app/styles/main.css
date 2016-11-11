@@ -173,21 +173,19 @@ body {
 
 .container-table > * {
     min-width: 600px;
+    display: table;
 }
 
-@media (max-width: 900px) {
-    .container-table .table tr td:nth-of-type(3),
-    .container-table .table tr th:nth-of-type(3),
-    .container-table .table tr td:nth-of-type(4),
-    .container-table .table tr th:nth-of-type(4),
-    .container-table .table tr td:nth-of-type(6),
-    .container-table .table tr th:nth-of-type(6),
-    .container-table .table tr td:nth-of-type(7),
-    .container-table .table tr th:nth-of-type(7),
-    .container-table .table tr td:nth-of-type(8),
-    .container-table .table tr th:nth-of-type(8) {
-        display: none;
-    }
+.container-table .table tr th:nth-of-type(2) {
+    min-width: 300px;
+}
+
+.container-table .ng-table-pagination {
+    margin-top: 0px;
+}
+
+.container-table .ng-table-pager {
+    padding: 5px;
 }
 
 .view-container {
