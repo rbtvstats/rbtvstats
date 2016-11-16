@@ -109,7 +109,7 @@
                                 <span class="text-muted">Kanäle..</span>
                             </ui-select-match>
                             <ui-select-choices repeat="channel in (channels | filter: $select.search | orderBy)">
-                                <img class="badge-round badge-md" ng-src="images/channels/{{channel | imgName}}.jpg" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
+                                <img class="badge-round badge-md" img-src="images/channels/{{channel | imgName}}.jpg" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
                                 <span ng-bind="channel"></span>
                             </ui-select-choices>
                         </ui-select>
@@ -120,7 +120,7 @@
                     <div class="col-md-offset-4 col-md-8">
                         <div class="button-list">
                             <button type="button" class="btn btn-default" ng-click="removeFilterChannel(channel)" ng-repeat="channel in tableParams.options.filter.channels.filter | orderBy">
-                                <img class="badge-round badge-md" ng-src="images/channels/{{channel | imgName}}.jpg" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
+                                <img class="badge-round badge-md" img-src="images/channels/{{channel | imgName}}.jpg" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
                                 <span ng-bind="channel"></span>
                             </button>
                         </div>
@@ -136,7 +136,7 @@
                                     <span class="text-muted">Formate..</span>
                                 </ui-select-match>
                                 <ui-select-choices group-by="listGroupShows" repeat="show in (shows | filter: $select.search | orderBy)">
-                                    <img class="badge-round badge-md" ng-src="images/shows/{{show | imgName}}.jpg" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                                    <img class="badge-round badge-md" img-src="images/shows/{{show | imgName}}.jpg" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                                     <span ng-bind="show"></span>
                                 </ui-select-choices>
                             </ui-select>
@@ -158,7 +158,7 @@
                     <div class="col-md-offset-4 col-md-8">
                         <div class="button-list">
                             <button type="button" class="btn btn-default" ng-click="removeFilterShow(show)" ng-repeat="show in tableParams.options.filter.shows.filter | orderBy">
-                                <img class="badge-round badge-md" ng-src="images/shows/{{show | imgName}}.jpg" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                                <img class="badge-round badge-md" img-src="images/shows/{{show | imgName}}.jpg" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                                 <span ng-bind="show"></span>
                             </button>
                         </div>
@@ -174,7 +174,7 @@
                                     <span class="text-muted">Moderatoren..</span>
                                 </ui-select-match>
                                 <ui-select-choices repeat="host in (hosts | filter: $select.search | orderBy)">
-                                    <img class="badge-round badge-md" ng-src="images/hosts/{{host | imgName}}.jpg" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                                    <img class="badge-round badge-md" img-src="images/hosts/{{host | imgName}}.jpg" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                                     <span ng-bind="host"></span>
                                 </ui-select-choices>
                             </ui-select>
@@ -196,7 +196,7 @@
                     <div class="col-md-offset-4 col-md-8">
                         <div class="button-list">
                             <button type="button" class="btn btn-default" ng-click="removeFilterHost(host)" ng-repeat="host in tableParams.options.filter.hosts.filter | orderBy">
-                                <img class="badge-round badge-md" ng-src="images/hosts/{{host | imgName}}.jpg" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                                <img class="badge-round badge-md" img-src="images/hosts/{{host | imgName}}.jpg" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                                 <span ng-bind="host"></span>
                             </button>
                         </div>

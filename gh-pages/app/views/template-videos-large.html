@@ -13,14 +13,14 @@
                             </a>
                             <div class="hosts" ng-if="video.hosts.length">
                                 <span ng-repeat="host in video.hosts | orderBy">
-                                <a uib-tooltip="{{host}}" tooltip-class="badge-zoom-tooltip" tooltip-is-open="tooltipVisible" tooltip-append-to-body="true" ng-href="#/hosts?host={{host}}" link-disable="tooltipVisible">
+                                <a uib-tooltip="{{host}}" tooltip-class="badge-zoom-tooltip" tooltip-is-open="tooltipVisible" tooltip-append-to-body="true" ng-href="#/hosts?host={{host | escape}}" link-disable="tooltipVisible">
                                     <img class="badge-round badge-md badge-shadow" ng-class="{'badge-zoom': tooltipVisible}" img-src="images/hosts/{{host | imgName}}.jpg" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                                 </a>
                             </span>
                             </div>
                             <div class="shows" ng-if="video.shows.length">
                                 <span ng-repeat="show in video.shows | orderBy">
-                                <a uib-tooltip="{{show}}" tooltip-class="badge-zoom-tooltip" tooltip-is-open="tooltipVisible" tooltip-append-to-body="true" ng-href="#/shows?show={{show}}" link-disable="tooltipVisible">
+                                <a uib-tooltip="{{show}}" tooltip-class="badge-zoom-tooltip" tooltip-is-open="tooltipVisible" tooltip-append-to-body="true" ng-href="#/shows?show={{show | escape}}" link-disable="tooltipVisible">
                                     <img class="badge-round badge-md badge-shadow" ng-class="{'badge-zoom': tooltipVisible}" img-src="images/shows/{{show | imgName}}.jpg" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                                 </a>
                             </span>
