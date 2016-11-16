@@ -30,7 +30,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, $timeout, St
         $scope.model = StateSrv.load($location.path(), $scope.model);
 
         $scope.host = {
-            selected: $scope.getHost() || $scope.model.host || $scope.default.host
+            selected: null
         };
 
         $scope.$on('updateVideoData', function(event, args) {
@@ -40,16 +40,18 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, $timeout, St
         $scope.$watch('host.selected', function(newVal, oldVal) {
             var params = {};
 
-            if ($scope.host.selected) {
-                params.host = $scope.host.selected;
+            if (!$scope.host.selected) {
+                $location.replace();
             }
+
+            params.host = $scope.host.selected = $scope.host.selected || $scope.getHost();
 
             $location.search(params);
             $scope.update();
         });
 
         $scope.$on('$routeUpdate', function(event, route) {
-            $scope.host.selected = $scope.getHost() || $scope.model.host || $scope.default.host;
+            $scope.host.selected = $scope.getHost();
         });
 
         $timeout(function() {
@@ -72,7 +74,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, $timeout, St
             host = params.host;
         }
 
-        return host;
+        return host || $scope.model.host || $scope.default.host;
     };
 
     $scope.update = function() {
@@ -436,7 +438,7 @@ app.controller('HostsCtrl', function($scope, $rootScope, $location, $timeout, St
             type: 'bar',
             header: 'Monatliche durchschnittliche Video Views',
             width: '100%',
-            height: '500px',
+            height: '400px',
             legend: {
                 display: false
             },

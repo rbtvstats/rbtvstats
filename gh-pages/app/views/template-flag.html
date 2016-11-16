@@ -6,18 +6,19 @@
         <fieldset>
             <!-- Multiple Checkboxes -->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="checkboxes">Grund</label>
+                <label class="col-md-3 control-label" for="checkboxes">Grund</label>
                 <div class="col-md-7">
-                    <div class="checkbox" ng-repeat="reason in reasons">
+                    <div class="checkbox checkbox-primary" ng-repeat="reason in reasons">
+                        <input id="checkboxes-{{$index}}" type="checkbox" name="checkboxes" value="{{$index}}" class="styled" ng-model="reason.selected">
                         <label for="checkboxes-{{$index}}">
-                            <input id="checkboxes-{{$index}}" type="checkbox" name="checkboxes" value="{{$index}}" ng-model="reason.selected"> {{reason.title}}
+                            {{reason.title}}
                         </label>
                     </div>
                 </div>
             </div>
             <!-- Textarea -->
             <div class="form-group">
-                <label class="col-md-4 control-label" for="textarea">Beschreibung<br><small>(optional)</small></label>
+                <label class="col-md-3 control-label" for="textarea">Beschreibung <small>(optional)</small></label>
                 <div class="col-md-7">
                     <textarea class="form-control" id="textarea" name="textarea" ng-model="description"></textarea>
                 </div>

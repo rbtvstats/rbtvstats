@@ -273,7 +273,7 @@ app.controller('LiveCtrl', function($scope, $rootScope, $location, $timeout, Sta
                             type: 'line',
                             header: 'Live Views',
                             width: '100%',
-                            height: '430px',
+                            height: '400px',
                             legend: {
                                 display: false
                             },

@@ -19,7 +19,9 @@ var app = angular.module('rbtvstatsApp', [
     'duScroll',
     'daterangepicker',
     'angularMoment',
-    'uuid4'
+    'uuid4',
+    'frapontillo.bootstrap-switch',
+    'angular-md5'
 ]);
 
 app.config(function($routeProvider, ChartJsProvider, cfpLoadingBarProvider) {

@@ -31,11 +31,11 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, $timeout, St
         $scope.model = StateSrv.load($location.path(), $scope.model);
 
         $scope.show = {
-            selected: $scope.getShow() || $scope.model.show || $scope.default.show
+            selected: $scope.getShow()
         };
 
         $scope.series = {
-            selected: $scope.getSeries() || $scope.model.series
+            selected: $scope.getSeries()
         };
 
         $scope.$on('updateVideoData', function(event, args) {
@@ -43,14 +43,18 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, $timeout, St
         });
 
         $scope.$watchGroup(['show.selected', 'series.selected'], function(newVal, oldVal) {
-            var params = {};
+            var params = $location.search();
 
-            if ($scope.show.selected) {
-                params.show = $scope.show.selected;
+            if (!$scope.show.selected) {
+                $location.replace();
             }
 
+            params.show = $scope.show.selected = $scope.show.selected || $scope.getShow();
+
             if ($scope.series.selected) {
-                params.series = $scope.series.selected;
+                params.series = $scope.series.selected = $scope.series.selected || $scope.getSeries();
+            } else {
+                params.series = $scope.series.selected = null;
             }
 
             $location.search(params);
@@ -58,7 +62,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, $timeout, St
         });
 
         $scope.$on('$routeUpdate', function(event, route) {
-            $scope.show.selected = $scope.getShow() || $scope.model.show || $scope.default.show;
+            $scope.show.selected = $scope.getShow();
             $scope.series.selected = $scope.getSeries();
         });
 
@@ -82,7 +86,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, $timeout, St
             show = params.show;
         }
 
-        return show;
+        return show || $scope.model.show || $scope.default.show;
     };
 
     $scope.getSeries = function() {
@@ -93,7 +97,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, $timeout, St
             series = params.series;
         }
 
-        return series;
+        return series || $scope.model.series;
     };
 
     $scope.update = function() {
@@ -391,7 +395,7 @@ app.controller('ShowsCtrl', function($scope, $rootScope, $location, $timeout, St
             type: 'bar',
             header: 'Monatliche durchschnittliche Video Views',
             width: '100%',
-            height: '500px',
+            height: '400px',
             legend: {
                 display: false
             },

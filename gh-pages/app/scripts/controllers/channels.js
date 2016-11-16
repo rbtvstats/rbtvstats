@@ -323,7 +323,7 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, $timeout,
             type: 'bar',
             header: 'Monatliche durchschnittliche Video Views pro Kanal',
             width: '100%',
-            height: '500px',
+            height: '400px',
             legend: {
                 display: true
             },
@@ -490,7 +490,7 @@ app.controller('ChannelsCtrl', function($scope, $rootScope, $location, $timeout,
             type: 'bar',
             header: 'Monatliche positive Bewertungen in Prozent pro Kanal',
             width: '100%',
-            height: '500px',
+            height: '400px',
             legend: {
                 display: true
             },

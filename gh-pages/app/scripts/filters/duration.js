@@ -15,10 +15,10 @@ app.filter('duration', function() {
         var minutes = Math.floor(((seconds % 86400) % 3600) / 60);
         var seconds = Math.floor((((seconds % 86400) % 3600) % 60));
         var timeString = '';
-        if (days > 0) timeString += days + " T ";
-        if (hours > 0) timeString += hours + " h ";
-        if (minutes > 0) timeString += minutes + " m ";
-        if (seconds >= 0 && days == 0 && hours == 0) timeString += seconds + " s ";
+        if (days > 0) timeString += days + "T ";
+        if (hours > 0) timeString += hours + "h ";
+        if (minutes > 0) timeString += minutes + "m ";
+        if (seconds >= 0 && days == 0 && hours == 0) timeString += seconds + "s ";
         return timeString;
     }
 });

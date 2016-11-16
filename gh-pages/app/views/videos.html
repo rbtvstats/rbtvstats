@@ -1,8 +1,3 @@
 <div class="content max-width fade-animate" ng-if="initFinished">
-    <div class="panel panel-default fade-animate" ng-if="videos.length">
-        <div class="panel-heading"><strong>Videos</strong></div>
-        <div class="panel-body container-table">
-            <div params="model.tableParams" videos="videos"></div>
-        </div>
-    </div>
+    <div params="model.tableParams" videos="videos" ng-if="videos.length"></div>
 </div>

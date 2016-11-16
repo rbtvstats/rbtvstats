@@ -1,7 +1,7 @@
 <div class="content max-width fade-animate" ng-if="initFinished">
     <div class="chart panel panel-default">
         <div class="panel-heading"><strong>Live Views</strong></div>
-        <div class="panel-body" style="width:{{model.chart.options.width}}; height: 500px">
+        <div class="panel-body live-chart">
             <div class="live-header">
                 <a href="javascript:void(0);" date-range-picker class="date-picker" options="model.dateRangeOptions" ng-model="$parent.dateRange">
                     {{dateRange.startDate | amDateFormat:'DD. MMMM YYYY HH:mm'}} — {{dateRange.endDate | amDateFormat:'DD. MMMM YYYY HH:mm'}}
@@ -21,9 +21,13 @@
                     </tr>
                 </table>
             </div>
-            <canvas class="chart-base live-chart" chart-type="model.chart.options.type" chart-options="model.chart.options" chart-data="model.chart.data" chart-labels="model.chart.labels" chart-series="model.chart.series"></canvas>
-            <div class="update-chart" ng-hide="!updateChartState">
-                <i class="fa fa-refresh fa-spin fa-fw"></i>Lade Daten &amp; Aktualisiere Diagramm
+            <div class="scroll-wrapper">
+                <div class="scroll-container" style="height: 400px">
+                    <canvas class="chart-base" chart-type="model.chart.options.type" chart-options="model.chart.options" chart-data="model.chart.data" chart-labels="model.chart.labels" chart-series="model.chart.series"></canvas>
+                    <div class="update-chart" ng-hide="!updateChartState">
+                        <i class="fa fa-refresh fa-spin fa-fw"></i>Lade Daten &amp; Aktualisiere Diagramm
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -40,10 +44,5 @@
             </div>
         </div>
     </div>
-    <div class="panel panel-default" ng-if="!updateChartState && model.videos.length">
-        <div class="panel-heading"><strong>Videos</strong></div>
-        <div class="panel-body container-table">
-            <div params="model.tableParams" videos="model.videos"></div>
-        </div>
-    </div>
+    <div params="model.tableParams" videos="model.videos" ng-if="!updateChartState && model.videos.length"></div>
 </div>

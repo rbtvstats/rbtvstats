@@ -37,6 +37,10 @@ module.exports = function(config) {
       'bower_components/angular-moment/angular-moment.js',
       'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
       'bower_components/angular-uuid4/angular-uuid4.js',
+      'bower_components/i18n/i18n.js',
+      'bower_components/bootstrap-switch/dist/js/bootstrap-switch.js',
+      'bower_components/angular-bootstrap-switch/dist/angular-bootstrap-switch.js',
+      'bower_components/angular-md5/angular-md5.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

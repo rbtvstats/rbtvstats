@@ -4,14 +4,18 @@
             <div class="row">
                 <div class="col-md-3 form-group">
                     <label>Moderator</label>
-                    <ui-select ng-model="host.selected">
-                        <ui-select-match placeholder="Auswählen..">
-                            <span ng-bind="$select.selected"></span>
-                        </ui-select-match>
-                        <ui-select-choices repeat="item in (hosts | filter: $select.search | orderBy)">
-                            <span ng-bind="item"></span>
-                        </ui-select-choices>
-                    </ui-select>
+                    <div class="select-large">
+                        <ui-select ng-model="host.selected" skip-focusser="true">
+                            <ui-select-match placeholder="Auswählen..">
+                                <img class="badge-round badge-md" src="images/hosts/{{host.selected | imgName}}.jpg" img-src="images/hosts/{{host.selected | imgName}}.jpg" img-loading="{{imagePlaceholders.host}}" img-fallback="{{imagePlaceholders.host}}">
+                                <span ng-bind="host.selected"></span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="host in (hosts | filter: $select.search | orderBy)">
+                                <img class="badge-round badge-md" img-src="images/hosts/{{host | imgName}}.jpg" img-loading="{{imagePlaceholders.host}}" img-fallback="{{imagePlaceholders.host}}">
+                                <span ng-bind="host"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,16 +36,15 @@
                 </div>
                 <div class="chart panel panel-default" ng-repeat="chart in model.charts">
                     <div class="panel-heading"><strong>{{chart.options.header}}</strong></div>
-                    <div class="panel-body" style="width:{{chart.options.width}}; height: {{chart.options.height}}">
-                        <canvas class="chart-base" chart-type="chart.options.type" chart-options="chart.options" chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series"></canvas>
+                    <div class="panel-body">
+                        <div class="scroll-wrapper">
+                            <div class="scroll-container" style="height: {{chart.options.height}}">
+                                <canvas class="chart-base" chart-type="chart.options.type" chart-options="chart.options" chart-data="chart.data" chart-labels="chart.labels" chart-series="chart.series"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="panel panel-default" ng-if="model.videos.length">
-                    <div class="panel-heading"><strong>Videos</strong></div>
-                    <div class="panel-body container-table">
-                        <div params="model.tableParams" videos="model.videos"></div>
-                    </div>
-                </div>
+                <div params="model.tableParams" videos="model.videos" ng-if="model.videos.length"></div>
             </div>
         </div>
     </div>

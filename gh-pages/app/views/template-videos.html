@@ -1,23 +1,308 @@
-<table class="table table-striped" ng-table="tableParams" show-filter="true">
-    <tr ng-repeat="video in $data">
-        <td width="20"><a href="" title="Fehler melden" ng-click="openFlagDialog(video.id)"><i class="fa fa-flag"></i></a></td>
-        <td title="'Titel'" filter="{ title: 'text'}" data-sortable="'title'"><a target="_blank" href="https://www.youtube.com/watch?v={{video.id}}">{{video.title}}</a></td>
-        <td width="140" filter="{ hosts: 'text'}" title="'Personen'" data-sortable="'hosts'">
-            <span ng-repeat="host in video.hosts | orderBy">
-                <a ng-href="#/hosts?host={{host}}" ng-click="scrollTop()">{{host}}</a><span ng-if="$index < video.hosts.length - 1">,</span>
-            </span>
-        </td>
-        <td width="140" filter="{ shows: 'text'}" title="'Formate'" data-sortable="'shows'">
-            <span ng-repeat="show in video.shows | orderBy">
-                <a ng-href="#/shows?show={{show | escape}}" ng-click="scrollTop()">{{show}}</a><span ng-if="$index < video.shows.length - 1">,</span>
-            </span>
-        </td>
-        <td width="140" filter="{ channel: 'select'}" filter-data="getSelectFilter('channel')" title="'Kanal'" data-sortable="'channel'">{{video.channel}}</td>
-        <td width="80" title="'Laufzeit'" data-sortable="'length'">{{video.length | duration}}</td>
-        <td width="80" title="'Upload'" data-sortable="'published'">{{video.published | createDate | date:"dd.MM.yyyy"}}</td>
-        <td width="80" title="'Ausstrahlung'" data-sortable="'aired'"><a ng-href="#/live?from={{getLiveFrom(video)}}&to={{getLiveTo(video)}}">{{video.aired | createDate | date:"dd.MM.yyyy"}}</a></td>
-        <td width="60" title="'Views'" data-sortable="'stats.viewCount'">{{video.stats.viewCount}}</td>
-        <td width="60" title="'Likes'" data-sortable="'stats.likeCount'">{{video.stats.likeCount}}</td>
-        <td width="60" title="'Dislikes'" data-sortable="'stats.dislikeCount'">{{video.stats.dislikeCount}}</td>
-    </tr>
-</table>
+<div class="videos-body">
+    <!-- header -->
+    <div class="header">
+        <div class="left">
+            Zeige {{tableParams.total()}} von {{data.length}} Videos
+        </div>
+        <div class="right">
+            <a ng-href="https://www.youtube.com/watch_videos?video_ids={{getVideoIds()}}" target="_blank" role="button" class="btn btn-default" ng-if="tableParams.total() <= 50">
+                <i class="fa fa-play"></i>
+            </a>
+            <button type="button" class="btn btn-default" ng-click="tableParams.showOptions=!tableParams.showOptions">
+                <i class="fa fa-sliders"></i> Optionen
+            </button>
+        </div>
+    </div>
+    <!-- options -->
+    <div class="options">
+        <div class="form-horizontal container-fluid" uib-collapse="!tableParams.showOptions">
+            <fieldset class="row">
+                <legend>Darstellung</legend>
+                <!-- view -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="view">Ansicht</label>
+                    <div class="col-md-4">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default" uib-tooltip="{{view.name}}" tooltip-append-to-body="true" ng-click="tableParams.options.display.view = view" ng-class="{'active' : tableParams.options.display.view.value == view.value}" ng-repeat="view in displayViewOptions">
+                                <i class="fa {{view.icon}}"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- count -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="count">Einträge pro Seite</label>
+                    <div class="col-md-4">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default" ng-click="tableParams.options.display.count = count" ng-class="{'active' : tableParams.options.display.count == count}" ng-repeat="count in [10, 25, 50, 100]">
+                                {{count}}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="row">
+                <legend>Sortierung</legend>
+                <!-- column -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="orderBy">Nach</label>
+                    <div class="col-md-4">
+                        <ui-select ng-model="tableParams.options.order.column" skip-focusser="true" search-enabled="false">
+                            <ui-select-match placeholder="Auswählen..">
+                                <span ng-bind="$select.selected.name"></span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="item in orderByOptions">
+                                <span ng-bind="item.name"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <!-- type -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="orderType">Reihenfolge</label>
+                    <div class="col-md-4">
+                        <div class="radio radio-primary radio-inline">
+                            <input id="OrderType1" type="radio" value="asc" name="tableParams.options.order.type" ng-model="tableParams.options.order.type" ng-checked="tableParams.options.order.type === 'asc'">
+                            <label for="OrderType1">Aufsteigend</label>
+                        </div>
+                        <div class="radio radio-primary radio-inline">
+                            <input id="OrderType2" type="radio" value="desc" name="tableParams.options.order.type" ng-model="tableParams.options.order.type" ng-checked="tableParams.options.order.type === 'desc'">
+                            <label for="OrderType2">Absteigend</label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="row">
+                <legend>Filter</legend>
+                <!-- title-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="filterTitle">Titel</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input id="filterTitle" name="filterTitle" type="text" placeholder="Titel" class="form-control" ng-model="tableParams.options.filter.title.text">
+                            <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-disabled="!tableParams.options.filter.title.text" ng-click="tableParams.options.filter.title.text=null">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </span>
+                        </div>
+                        <div class="checkbox checkbox-inline checkbox-primary">
+                            <input id="filterTitleRegex" class="styled" type="checkbox" ng-model="tableParams.options.filter.title.regex">
+                            <label for="filterTitleRegex">
+                                Regex
+                            </label>
+                        </div>
+                        <div class="checkbox checkbox-inline checkbox-primary">
+                            <input id="filterTitleSensitive" class="styled" type="checkbox" ng-model="tableParams.options.filter.title.sensitive">
+                            <label for="filterTitleSensitive">
+                                Groß-/Kleinschreibung
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- channels-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="filterChannels">Kanäle</label>
+                    <div class="col-md-4">
+                        <ui-select ng-model="channel.selected" on-select="addFilterChannel(channel.selected)">
+                            <ui-select-match placeholder="Kanäle..">
+                                <span class="text-muted">Kanäle..</span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="channel in (channels | filter: $select.search | orderBy)">
+                                <img class="badge-round badge-md" ng-src="images/channels/{{channel | imgName}}.jpg" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
+                                <span ng-bind="channel"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <!-- channel list -->
+                <div class="form-group" ng-if="tableParams.options.filter.channels.filter.length">
+                    <div class="col-md-offset-4 col-md-8">
+                        <div class="button-list">
+                            <button type="button" class="btn btn-default" ng-click="removeFilterChannel(channel)" ng-repeat="channel in tableParams.options.filter.channels.filter | orderBy">
+                                <img class="badge-round badge-md" ng-src="images/channels/{{channel | imgName}}.jpg" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
+                                <span ng-bind="channel"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- shows-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="filterShows">Formate</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <ui-select ng-model="show.selected" skip-focusser="true" on-select="addFilterShow(show.selected)">
+                                <ui-select-match placeholder="Formate..">
+                                    <span class="text-muted">Formate..</span>
+                                </ui-select-match>
+                                <ui-select-choices group-by="listGroupShows" repeat="show in (shows | filter: $select.search | orderBy)">
+                                    <img class="badge-round badge-md" ng-src="images/shows/{{show | imgName}}.jpg" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                                    <span ng-bind="show"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <div class="input-group-btn align-left">
+                                <ui-select ng-model="tableParams.options.filter.shows.match" skip-focusser="true" search-enabled="false">
+                                    <ui-select-match placeholder="Verknüpfung..">
+                                        <span ng-bind="$select.selected.name"></span>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="item in filterMatchOptions">
+                                        <span ng-bind="item.name"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- show list -->
+                <div class="form-group" ng-if="tableParams.options.filter.shows.filter.length">
+                    <div class="col-md-offset-4 col-md-8">
+                        <div class="button-list">
+                            <button type="button" class="btn btn-default" ng-click="removeFilterShow(show)" ng-repeat="show in tableParams.options.filter.shows.filter | orderBy">
+                                <img class="badge-round badge-md" ng-src="images/shows/{{show | imgName}}.jpg" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                                <span ng-bind="show"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- hosts-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="filterHosts">Moderatoren</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <ui-select ng-model="host.selected" skip-focusser="true" on-select="addFilterHost(host.selected)">
+                                <ui-select-match placeholder="Moderatoren..">
+                                    <span class="text-muted">Moderatoren..</span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="host in (hosts | filter: $select.search | orderBy)">
+                                    <img class="badge-round badge-md" ng-src="images/hosts/{{host | imgName}}.jpg" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                                    <span ng-bind="host"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <div class="input-group-btn align-left">
+                                <ui-select ng-model="tableParams.options.filter.hosts.match" skip-focusser="true" search-enabled="false">
+                                    <ui-select-match placeholder="Verknüpfung..">
+                                        <span ng-bind="$select.selected.name"></span>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="item in filterMatchOptions">
+                                        <span ng-bind="item.name"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- hosts list -->
+                <div class="form-group" ng-if="tableParams.options.filter.hosts.filter.length">
+                    <div class="col-md-offset-4 col-md-8">
+                        <div class="button-list">
+                            <button type="button" class="btn btn-default" ng-click="removeFilterHost(host)" ng-repeat="host in tableParams.options.filter.hosts.filter | orderBy">
+                                <img class="badge-round badge-md" ng-src="images/hosts/{{host | imgName}}.jpg" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                                <span ng-bind="host"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- length -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="filterLength">Laufzeit</label>
+                    <div class="col-md-4 datetime-picker">
+                        <div class="input-group">
+                            <div uib-timepicker ng-model="tableParams.options.filter.length.start" hour-step="1" minute-step="5" show-spinners="false" show-meridian="false"></div>
+                            <span class="input-group-btn">
+                        <button class="btn btn-default clear" ng-click="tableParams.options.filter.length.start=0" ng-disabled="!tableParams.options.filter.length.start">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </span>
+                        </div>
+                        <div class="input-group">
+                            <div uib-timepicker ng-model="tableParams.options.filter.length.end" hour-step="1" minute-step="5" show-spinners="false" show-meridian="false"></div>
+                            <span class="input-group-btn">
+                        <button class="btn btn-default clear" ng-click="tableParams.options.filter.length.end=0" ng-disabled="!tableParams.options.filter.length.end">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </span>
+                        </div>
+                    </div>
+                </div>
+                <!-- published -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="filterPublished">Veröffentlichung</label>
+                    <div class="col-md-4 datetime-picker">
+                        <div class="input-group">
+                            <input type="text" placeholder="Von" class="form-control date" ng-model="tableParams.options.filter.published.start" options="filterPublishedOptions" date-range-picker>
+                            <span class="input-group-btn">
+                        <button class="btn btn-default clear" ng-click="tableParams.options.filter.published.start=0" ng-disabled="!tableParams.options.filter.published.start">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </span>
+                        </div>
+                        <div class="input-group">
+                            <input type="text" placeholder="Bis" class="form-control date" ng-model="tableParams.options.filter.published.end" options="filterPublishedOptions" date-range-picker>
+                            <span class="input-group-btn">
+                        <button class="btn btn-default clear" ng-click="tableParams.options.filter.published.end=0" ng-disabled="!tableParams.options.filter.published.end">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </span>
+                        </div>
+                    </div>
+                </div>
+                <!-- events -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="filterEvent">Event</label>
+                    <div class="col-md-4">
+                        <div class="radio radio-primary radio-inline">
+                            <input id="filterEvent0" type="radio" value="0" name="filterEvent" ng-model="tableParams.options.filter.event" ng-checked="tableParams.options.filter.event === 0">
+                            <label for="filterEvent0">Alle</label>
+                        </div>
+                        <div class="radio radio-primary radio-inline">
+                            <input id="filterEvent1" type="radio" value="1" name="filterEvent" ng-model="tableParams.options.filter.event" ng-checked="tableParams.options.filter.event === 1">
+                            <label for="filterEvent1">Ja</label>
+                        </div>
+                        <div class="radio radio-primary radio-inline">
+                            <input id="filterEvent2" type="radio" value="2" name="filterEvent" ng-model="tableParams.options.filter.event" ng-checked="tableParams.options.filter.event === 2">
+                            <label for="filterEvent2">Nein</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- other videos -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="filterOther">Sonstige Videos</label>
+                    <div class="col-md-4">
+                        <div class="radio radio-primary radio-inline">
+                            <input id="filterOther0" type="radio" value="0" name="filterOther" ng-model="tableParams.options.filter.other" ng-checked="tableParams.options.filter.other === 0">
+                            <label for="filterOther0">Alle</label>
+                        </div>
+                        <div class="radio radio-primary radio-inline">
+                            <input id="filterOther1" type="radio" value="1" name="filterOther" ng-model="tableParams.options.filter.other" ng-checked="tableParams.options.filter.other === 1">
+                            <label for="filterOther1">Ja</label>
+                        </div>
+                        <div class="radio radio-primary radio-inline">
+                            <input id="filterOther2" type="radio" value="2" name="filterOther" ng-model="tableParams.options.filter.other" ng-checked="tableParams.options.filter.other === 2">
+                            <label for="filterOther2">Nein</label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-4 col-md-offset-4">
+                        <button class="btn btn-primary" ng-click="update();">Anwenden</button>
+                        <button class="btn btn-default" ng-click="resetOptions(); update();">Zurücksetzen</button>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!-- views -->
+    <div class="views">
+        <!-- view: list-->
+        <div class="fade-animate view-list" ng-if="tableParams.options.display.view.value == displayViewOptions[0].value">
+            <div ng-include="'views/template-videos-list.html'"></div>
+        </div>
+        <!-- view: large-->
+        <div class="fade-animate view-large" ng-if="tableParams.options.display.view.value == displayViewOptions[1].value">
+            <div ng-include="'views/template-videos-large.html'"></div>
+        </div>
+    </div>
+</div>
