@@ -1,0 +1,29 @@
+<div class="form-group image-input">
+    <label class="col-md-2 control-label" for="image">Bild<span class="key-name">image</span></label>
+    <div class="col-md-4">
+        <table class="table-image">
+            <tr>
+                <td class="left">
+                    <img ng-src="{{image || 'http://placehold.it/100'}}">
+                    <canvas id="imageCanvas" width="100" height="100" class="hide"></canvas>
+                </td>
+                <td class="right">
+                    <div class="input-group">
+                        <input id="image" name="image" type="text" class="form-control input-md" ng-model="image">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="convertImageUrl(image)">
+                                <i class="fa fa-fw fa-picture-o"></i>
+                            </button>
+                        </span>
+                    </div>
+                    <div class="input-group margin-top">
+                        <label class="btn btn-default btn-file">
+                            <i class="fa fa-folder-o"></i> Öffnen..
+                            <input type="file" name="test" onchange="angular.element(this).scope().changedImageSelection(this.files[0])">
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

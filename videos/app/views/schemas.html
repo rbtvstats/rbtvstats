@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <div class="row group-header">
+        <div class="col-md-12">
+            <label>Schemas</label>
+        </div>
+        <div class="col-md-4">
+            <ui-select class="ui-select-rounded" ng-model="dataServiceSelected.id" skip-focusser="true" select="dataService">
+                <ui-select-match placeholder="Auswählen..">
+                    <span ng-bind="$select.selected.service.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="dataService.id as dataService in (dataServices | filter: $select.search | orderBy) track by $index">
+                    <span ng-bind="dataService.service.name"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-8 text-right">
+            <button class="btn btn-default" type="button" ng-click="reset(dataService)" ng-if="dataService">
+                <i class="fa fa-repeat"></i> Zurücksetzen
+            </button>
+        </div>
+    </div>
+    <div class="row" ng-hide="!dataService">
+        <div class="col-md-12">
+            <div json-editor="dataService.service.schema"></div>
+        </div>
+    </div>
+</div>

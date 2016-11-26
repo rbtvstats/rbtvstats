@@ -1,0 +1,123 @@
+<div class="metadata">
+    <div class="metadata-header">
+        <div class="float-left">
+            <button class="btn btn-default" type="button" uib-tooltip="Schließen" tooltip-append-to-body="true" ng-click="hideMetadata()">
+                <i class="fa fa-fw fa-close"></i>
+            </button>
+            <button class="btn btn-default" type="button" uib-tooltip="Auto" tooltip-append-to-body="true" ng-click="autoAll(video)">
+                <i class="fa fa-fw fa-magic"></i>
+            </button>
+            <button class="btn btn-default" type="button" uib-tooltip="Ansicht: Formular" tooltip-append-to-body="true" ng-click="active=0" ng-class="{'active': active === 0}">
+                <i class="fa fa-fw fa-bars"></i>
+            </button>
+            <button class="btn btn-default" type="button" uib-tooltip="Ansicht: Editor" tooltip-append-to-body="true" ng-click="active=1" ng-class="{'active': active === 1}">
+                <i class="fa fa-fw fa-code"></i>
+            </button>
+        </div>
+        <div class="float-right">
+            <div class="text-right">
+                <button class="btn btn-default btn-circle" type="button" ng-class="valid ? 'btn-success': 'btn-danger'" uib-tooltip="Schema Validation" tooltip-append-to-body="true">
+                    <i class="fa fa-fw" ng-class="valid ? 'fa-check': 'fa-times'"></i>
+                </button>
+                <button class="btn btn-danger" type="button" ng-click="remove(video)">
+                    <i class="fa fa-trash"></i> Löschen
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="metadata-content">
+        <uib-tabset active="active">
+            <uib-tab index="0" heading="Formular">
+                <div class="view-form">
+                    <!-- shows -->
+                    <div class="form-group">
+                        <label class="control-label">Formate</label>
+                        <div class="input-group">
+                            <ui-select ng-model="show.selected" on-select="addShow(video, show.selected)">
+                                <ui-select-match placeholder="Auswählen..">
+                                    <span>Auswählen..</span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="show in (shows | filter: $select.search)">
+                                    <img class="badge-round badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                                    <span ng-bind="show.name"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="autoShows(video)">
+                                    <i class="fa fa-magic"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="video.shows.length">
+                        <div class="button-list">
+                            <button type="button" class="btn btn-default" uib-tooltip="{{show.name || show.id}}" tooltip-append-to-body="true" ng-click="removeShow(video, show)" ng-repeat="show in (video.shows | resolveReferences:'shows' | orderBy)">
+                                <span ng-bind="show.name"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- hosts -->
+                    <div class="form-group">
+                        <label class="control-label">Moderatoren</label>
+                        <div class="input-group">
+                            <ui-select ng-model="host.selected" on-select="addHost(video, host.selected)">
+                                <ui-select-match placeholder="Auswählen..">
+                                    <span>Auswählen..</span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="host in (hosts | filter: $select.search)">
+                                    <img class="badge-round badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                                    <span>{{host.firstname}} {{host.lastname}}</span>
+                                    <span ng-if="host.nickname">({{host.nickname}})</span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="autoHosts(video)">
+                                    <i class="fa fa-magic"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="video.hosts.length">
+                        <div class="button-list">
+                            <button type="button" class="btn btn-default" uib-tooltip="{{host.firstname}} {{host.lastname}}" tooltip-append-to-body="true" ng-click="removeHost(video, host)" ng-repeat="host in (video.hosts | resolveReferences:'hosts' | orderBy)">
+                                <span>{{host.firstname}} {{host.lastname}}</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- series -->
+                    <div class="form-group">
+                        <label class="control-label">Serien</label>
+                        <div class="input-group">
+                            <ui-select ng-model="series_.selected" on-select="addSeries(video, series_.selected)">
+                                <ui-select-match placeholder="Auswählen..">
+                                    <span>Auswählen..</span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="series in (series | filter: $select.search)">
+                                    <img class="badge-round badge-md" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
+                                    <span ng-bind="series.name"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="autoSeries(video)">
+                                    <i class="fa fa-magic"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-if="video.series.length">
+                        <div class="button-list">
+                            <button type="button" class="btn btn-default" uib-tooltip="{{series.name || series.id}}" tooltip-append-to-body="true" ng-click="removeSeries(video, series)" ng-repeat="series in (video.series | resolveReferences:'series' | orderBy)">
+                                <span ng-bind="series.name"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+            <uib-tab index="1" heading="Editor">
+                <div class="view-editor">
+                    <div json-editor="video" editor-only="true"></div>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+    </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="container-fluid">
+    <div class="row group-header">
+        <div class="col-md-12">
+            <label>Moderatoren</label>
+        </div>
+        <div class="col-md-4">
+            <ui-select class="ui-select-rounded" ng-model="hostSelected.id" skip-focusser="true" select="host">
+                <ui-select-match placeholder="Auswählen..">
+                    <span>{{$select.selected.firstname}} {{$select.selected.lastname}}</span>
+                    <span ng-if="$select.selected.nickname">({{$select.selected.nickname}})</span>
+                </ui-select-match>
+                <ui-select-choices repeat="host.id as host in (hosts | filter: $select.search | orderBy) track by $index">
+                    <span>{{host.firstname}} {{host.lastname}}</span>
+                    <span ng-if="host.nickname">({{host.nickname}})</span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="col-md-8 text-right">
+            <button class="btn btn-default btn-circle" type="button" ng-class="valid ? 'btn-success': 'btn-danger'" uib-tooltip="Schema Validation" ng-if="host">
+                <i class="fa fa-fw" ng-class="valid ? 'fa-check': 'fa-times'"></i>
+            </button>
+            <button class="btn btn-default" type="button" ng-click="add()">
+                <i class="fa fa-plus"></i> Hinzufügen
+            </button>
+            <button class="btn btn-danger" type="button" ng-click="remove(host)" ng-if="host">
+                <i class="fa fa-trash"></i> Löschen
+            </button>
+        </div>
+    </div>
+    <div class="row" ng-hide="!host">
+        <div class="col-md-12">
+            <uib-tabset active="active">
+                <uib-tab index="0" heading="Formular">
+                    <div ng-include="'views/template-edit-host.html'"></div>
+                </uib-tab>
+                <uib-tab index="1" heading="Editor">
+                    <div json-editor="host"></div>
+                </uib-tab>
+            </uib-tabset>
+        </div>
+    </div>
+</div>
