@@ -1,6 +1,6 @@
 import pandas as pd
 import datetime
-import json
+import simplejson as json
 import os
 
 def load(dir):
@@ -15,6 +15,7 @@ def load(dir):
             
             #read file
             openfile = open(filepath)
+            print(filepath)
             dataJson = json.load(openfile)
             openfile.close()
             
