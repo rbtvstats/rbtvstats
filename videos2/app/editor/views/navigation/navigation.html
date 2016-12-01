@@ -1,0 +1,28 @@
+<nav class="navbar navbar-inverse navbar-custom">
+    <div class="container-fluid max-width">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/editor/">RBTV Statistiken</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li ng-class="{ active: isActive('/editor/channels/')}"><a href="#/editor/channels/" data-toggle="collapse" data-target=".navbar-collapse.in">Kanäle</a></li>
+                <li ng-class="{ active: isActive('/editor/shows/')}"><a href="#/editor/shows/" data-toggle="collapse" data-target=".navbar-collapse.in">Formate</a></li>
+                <li ng-class="{ active: isActive('/editor/hosts/')}"><a href="#/editor/hosts/" data-toggle="collapse" data-target=".navbar-collapse.in">Moderatoren</a></li>
+                <li ng-class="{ active: isActive('/editor/series/')}"><a href="#/editor/series/" data-toggle="collapse" data-target=".navbar-collapse.in">Serien</a></li>
+                <li ng-class="{ active: isActive('/editor/videos/')}"><a href="#/editor/videos/" data-toggle="collapse" data-target=".navbar-collapse.in">Videos</a></li>
+                <li ng-class="{ active: isActive('/editor/export/')}"><a href="#/editor/export/" data-toggle="collapse" data-target=".navbar-collapse.in">Export</a></li>
+                <li ng-class="{ active: isActive('/editor/config/')}"><a href="#/editor/config/" data-toggle="collapse" data-target=".navbar-collapse.in">Einstellungen</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="navbar-text">
+                    <i class="fa fa-circle save-indicator" ng-class="debounceCount > 0 ? 'unsaved' : 'saved'"></i>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

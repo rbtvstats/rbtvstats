@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html ng-app="videoCrawler">
+
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link href="app.less" type="text/css" rel="stylesheet/less">
+</head>
+
+<body>
+    <!-- Livereload script for development only (stripped during dist build) -->
+    <script src="http://localhost:35729/livereload.js" data-concat="false"></script>
+    <!-- JS from Bower Components -->
+    <script src="bower_components/less.js/dist/less.js" data-concat="false"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/lodash/dist/lodash.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/moment/locale/de.js"></script>
+    <script src="bower_components/angular-moment/angular-moment.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+    <script src="bower_components/angular-uuid4/angular-uuid4.js"></script>
+    <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
+    <script src="bower_components/angular-ui-select/dist/select.js"></script>
+    <script src="bower_components/jsoneditor/dist/jsoneditor.min.js"></script>
+    <script src="bower_components/ng-jsoneditor/ng-jsoneditor.min.js"></script>
+    <script src="bower_components/ng-table/dist/ng-table.js"></script>
+    <script src="bower_components/angular-youtube-mb/dist/angular-youtube-embed.min.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- Add New Bower Component JS Above -->
+    <!-- Main App JS -->
+    <script src="app.js"></script>
+    <!-- app -->
+    <script src="app/app.js"></script>
+    <!-- app.common -->
+    <script src="app/common/app.common.js"></script>
+    <script src="app/common/debounce/debounce.js"></script>
+    <script src="app/common/config/config.js"></script>
+    <script src="app/common/state/state.js"></script>
+    <script src="app/common/duration/duration.js"></script>
+    <script src="app/common/img-src/img-src.js"></script>
+    <!-- app.data -->
+    <script src="app/data/app.data.js"></script>
+    <!-- app.data.video -->
+    <script src="app/data/videos/app.data.videos.js"></script>
+    <script src="app/data/videos/base/base.js"></script>
+    <script src="app/data/videos/backend/youtube-api/youtube-api.js"></script>
+    <script src="app/data/videos/videos-resolve/videos-resolve.js"></script>
+    <script src="app/data/videos/models/channels/channels.js"></script>
+    <script src="app/data/videos/models/videos/videos.js"></script>
+    <script src="app/data/videos/models/hosts/hosts.js"></script>
+    <script src="app/data/videos/models/shows/shows.js"></script>
+    <script src="app/data/videos/models/series/series.js"></script>
+    <!-- app.editor -->
+    <script src="app/editor/app.editor.js"></script>
+    <script src="app/editor/views/navigation/navigation.js"></script>
+    <script src="app/editor/views/config/config.js"></script>
+    <script src="app/editor/views/export/export.js"></script>
+    <script src="app/editor/views/channels/channels.js"></script>
+    <script src="app/editor/views/channels/channels-all/channels-all.js"></script>
+    <script src="app/editor/views/channels/channels-one/channels-one.js"></script>
+    <script src="app/editor/views/videos/videos.js"></script>
+    <script src="app/editor/views/videos/videos-all/videos-all.js"></script>
+    <script src="app/editor/views/videos/videos-all/videos-options/videos-options.js"></script>
+    <script src="app/editor/views/videos/videos-all/videos-edit/videos-edit.js"></script>
+    <script src="app/editor/views/videos/videos-one/videos-one.js"></script>
+    <!-- app.editor.utils -->
+    <script src="app/editor/utils/app.editor.utils.js"></script>
+    <script src="app/editor/utils/img-input/img-input.js"></script>
+    <script src="app/editor/utils/json-editor/json-editor.js"></script>
+    <!-- Add New Component JS Above -->
+    <div ui-view></div>
+</body>
+
+</html>

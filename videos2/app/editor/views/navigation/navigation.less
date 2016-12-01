@@ -1,0 +1,45 @@
+.navbar-custom {
+    background-color: #3d4a57;
+    border-color: #333333;
+    .box-shadow-level(1);
+    .border-radius(0);
+    .navbar-header {
+        .navbar-brand {
+            color: #fbfbfb !important;
+        }
+    }
+    .navbar-nav {
+        a {
+            color: #fbfbfb !important;
+        }
+        > .active > a {
+            background-color: #465563 !important;
+        }
+        > .active > a:hover {
+            background-color: #465563 !important;
+        }
+        > li > a:hover {
+            background-color: #465563 !important;
+        }
+    }
+    .navbar-collapse {
+        border: 0;
+    }
+}
+
+.save-indicator {
+    position: fixed;
+    color: rgba(100, 255, 100, 0.8);
+    z-index: 9999;
+}
+
+.save-indicator.saved {
+    .transition(opacity 5s ease-in-out, color 500ms ease-in-out;
+    );
+    opacity: 0;
+}
+
+.save-indicator.unsaved {
+    color: rgba(255, 100, 100, 0.8);
+    opacity: 1;
+}
