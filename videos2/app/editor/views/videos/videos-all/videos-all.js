@@ -1,4 +1,4 @@
-angular.module('app.editor').controller('VideosAllCtrl', function($scope, $filter, $q, NgTableParams, StateSrv, YoutubeApiSrv, VideosFilterSrv, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+angular.module('app.editor').controller('VideosAllCtrl', function($scope, $timeout, $filter, $q, NgTableParams, Notification, StateSrv, YoutubeApiSrv, VideosFilterSrv, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
     $scope.init = function() {
         $scope.videos = VideosSrv.all();
         $scope.channels = ChannelsSrv.all();
@@ -50,6 +50,8 @@ angular.module('app.editor').controller('VideosAllCtrl', function($scope, $filte
         });
 
         StateSrv.watch($scope, ['tableOptions']);
+
+        $scope.initialized = true;
     };
 
     function YTDurationToSeconds(duration) {
@@ -216,7 +218,12 @@ angular.module('app.editor').controller('VideosAllCtrl', function($scope, $filte
 
             })
             .catch(function(err) {
-                console.error('error:', err);
+                Notification.error(Notification.parseError({
+                    title: 'Fehler beim Abrufen der Video Liste',
+                    err: err,
+                    errPath: 'data.error.message',
+                    delay: null
+                }));
             })
             .finally(function() {
                 $scope.updateState.active = false;
@@ -241,7 +248,12 @@ angular.module('app.editor').controller('VideosAllCtrl', function($scope, $filte
 
             })
             .catch(function(err) {
-                console.error('error:', err);
+                Notification.error(Notification.parseError({
+                    title: 'Fehler beim Abrufen der Video Details',
+                    err: err,
+                    errPath: 'data.error.message',
+                    delay: null
+                }));
             })
             .finally(function() {
                 $scope.updateState.active = false;
@@ -279,8 +291,6 @@ angular.module('app.editor').controller('VideosAllCtrl', function($scope, $filte
     };
 
     $scope.updateVideosAllUntil = function(date) {
-        console.log(typeof(date), date)
-
         function until(channel) {
             return date;
         };
@@ -314,5 +324,5 @@ angular.module('app.editor').controller('VideosAllCtrl', function($scope, $filte
         $scope.tableParams.reload();
     };
 
-    $scope.init();
+    $timeout($scope.init, 50);
 });

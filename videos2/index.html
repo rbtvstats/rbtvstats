@@ -8,7 +8,7 @@
     <link href="app.less" type="text/css" rel="stylesheet/less">
 </head>
 
-<body>
+<body ng-cloak>
     <!-- Livereload script for development only (stripped during dist build) -->
     <script src="http://localhost:35729/livereload.js" data-concat="false"></script>
     <!-- JS from Bower Components -->
@@ -32,7 +32,14 @@
     <script src="bower_components/jsoneditor/dist/jsoneditor.min.js"></script>
     <script src="bower_components/ng-jsoneditor/ng-jsoneditor.min.js"></script>
     <script src="bower_components/ng-table/dist/ng-table.js"></script>
+    <script src="bower_components/angular-md5/angular-md5.js"></script>
+    <script src="bower_components/url-join/lib/url-join.js"></script>
     <script src="bower_components/angular-youtube-mb/dist/angular-youtube-embed.min.js"></script>
+    <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+    <script src="bower_components/angular-ui-notification/dist/angular-ui-notification.js"></script>
+    <script src="bower_components/file-saver/FileSaver.js"></script>
+    <script src="bower_components/jszip/dist/jszip.js"></script>
+    <script src="bower_components/localforage/dist/localforage.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
     <!-- Add New Bower Component JS Above -->
     <!-- Main App JS -->
@@ -41,7 +48,6 @@
     <script src="app/app.js"></script>
     <!-- app.common -->
     <script src="app/common/app.common.js"></script>
-    <script src="app/common/debounce/debounce.js"></script>
     <script src="app/common/config/config.js"></script>
     <script src="app/common/state/state.js"></script>
     <script src="app/common/duration/duration.js"></script>
@@ -52,6 +58,7 @@
     <script src="app/data/videos/app.data.videos.js"></script>
     <script src="app/data/videos/base/base.js"></script>
     <script src="app/data/videos/backend/youtube-api/youtube-api.js"></script>
+    <script src="app/data/videos/backend/github-api/github-api.js"></script>
     <script src="app/data/videos/videos-resolve/videos-resolve.js"></script>
     <script src="app/data/videos/models/channels/channels.js"></script>
     <script src="app/data/videos/models/videos/videos.js"></script>
@@ -62,7 +69,7 @@
     <script src="app/editor/app.editor.js"></script>
     <script src="app/editor/views/navigation/navigation.js"></script>
     <script src="app/editor/views/config/config.js"></script>
-    <script src="app/editor/views/export/export.js"></script>
+    <script src="app/editor/views/data/data.js"></script>
     <script src="app/editor/views/channels/channels.js"></script>
     <script src="app/editor/views/channels/channels-all/channels-all.js"></script>
     <script src="app/editor/views/channels/channels-one/channels-one.js"></script>

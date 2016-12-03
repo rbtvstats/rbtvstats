@@ -6,9 +6,8 @@ angular.module('app.editor', ['ui.bootstrap',
     'app.editor.utils',
     'ngTable',
     'ui.select',
-    'daterangepicker',
-    'ng.jsoneditor',
-    'youtube-embed'
+    'youtube-embed',
+    'angular-md5'
 ]);
 
 angular.module('app.editor').config(function($stateProvider, $urlRouterProvider) {

@@ -1,4 +1,4 @@
-angular.module('app.editor').controller('ChannelsAllCtrl', function($scope, $state, NgTableParams, ChannelsSrv) {
+angular.module('app.editor').controller('ChannelsAllCtrl', function($scope, $timeout, $state, NgTableParams, ChannelsSrv) {
     $scope.init = function() {
         $scope.channels = ChannelsSrv.all();
         $scope.tableParams = new NgTableParams({
@@ -10,6 +10,8 @@ angular.module('app.editor').controller('ChannelsAllCtrl', function($scope, $sta
             dataset: $scope.channels,
             counts: []
         });
+
+        $scope.initialized = true;
     };
 
     $scope.details = function(channel) {
@@ -32,7 +34,7 @@ angular.module('app.editor').controller('ChannelsAllCtrl', function($scope, $sta
         $scope.tableParams.reload();
     };
 
-    $scope.init();
+    $timeout($scope.init, 50);
 });
 angular.module('app.editor').directive('includeReplace', function() {
     return {

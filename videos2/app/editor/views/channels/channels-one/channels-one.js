@@ -1,17 +1,19 @@
-angular.module('app.editor').controller('ChannelsOneCtrl', function($scope, $state, $stateParams, YoutubeApiSrv, ChannelsSrv) {
+angular.module('app.editor').controller('ChannelsOneCtrl', function($scope, $timeout, $state, $stateParams, Notification, YoutubeApiSrv, ChannelsSrv) {
     $scope.init = function() {
         $scope.channel = ChannelsSrv.findById($stateParams.channelId);
 
         $scope.$watch('channel', function(newVal, oldVal) {
             $scope.valid = ChannelsSrv.isValid($scope.channel);
 
-            ChannelsSrv.saveDelayed();
+            ChannelsSrv.save();
         }, true);
+
+        $scope.initialized = true;
     };
 
     $scope.delete = function(channel) {
         ChannelsSrv.delete(({ id: channel.id }));
-        ChannelsSrv.saveDelayed();
+        ChannelsSrv.save();
         $state.transitionTo('editor.channels.all');
     };
 
@@ -29,13 +31,19 @@ angular.module('app.editor').controller('ChannelsOneCtrl', function($scope, $sta
                     channel.title = snippet.title;
                     channel.image = snippet.thumbnails.medium.url;
                 }
-
-                $scope.loadingMetadata = false;
             })
             .catch(function(err) {
+                Notification.error(Notification.parseError({
+                    title: 'Fehler beim Abrufen der Kanal Informationen',
+                    err: err,
+                    errPath: 'data.error.message',
+                    delay: null
+                }));
+            })
+            .finally(function() {
                 $scope.loadingMetadata = false;
-            });
+            })
     };
 
-    $scope.init();
+    $timeout($scope.init, 50);
 });

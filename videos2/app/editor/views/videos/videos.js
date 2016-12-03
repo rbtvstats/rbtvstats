@@ -37,7 +37,7 @@ angular.module('app.editor').controller('VideosCtrl', function($scope, VideosSrv
             angular.copy($scope.clipboard.shows, video.shows);
             angular.copy($scope.clipboard.hosts, video.hosts);
             angular.copy($scope.clipboard.series, video.series);
-            VideosSrv.saveDelayed();
+            VideosSrv.save();
         }
     };
 
@@ -107,42 +107,42 @@ angular.module('app.editor').controller('VideosCtrl', function($scope, VideosSrv
 
     $scope.delete = function(video) {
         VideosSrv.delete({ id: video.id });
-        VideosSrv.saveDelayed();
+        VideosSrv.save();
     };
 
     $scope.addShow = function(video, shows) {
         VideosSrv.addShow(video, shows);
-        VideosSrv.saveDelayed();
+        VideosSrv.save();
         $scope.videoChanged(video);
     };
 
     $scope.removeShow = function(video, shows) {
         VideosSrv.removeShow(video, shows);
-        VideosSrv.saveDelayed();
+        VideosSrv.save();
         $scope.videoChanged(video);
     };
 
     $scope.addHost = function(video, hosts) {
         VideosSrv.addHost(video, hosts);
-        VideosSrv.saveDelayed();
+        VideosSrv.save();
         $scope.videoChanged(video);
     };
 
     $scope.removeHost = function(video, hosts) {
         VideosSrv.removeHost(video, hosts);
-        VideosSrv.saveDelayed();
+        VideosSrv.save();
         $scope.videoChanged(video);
     };
 
     $scope.addSeries = function(video, series) {
         VideosSrv.addSeries(video, series);
-        VideosSrv.saveDelayed();
+        VideosSrv.save();
         $scope.videoChanged(video);
     };
 
     $scope.removeSeries = function(video, series) {
         VideosSrv.removeSeries(video, series);
-        VideosSrv.saveDelayed();
+        VideosSrv.save();
         $scope.videoChanged(video);
     };
 });

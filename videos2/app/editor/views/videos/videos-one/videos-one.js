@@ -1,4 +1,4 @@
-angular.module('app.editor').controller('VideosOneCtrl', function($scope, $state, $stateParams, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+angular.module('app.editor').controller('VideosOneCtrl', function($scope, $timeout, $state, $stateParams, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
     $scope.init = function() {
         $scope.video = VideosSrv.findById($stateParams.videoId);
         $scope.videos = VideosSrv.all();
@@ -10,16 +10,18 @@ angular.module('app.editor').controller('VideosOneCtrl', function($scope, $state
         $scope.$watch('video', function(newVal, oldVal) {
             $scope.valid = VideosSrv.isValid($scope.video);
 
-            VideosSrv.saveDelayed();
+            VideosSrv.save();
             $scope.videoChanged($scope.video);
         }, true);
+
+        $scope.initialized = true;
     };
 
     $scope.delete = function(video) {
         VideosSrv.delete({ id: video.id });
-        VideosSrv.saveDelayed();
+        VideosSrv.save();
         $state.transitionTo('editor.videos.all');
     };
 
-    $scope.init();
+    $timeout($scope.init, 50);
 });

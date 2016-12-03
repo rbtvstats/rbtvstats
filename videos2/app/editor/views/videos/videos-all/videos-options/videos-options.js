@@ -216,9 +216,9 @@ angular.module('app.editor').service('VideosFilterSrv', function(VideosSrv) {
             if (filter.title.regex) {
                 var title = new RegExp(filter.title.text, filter.title.sensitive ? '' : 'i');
             } else if (filter.title.sensitive) {
-                title = filter.title.text.toLowerCase();
-            } else {
                 title = filter.title.text;
+            } else {
+                title = filter.title.text.toLowerCase();
             }
         }
 

@@ -6,7 +6,7 @@ angular.module('app.editor').directive('videosEdit', function() {
             $scope.$watch('video', function(newVal, oldVal) {
                 $scope.valid = VideosSrv.isValid($scope.video);
 
-                VideosSrv.saveDelayed();
+                VideosSrv.save();
                 $scope.videoChanged($scope.video);
             }, true);
         }

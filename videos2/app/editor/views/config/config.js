@@ -6,16 +6,20 @@ angular.module('app.editor').config(function($stateProvider, $urlRouterProvider)
     $urlRouterProvider.when('/editor/config', '/editor/config/');
 });
 
-angular.module('app.editor').controller('ConfigCtrl', function($scope, ConfigSrv, DebounceSrv) {
+angular.module('app.editor').controller('ConfigCtrl', function($scope, $timeout, ConfigSrv, GithubApiSrv) {
     $scope.init = function() {
         $scope.config = ConfigSrv.get();
 
-        console.log($scope.config)
-
         $scope.$watch('config', function(newVal, oldVal) {
-            ConfigSrv.saveDelayed();
+            ConfigSrv.save();
         }, true);
+
+        $scope.initialized = true;
     };
 
-    $scope.init();
+    $scope.reset = function() {
+        ConfigSrv.load(ConfigSrv.default());
+    };
+
+    $timeout($scope.init, 50);
 });

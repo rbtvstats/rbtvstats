@@ -1,36 +1,13 @@
 @import "bower_components/bootstrap/less/bootstrap.less";
-//@import "bower_components/bootswatch-dist/css/bootstrap.css";
-//@import "bower_components/bootstrap/less/theme.less";
 @import "bower_components/font-awesome/less/font-awesome.less";
-@fa-font-path: "bower_components/font-awesome/fonts";
 @import "bower_components/angular-ui-select/dist/select.css";
 @import "bower_components/components-font-awesome/css/font-awesome.css";
 @import "bower_components/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css";
 @import "bower_components/bootstrap-daterangepicker/daterangepicker.css";
 @import "bower_components/jsoneditor/dist/jsoneditor.min.css";
 @import "bower_components/ng-table/dist/ng-table.css";
-
+@import "bower_components/angular-loading-bar/build/loading-bar.css";
+@import "bower_components/angular-ui-notification/dist/angular-ui-notification.css";
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,300,700);
-body {
-  font-family: 'Roboto', sans-serif;
-}
-
-
-/* Component LESS */
+@fa-font-path: "bower_components/font-awesome/fonts";
 @import "app/app.less";
-/* Add Component LESS Above */
-
-/* Required for Angular UI Bootstrap */
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-
-/* Personal preference for BS modal.  The LESS below makes the backdrop white and
-   causes the modal to fade in rather than slide in. */
-//@modal-backdrop-bg: white;
-//.modal {
-//	&.fade {
-//		.transition(opacity .3s);
-//	}
-//	&.fade .modal-dialog {
-//		.translate(0,0);
-//	}
-//}

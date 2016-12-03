@@ -1,26 +1,28 @@
-<div class="container-fluid" ng-controller="ChannelsAllCtrl">
-    <div class="row">
-        <div class="col-md-12 text-right">
-            <div class="card-content">
-                <div class="card-content-header form-inline">
-                    <div class="form-group">
-                        <button class="btn btn-default" type="button" ng-click="add()">
-                            <i class="fa fa-plus"></i> Hinzufügen
-                        </button>
-                    </div>
-                    <div class="form-group has-feedback">
-                        <input type="text" class="form-control input-md" placeholder="Suche" ng-model="tableParams.filter().title">
-                        <i class="fa fa-search form-control-feedback"></i>
+<div ng-controller="ChannelsAllCtrl">
+    <div class="container-fluid animate-view" ng-if="initialized">
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <div class="card-content">
+                    <div class="card-content-header form-inline">
+                        <div class="form-group">
+                            <button class="btn btn-default" type="button" ng-click="add()">
+                                <i class="fa fa-plus"></i> Hinzufügen
+                            </button>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <input type="text" class="form-control input-md" placeholder="Suche" ng-model="tableParams.filter().title">
+                            <i class="fa fa-search form-control-feedback"></i>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div ng-include="'app/editor/views/channels/channels-all/channels-all-card.html'"></div>
-            <div class="no-entries" ng-if="tableParams.total() === 0">
-                Keine Einträge
+        <div class="row">
+            <div class="col-md-12">
+                <div ng-include="'app/editor/views/channels/channels-all/channels-all-card.html'"></div>
+                <div class="no-entries" ng-if="tableParams.total() === 0">
+                    Keine Einträge
+                </div>
             </div>
         </div>
     </div>
