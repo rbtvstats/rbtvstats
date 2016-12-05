@@ -11,7 +11,7 @@ angular.module('app', [
     'ui-notification'
 ]);
 
-angular.module('app').config(function(NotificationProvider, cfpLoadingBarProvider) {
+angular.module('app').config(function(NotificationProvider, cfpLoadingBarProvider, $uibTooltipProvider) {
     NotificationProvider.setOptions({
         delay: 3000,
         startTop: 20,
@@ -24,6 +24,11 @@ angular.module('app').config(function(NotificationProvider, cfpLoadingBarProvide
 
     cfpLoadingBarProvider.includeSpinner = false;
     cfpLoadingBarProvider.latencyThreshold = 500;
+
+    $uibTooltipProvider.options({
+        appendToBody: true,
+        animation: false
+    });
 });
 
 angular.module('app').run(function($rootScope, amMoment, Notification, $parse) {

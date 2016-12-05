@@ -1,0 +1,78 @@
+<div ng-controller="HostsOneCtrl">
+    <div class="container-fluid animate-view" ng-if="initialized">
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <div class="card-content">
+                    <div class="card-content-header">
+                        <button class="btn btn-default btn-circle" type="button" ng-class="valid ? 'btn-success': 'btn-danger'" uib-tooltip="Schema Validierung">
+                            <i class="fa fa-fw" ng-class="valid ? 'fa-check': 'fa-times'"></i>
+                        </button>
+                        <button class="btn btn-danger" type="button" ng-click="delete(host)">
+                            <i class="fa fa-trash"></i> Löschen
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card-content">
+                    <div class="card-content-header">
+                        Moderator
+                    </div>
+                    <div class="card-content-body">
+                        <div class="form-horizontal">
+                            <!-- id -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="id">Primärschlüssel<span class="key-name">id</span></label>
+                                <div class="col-md-8">
+                                    <div class="input-group" ng-init="lockedId=true">
+                                        <input id="id" name="id" type="text" class="form-control input-md" ng-model="host.id" ng-disabled="lockedId">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" ng-click="lockedId=!lockedId">
+                                                <i class="fa fa-fw" ng-class="{'fa-lock': lockedId, 'fa-unlock-alt': !lockedId}"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- firstname -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="firstname">Vorname<span class="key-name">firstname</span></label>
+                                <div class="col-md-8">
+                                    <input id="firstname" name="firstname" type="text" class="form-control input-md" ng-model="host.firstname">
+                                </div>
+                            </div>
+                            <!-- lastname -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="lastname">Nachname<span class="key-name">lastname</span></label>
+                                <div class="col-md-8">
+                                    <input id="lastname" name="lastname" type="text" class="form-control input-md" ng-model="host.lastname">
+                                </div>
+                            </div>
+                            <!-- nickname -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="nickname">Spitzname<span class="key-name">nickname</span></label>
+                                <div class="col-md-8">
+                                    <input id="nickname" name="nickname" type="text" class="form-control input-md" ng-model="host.nickname">
+                                </div>
+                            </div>
+                            <!-- description -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="description">Beschreibung<span class="key-name">description</span></label>
+                                <div class="col-md-8">
+                                    <textarea id="description" name="description" type="text" rows="5" class="form-control input-md" ng-model="host.description"></textarea>
+                                </div>
+                            </div>
+                            <!-- image -->
+                            <div img-input="host.image"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div json-editor="host"></div>
+            </div>
+        </div>
+    </div>
+</div>

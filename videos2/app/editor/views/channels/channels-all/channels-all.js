@@ -1,4 +1,4 @@
-angular.module('app.editor').controller('ChannelsAllCtrl', function($scope, $timeout, $state, NgTableParams, ChannelsSrv) {
+angular.module('app.editor').controller('ChannelsAllCtrl', function($scope, $timeout, $state, NgTableParams, StateSrv, ChannelsSrv) {
     $scope.init = function() {
         $scope.channels = ChannelsSrv.all();
         $scope.tableParams = new NgTableParams({
@@ -10,18 +10,37 @@ angular.module('app.editor').controller('ChannelsAllCtrl', function($scope, $tim
             dataset: $scope.channels,
             counts: []
         });
+        $scope.tableOptions = {
+            display: {
+                view: 'list',
+                count: 25
+            }
+        };
+
+        //view
+        $scope.displayViewOptions = [
+            { value: 'list', name: 'Liste', icon: 'fa-th-list' },
+            { value: 'card', name: 'Kacheln', icon: 'fa-th-large' }
+        ];
+        $scope.displayCountOptions = [10, 25, 50];
+
+        $scope.$watchCollection('tableOptions.display', function(newVal, oldVal) {
+            $scope.tableParams.count($scope.tableOptions.display.count);
+        });
+
+        StateSrv.watch($scope, ['tableOptions']);
 
         $scope.initialized = true;
     };
 
-    $scope.details = function(channel) {
+    $scope.one = function(channel) {
         $state.transitionTo('editor.channels.one', { channelId: channel.id });
     };
 
     $scope.add = function() {
         var channel = ChannelsSrv.create();
         ChannelsSrv.save();
-        $scope.details(channel);
+        $scope.one(channel);
     };
 
     $scope.delete = function(channel) {
@@ -35,14 +54,4 @@ angular.module('app.editor').controller('ChannelsAllCtrl', function($scope, $tim
     };
 
     $timeout($scope.init, 50);
-});
-angular.module('app.editor').directive('includeReplace', function() {
-    return {
-        require: 'ngInclude',
-        restrict: 'A',
-        /* optional */
-        link: function(scope, el, attrs) {
-            el.replaceWith(el.children());
-        }
-    };
 });

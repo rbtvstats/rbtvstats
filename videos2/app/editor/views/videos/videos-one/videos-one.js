@@ -11,7 +11,6 @@ angular.module('app.editor').controller('VideosOneCtrl', function($scope, $timeo
             $scope.valid = VideosSrv.isValid($scope.video);
 
             VideosSrv.save();
-            $scope.videoChanged($scope.video);
         }, true);
 
         $scope.initialized = true;

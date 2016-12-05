@@ -1,151 +1,29 @@
-.card-image {
-    /* header */
-    > .card-image-header {
-        > .hosts {
-            pointer-events: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            padding: 3px;
-            > * {
-                pointer-events: auto;
-            }
-        }
-        > .shows {
-            pointer-events: none;
-            position: absolute;
-            bottom: 4px;
-            left: 0;
-            padding: 3px;
-            > * {
-                pointer-events: auto;
-            }
-        }
-        > .series {
-            pointer-events: none;
-            position: absolute;
-            bottom: 4px;
-            right: 0;
-            padding: 3px;
-            > * {
-                pointer-events: auto;
-            }
-        }
-        > .duration {
-            background-color: rgba(0, 0, 0, 0.75);
-            position: absolute;
-            top: 0;
-            right: 0;
-            color: #ddd;
-            font-weight: bold;
-            font-size: 0.8em;
-            padding: 2px 3px;
-            z-index: 100;
-        }
-        > .rating {
-            background-color: #ff6666;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            .bar {
-                background-color: #66ce66;
-                height: 100%;
-            }
-        }
-    }
-    /* body */
-    > .card-image-body {
-        > .stats {
-            overflow: hidden;
-            cursor: default;
-            > * {
-                float: left;
-                margin-right: 5px;
-            }
-        }
-        > .title {
-            font-size: 1.1em;
-        }
-    }
-    /* footer */
-    > .card-image-footer {
-        > .left {
-            width: 30%;
-            > .toolbar {
-                position: absolute;
-                left: 43px;
-                bottom: 3px;
-                width: 140px;
-                padding-left: 3px;
-            }
-        }
-        > .right {
-            width: 70%;
-            cursor: default;
-            > .dates {
-                > * {
-                    float: right;
-                    margin-left: 5px;
-                }
-            }
-        }
-    }
-}
-
 .videos-display {
     padding: 7px 0;
 }
 
 .videos-update {
     text-align: center;
-    .spinner {
-        font-size: 40px;
+    .card-content-body {
+        position: relative;
+        height: 200px;
+        .videos-update-container {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            margin: auto 0;
+            margin-top: -50px;
+            > .spinner {
+                font-size: 40px;
+            }
+            > .info {
+                font-size: 20px;
+            }
+            > .latest {
+                font-size: 14px;
+                color: #888;
+            }
+        }
     }
-    .info {
-        font-size: 20px;
-    }
-    .latest {
-        font-size: 14px;
-        color: #888;
-    }
-}
-
-.badge-zoom {
-    position: relative;
-    .box-shadow-level(3);
-    z-index: 101;
-    > img {
-        .transition(100ms ease-in-out all);
-        .transform(scale(1.6));
-    }
-    > .badge-remove {
-        display: block;
-    }
-}
-
-.badge-remove {
-    .box-shadow-level(3);
-    .border-radius(20px);
-    display: none;
-    border: 1px solid #d43f3a;
-    background-color: #d9534f;
-    position: absolute;
-    top: -25px;
-    right: -20px;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    font-size: 20px;
-    color: white;
-    z-index: 200;
-    &:hover {
-        .transition(100ms ease-in-out all);
-        .transform(scale(1.1));
-    }
-}
-
-.badge-zoom-tooltip {
-    .transform(translate(0, -15px));
 }

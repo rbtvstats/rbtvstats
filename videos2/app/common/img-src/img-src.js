@@ -9,11 +9,15 @@ angular.module('app.common').directive('imgSrc', function() {
             //fallback image
             img.onerror = function() {
                 element.attr('src', attrs.imgFallback);
+                element.attr('img-loading', '');
+                element.attr('img-fallback', '');
             };
 
             //show original image
             img.onload = function() {
                 element.attr('src', attrs.imgSrc);
+                element.attr('img-loading', '');
+                element.attr('img-fallback', '');
             };
 
             img.src = attrs.imgSrc;

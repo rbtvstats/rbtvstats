@@ -1,0 +1,33 @@
+<div class="card-content">
+    <div class="card-content-body">
+        <div class="table-container">
+            <table class="table table-hover list" ng-table="tableParams">
+                <tr class="middle link" ng-repeat="host in $data" ng-click="one(host)">
+                    <td width="1">
+                        <img img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                    </td>
+                    <td width="150" title="'Vorname'" sortable="'firstname'">
+                        {{host.firstname}}
+                    </td>
+                    <td width="150" title="'Nachname'" sortable="'lastname'">
+                        {{host.lastname}}
+                    </td>
+                    <td width="150" title="'Spitzname'" sortable="'nickname'">
+                        {{host.nickname}}
+                    </td>
+                    <td title="'Beschreibung'" sortable="'description'">
+                        <div class="limit-height">
+                            {{host.description}}
+                        </div>
+                    </td>
+                    <td width="1">
+                        <button class="btn btn-danger" type="button" ng-click="delete(host)" uib-tooltip="Löschen">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div table-pagination="tableParams"></div>
+    </div>
+</div>

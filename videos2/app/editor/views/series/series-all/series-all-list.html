@@ -1,0 +1,27 @@
+<div class="card-content">
+    <div class="card-content-body">
+        <div class="table-container">
+            <table class="table table-hover list" ng-table="tableParams">
+                <tr class="middle link" ng-repeat="series in $data" ng-click="one(series)">
+                    <td width="1">
+                        <img img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
+                    </td>
+                    <td width="200" title="'Name'" sortable="'name'">
+                        {{series.name}}
+                    </td>
+                    <td title="'Beschreibung'" sortable="'description'">
+                        <div class="limit-height">
+                            {{series.description}}
+                        </div>
+                    </td>
+                    <td width="1">
+                        <button class="btn btn-danger" type="button" ng-click="delete(series)" uib-tooltip="Löschen">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div table-pagination="tableParams"></div>
+    </div>
+</div>

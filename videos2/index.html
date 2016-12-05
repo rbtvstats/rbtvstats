@@ -16,30 +16,29 @@
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/lodash/dist/lodash.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/moment/locale/de.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-moment/angular-moment.js"></script>
-    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
     <script src="bower_components/angular-uuid4/angular-uuid4.js"></script>
-    <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script src="bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
+    <script src="bower_components/angular-md5/angular-md5.js"></script>
+    <script src="bower_components/angular-youtube-mb/dist/angular-youtube-embed.min.js"></script>
+    <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-ui-select/dist/select.js"></script>
+    <script src="bower_components/angular-ui-notification/dist/angular-ui-notification.js"></script>
+    <script src="bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
+    <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="bower_components/localforage/dist/localforage.js"></script>
     <script src="bower_components/jsoneditor/dist/jsoneditor.min.js"></script>
     <script src="bower_components/ng-jsoneditor/ng-jsoneditor.min.js"></script>
     <script src="bower_components/ng-table/dist/ng-table.js"></script>
-    <script src="bower_components/angular-md5/angular-md5.js"></script>
     <script src="bower_components/url-join/lib/url-join.js"></script>
-    <script src="bower_components/angular-youtube-mb/dist/angular-youtube-embed.min.js"></script>
-    <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
-    <script src="bower_components/angular-ui-notification/dist/angular-ui-notification.js"></script>
     <script src="bower_components/file-saver/FileSaver.js"></script>
     <script src="bower_components/jszip/dist/jszip.js"></script>
-    <script src="bower_components/localforage/dist/localforage.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
     <!-- Add New Bower Component JS Above -->
     <!-- Main App JS -->
@@ -50,16 +49,23 @@
     <script src="app/common/app.common.js"></script>
     <script src="app/common/config/config.js"></script>
     <script src="app/common/state/state.js"></script>
-    <script src="app/common/duration/duration.js"></script>
     <script src="app/common/img-src/img-src.js"></script>
+    <script src="app/common/videos-filter/videos-filter.js"></script>
+    <script src="app/common/videos-view/videos-view.js"></script>
+    <script src="app/common/videos-view/videos-options/videos-options.js"></script>
+    <script src="app/common/videos-view/videos-edit/videos-edit.js"></script>
+    <script src="app/common/touch-tooltip/touch-tooltip.js"></script>
+    <script src="app/common/table-pagination/table-pagination.js"></script>
     <!-- app.data -->
     <script src="app/data/app.data.js"></script>
     <!-- app.data.video -->
     <script src="app/data/videos/app.data.videos.js"></script>
-    <script src="app/data/videos/base/base.js"></script>
+    <script src="app/data/videos/controller/controller.js"></script>
+    <script src="app/data/videos/backup/backup.js"></script>
     <script src="app/data/videos/backend/youtube-api/youtube-api.js"></script>
     <script src="app/data/videos/backend/github-api/github-api.js"></script>
     <script src="app/data/videos/videos-resolve/videos-resolve.js"></script>
+    <script src="app/data/videos/models/base/base.js"></script>
     <script src="app/data/videos/models/channels/channels.js"></script>
     <script src="app/data/videos/models/videos/videos.js"></script>
     <script src="app/data/videos/models/hosts/hosts.js"></script>
@@ -75,9 +81,16 @@
     <script src="app/editor/views/channels/channels-one/channels-one.js"></script>
     <script src="app/editor/views/videos/videos.js"></script>
     <script src="app/editor/views/videos/videos-all/videos-all.js"></script>
-    <script src="app/editor/views/videos/videos-all/videos-options/videos-options.js"></script>
-    <script src="app/editor/views/videos/videos-all/videos-edit/videos-edit.js"></script>
     <script src="app/editor/views/videos/videos-one/videos-one.js"></script>
+    <script src="app/editor/views/shows/shows.js"></script>
+    <script src="app/editor/views/shows/shows-all/shows-all.js"></script>
+    <script src="app/editor/views/shows/shows-one/shows-one.js"></script>
+    <script src="app/editor/views/hosts/hosts.js"></script>
+    <script src="app/editor/views/hosts/hosts-all/hosts-all.js"></script>
+    <script src="app/editor/views/hosts/hosts-one/hosts-one.js"></script>
+    <script src="app/editor/views/series/series.js"></script>
+    <script src="app/editor/views/series/series-all/series-all.js"></script>
+    <script src="app/editor/views/series/series-one/series-one.js"></script>
     <!-- app.editor.utils -->
     <script src="app/editor/utils/app.editor.utils.js"></script>
     <script src="app/editor/utils/img-input/img-input.js"></script>

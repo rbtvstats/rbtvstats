@@ -1,0 +1,36 @@
+<table class="table cards" ng-table="tableParams">
+    <tr ng-repeat="series in $data">
+        <td class="hide"></td>
+    </tr>
+    <td class="container-fluid">
+        <div class="row">
+            <div ng-repeat="series in $data" class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card-image">
+                    <div class="card-image-header card-image-header-xs">
+                        <div class="image">
+                            <a ng-href="#/editor/series/{{series.id}}">
+                                <img img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
+                            </a>
+                        </div>
+                        <div class="title">
+                            <a ng-href="#/editor/series/{{series.id}}">{{series.name || '(Kein Name)'}}</a>
+                        </div>
+                    </div>
+                    <div class="card-image-body card-image-body-xs">
+                        <div class="description">
+                            {{series.description}}
+                        </div>
+                    </div>
+                    <div class="card-image-footer">
+                        <div class="right">
+                            <button class="btn btn-danger" type="button" uib-tooltip="Löschen" ng-click="delete(series)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </td>
+</table>
+<div table-pagination="tableParams"></div>

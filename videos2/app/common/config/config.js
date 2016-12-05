@@ -1,14 +1,9 @@
-angular.module('app.common').service('ConfigSrv', function(localStorageService) {
+angular.module('app.common').service('ConfigSrv', function() {
     var cache = null;
     var service = {};
 
-    service.clear = function() {
-        cache = cache || {};
-        angular.copy({}, cache);
-    };
-
     service.default = function() {
-        return {
+        return angular.copy({
             youtubeApiKey: '',
             githubOAuthToken: '',
             githubBaseUrl: 'https://raw.githubusercontent.com',
@@ -16,28 +11,46 @@ angular.module('app.common').service('ConfigSrv', function(localStorageService) 
             githubBranch: 'master',
             videosPath: 'videos',
             livePath: 'live'
-        };
+        });
+    };
+
+    service.clear = function() {
+        cache = cache || {};
+        angular.copy({}, cache);
+    };
+
+    service.loadLocal = function(config) {
+        return localforage.getItem('config')
+            .then(function(data) {
+                service.clear();
+
+                if (!data) {
+                    data = service.default();
+                }
+
+                angular.copy(data, cache);
+
+                return cache;
+            });
     };
 
     service.load = function(config) {
-        service.clear();
+        if (config !== cache && angular.isObject(config)) {
+            service.clear();
 
-        if (!angular.isObject(config)) {
-            config = localStorageService.get('config') || service.default();
+            angular.copy(config, cache);
         }
-
-        angular.copy(config, cache);
 
         return cache;
     };
 
     service.save = _.debounce(function() {
         var config = service.all();
-        localStorageService.set('config', config);
+        localforage.setItem('config', config);
     }, 1000);
 
     service.all = function() {
-        return cache || service.load();
+        return cache;
     };
 
     service.get = function(key) {
@@ -49,6 +62,8 @@ angular.module('app.common').service('ConfigSrv', function(localStorageService) 
 
         return config[key];
     };
+
+    service.clear();
 
     return service;
 });

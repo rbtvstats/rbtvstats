@@ -1,24 +1,13 @@
-.no-entries {
-    text-align: center;
-    font-size: 20px;
-    td {
-        padding: 40px 0;
-    }
-}
-
 .key-name {
     display: block;
     color: #aaa;
     font-size: 0.9em;
 }
 
-.button-list {
-    button {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        margin-right: 5px;
-        max-width: 180px;
+.inline-wrap {
+    > * {
+        display: inline-block;
+        margin-bottom: 5px;
     }
 }
 
@@ -33,9 +22,16 @@
 @import "views/channels/channels-one/channels-one.less";
 @import "views/videos/videos.less";
 @import "views/videos/videos-all/videos-all.less";
-@import "views/videos/videos-all/videos-options/videos-options.less";
-@import "views/videos/videos-all/videos-edit/videos-edit.less";
 @import "views/videos/videos-one/videos-one.less";
 @import "utils/app.editor.utils.less";
 
+@import "views/shows/shows.less";
+@import "views/shows/shows-all/shows-all.less";
+@import "views/shows/shows-one/shows-one.less";
+@import "views/hosts/hosts.less";
+@import "views/hosts/hosts-all/hosts-all.less";
+@import "views/hosts/hosts-one/hosts-one.less";
+@import "views/series/series.less";
+@import "views/series/series-one/series-one.less";
+@import "views/series/series-all/series-all.less";
 /* Add Component LESS Above */

@@ -1,26 +1,8 @@
-angular.module('app.common').service('StateSrv', function($rootScope, $location, localStorageService) {
-    var cache = null;
+angular.module('app.common').service('StateSrv', function($rootScope, $location) {
+    var storage = {};
     var service = {};
 
-    function getStorage() {
-        if (!cache) {
-            cache = localStorageService.get('state');
-            if (!cache) {
-                cache = {};
-                setStorage(cache);
-            }
-        }
-
-        return cache;
-    }
-
-    function setStorage(storage) {
-        localStorageService.set('state', storage);
-    }
-
     function saveState(path, scope, properties) {
-        var storage = getStorage();
-
         storage[path] = storage[path] || {};
         for (var i = 0; i < properties.length; i++) {
             var property = properties[i];
@@ -28,12 +10,10 @@ angular.module('app.common').service('StateSrv', function($rootScope, $location,
             storage[path][property] = value;
         }
 
-        setStorage(storage);
+        service.save();
     }
 
     function loadState(path, scope, properties) {
-        var storage = getStorage();
-
         if (path in storage) {
             for (var i = 0; i < properties.length; i++) {
                 var property = properties[i];
@@ -58,6 +38,17 @@ angular.module('app.common').service('StateSrv', function($rootScope, $location,
             }
         }, true);
     }
+
+    service.loadLocal = function() {
+        return localforage.getItem('state')
+            .then(function(data) {
+                storage = data || {};
+            });
+    };
+
+    service.save = _.debounce(function() {
+        localforage.setItem('state', storage);
+    }, 1000);
 
     service.watch = function(scope, properties) {
         var path = $location.path();

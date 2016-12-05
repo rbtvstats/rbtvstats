@@ -1,4 +1,4 @@
-angular.module('app.editor').controller('VideosAllCtrl', function($scope, $timeout, $filter, $q, NgTableParams, Notification, StateSrv, YoutubeApiSrv, VideosFilterSrv, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+angular.module('app.editor').controller('VideosAllCtrl', function($scope, $timeout, $filter, $q, Notification, YoutubeApiSrv, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
     $scope.init = function() {
         $scope.videos = VideosSrv.all();
         $scope.channels = ChannelsSrv.all();
@@ -17,39 +17,6 @@ angular.module('app.editor').controller('VideosAllCtrl', function($scope, $timeo
             singleDatePicker: true
         };
         $scope.updateUntil = moment(new Date(2015, 0, 15));
-
-        //table
-        $scope.tableParams = new NgTableParams({
-            filter: { $: 'a' }
-        }, {
-            dataset: $scope.videos,
-            counts: [],
-            filterOptions: {
-                filterFn: function(videos) {
-                    if (!$scope.videosCache) {
-                        $scope.videosCache = VideosFilterSrv.filter(videos, $scope.tableOptions.filter);
-                    }
-
-                    return $scope.videosCache;
-                }
-            }
-        });
-
-        $scope.tableOptions = null;
-        $scope.tableOptionsVisible = false;
-
-        $scope.videosFiltered = [];
-        $scope.clipboard = null;
-
-        $scope.$watch('tableOptions.filter', function(newVal, oldVal) {
-            $scope.clearVideosCache();
-        }, true);
-
-        $scope.videoChangedListener(function(video) {
-            $scope.clearVideosCache();
-        });
-
-        StateSrv.watch($scope, ['tableOptions']);
 
         $scope.initialized = true;
     };
@@ -150,11 +117,10 @@ angular.module('app.editor').controller('VideosAllCtrl', function($scope, $timeo
                             var videoId = item.id;
                             var video = VideosSrv.findById(videoId);
                             if (video) {
-                                video.length = YTDurationToSeconds(details.duration);
+                                video.duration = YTDurationToSeconds(details.duration);
                                 video.stats = {};
                                 video.stats.commentCount = parseInt(statistics.commentCount, 10);
                                 video.stats.viewCount = parseInt(statistics.viewCount, 10);
-                                video.stats.favoriteCount = parseInt(statistics.favoriteCount, 10);
                                 video.stats.dislikeCount = parseInt(statistics.dislikeCount, 10);
                                 video.stats.likeCount = parseInt(statistics.likeCount, 10);
                                 video.online = true;
@@ -314,14 +280,6 @@ angular.module('app.editor').controller('VideosAllCtrl', function($scope, $timeo
         var videos = $scope.videosFiltered;
 
         $scope.updateVideoDetails(videos);
-    };
-
-    $scope.clearVideosCache = function() {
-        $scope.videosCache = null;
-    };
-
-    $scope.update = function() {
-        $scope.tableParams.reload();
     };
 
     $timeout($scope.init, 50);
