@@ -1,13 +1,14 @@
-angular.module('app.editor', ['ui.bootstrap',
-    'ui.router',
-    'ngAnimate',
+angular.module('app.editor', [
     'app.common',
     'app.data',
-    'app.editor.utils',
-    'ngTable',
+    'ui.bootstrap',
+    'ui.router',
     'ui.select',
+    'ngAnimate',
+    'ngTable',
+    'angular-md5',
     'youtube-embed',
-    'angular-md5'
+    'ng.jsoneditor'
 ]);
 
 angular.module('app.editor').config(function($stateProvider, $urlRouterProvider) {
@@ -17,24 +18,27 @@ angular.module('app.editor').config(function($stateProvider, $urlRouterProvider)
         templateUrl: 'app/editor/app.editor.html'
     });
     $urlRouterProvider.when('/editor', '/editor/channels/');
-    $urlRouterProvider.otherwise('/editor');
 });
 
-angular.module('app.data.videos').run(function($rootScope, $q, ConfigSrv, StateSrv, VideosDataControllerSrv, VideosDataBackupSrv) {
-    var promises = [];
-    promises.push(ConfigSrv.loadLocal());
-    promises.push(StateSrv.loadLocal());
-    promises.push(VideosDataControllerSrv.loadAllLocal());
-    promises.push(VideosDataBackupSrv.loadLocal());
+angular.module('app.editor').controller('EditorCtrl', function($scope, $q, InitSrv, NavigationSrv, ConfigSrv, StateSrv, VideosDataBackupSrv, VideosDataControllerSrv) {
+    $scope.init = function() {
+        NavigationSrv.clear();
+        NavigationSrv.register('/editor/channels/', 'Kanäle');
+        NavigationSrv.register('/editor/shows/', 'Formate');
+        NavigationSrv.register('/editor/hosts/', 'Moderatoren');
+        NavigationSrv.register('/editor/series/', 'Serien');
+        NavigationSrv.register('/editor/videos/', 'Videos');
+        NavigationSrv.register('/editor/data/', 'Daten');
+        NavigationSrv.register('/editor/config/', 'Einstellungen');
 
-    $q.all(promises)
-        .then(function() {
-            //do nothing
-        })
-        .catch(function(err) {
-            //should not happen
-        })
-        .finally(function() {
-            $rootScope.appInitialized = true;
-        })
+        var promises = [];
+        promises.push(ConfigSrv.loadLocal());
+        promises.push(StateSrv.loadLocal());
+        promises.push(VideosDataBackupSrv.loadLocal());
+        promises.push(VideosDataControllerSrv.loadAllLocal());
+
+        return $q.all(promises);
+    };
+
+    InitSrv.init($scope, $scope.init);
 });

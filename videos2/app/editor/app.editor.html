@@ -1,10 +1,5 @@
-<div ng-if="appInitialized">
-    <!-- navigation -->
-    <div navigation></div>
-    <!-- main -->
-    <div class="main" ui-view></div>
-    <!-- footer -->
-    <div class="footer">
-        footer
+<div ng-controller="EditorCtrl">
+    <div ng-if="initialized">
+        <div class="main" ui-view></div>
     </div>
 </div>

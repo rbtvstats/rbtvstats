@@ -1,15 +1,37 @@
 angular.module('app', [
+    'app.common',
+    'app.data',
+    'app.editor',
+    'app.viewer',
     'ui.bootstrap',
     'ui.router',
     'ngAnimate',
-    'app.data',
-    'app.common',
-    'app.editor',
+    'ngSanitize',
     'daterangepicker',
     'angularMoment',
     'angular-loading-bar',
     'ui-notification'
 ]);
+
+function benchmark(func, run) { //TODO remove
+    if (run !== false) {
+        setTimeout(function() {
+            var benchmarks = [];
+            setInterval(function() {
+                var t0 = performance.now();
+
+                func();
+
+                var t1 = performance.now();
+                benchmarks.push(t1 - t0);
+
+                if (benchmarks.length % 10 === 0) {
+                    console.log('average execution time: ' + _.mean(benchmarks));
+                }
+            }, 100);
+        }, 1000);
+    }
+}
 
 angular.module('app').config(function(NotificationProvider, cfpLoadingBarProvider, $uibTooltipProvider) {
     NotificationProvider.setOptions({
@@ -39,7 +61,60 @@ angular.module('app').run(function($rootScope, amMoment, Notification, $parse) {
     $rootScope.imagePlaceholders.host = $rootScope.imagePlaceholders.channel;
     $rootScope.imagePlaceholders.series = $rootScope.imagePlaceholders.channel;
 
+    //locale
     amMoment.changeLocale('de');
+
+    var d3GermanFormat = d3.locale({
+        decimal: ',',
+        thousands: '.',
+        grouping: [3],
+        currency: ['€', ''],
+        dateTime: '%a %b %e %X %Y',
+        date: '%d.%m.%Y',
+        time: '%H:%M:%S',
+        periods: ['AM', 'PM'],
+        days: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+        shortDays: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+        months: ['Jänner', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+        shortMonths: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Dez']
+    });
+    d3.format = d3GermanFormat.numberFormat;
+    d3.time.format = d3GermanFormat.timeFormat;
+
+    $rootScope.dateRangePickerLocale = {
+        format: 'DD.MM.YYYY',
+        separator: ' - ',
+        applyLabel: 'Anwenden',
+        cancelLabel: 'Abbrechen',
+        fromLabel: 'Bis',
+        toLabel: 'Von',
+        customRangeLabel: 'Manuell',
+        weekLabel: 'W',
+        daysOfWeek: [
+            'So',
+            'Mo',
+            'Di',
+            'Mi',
+            'Do',
+            'Fr',
+            'Sa'
+        ],
+        monthNames: [
+            'Januar',
+            'Frebruar',
+            'März',
+            'April',
+            'Mai',
+            'Juni',
+            'Juli',
+            'August',
+            'September',
+            'Oktober',
+            'November',
+            'Dezember'
+        ],
+        firstDay: 1
+    };
 
     //extend notification service
     Notification.parseError = function(options) {

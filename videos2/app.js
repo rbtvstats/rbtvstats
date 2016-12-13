@@ -1,3 +1,3 @@
-angular.module('videoCrawler', [
+angular.module('rbtvStats', [
     'app'
 ]);

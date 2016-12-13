@@ -1,0 +1,62 @@
+<div class="card-content chart">
+    <div class="card-content-header">
+        <table>
+            <tr>
+                <td>
+                    <div ng-show="options.title.enable" ng-bind-html="options.title.text"></div>
+                </td>
+                <td class="text-right">
+                    <span class="dropdown" ng-show="options.dateGroup.enable" uib-dropdown>
+                        <button class="btn btn-transparent dropdown-toggle" type="button" uib-dropdown-toggle>
+                            <span class="fa fa-list"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
+                            <li class="dropdown-header" ng-click="$event.stopPropagation()">Gruppieren nach...</li>
+                            <li ng-class="options.dateGroup.selected === id ? 'active' : ''" ng-repeat="(id, group) in options.dateGroup.options">
+                                <a href="" ng-click="options.dateGroup.selected=id">{{group.name}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                    <button class="btn btn-transparent" type="button" ng-show="options.dateRange.enable" clearable="true" date-range-picker options="options.dateRange.options" ng-model="dateRange" date-converter="options.dateRange.selected">
+                        <span class="fa fa-calendar"></span>
+                    </button>
+                    <span class="dropdown" uib-dropdown>
+                        <button class="btn btn-transparent dropdown-toggle" type="button" uib-dropdown-toggle>
+                            <span class="fa fa-ellipsis-v"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" uib-dropdown-menu>
+                            <li class="dropdown-header" ng-click="$event.stopPropagation()">Exportiere Grafik als...</li>
+                            <li ng-repeat="export in exportChart">
+                                <a href="" ng-click="export.exec()">{{export.name}}</a>
+                            </li>
+                            <li class="dropdown-header" ng-click="$event.stopPropagation()">Exportiere Daten als...</li>
+                            <li ng-repeat="export in exportData">
+                                <a href="" ng-click="export.exec()">{{export.name}}</a>
+                            </li>
+                        </ul>
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="card-content-body">
+        <div class="chart-overlay">
+            <div class="chart-loading" ng-show="loading">
+                <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+            </div>
+            <div class="chart-error" ng-show="!loading && error">
+                Fehler bei der Darstellung
+            </div>
+            <div class="chart-empty" ng-show="!loading && !error && !data.length">
+                Keine Daten zum darstellen
+            </div>
+        </div>
+        <div class="chart-container">
+            <div class="chart-container-scroll" style="min-width:{{options.chart.minWidth}}px; height:{{options.chart.height}}px">
+                <nvd3 id="{{svgId}}" options="options" data="data" config="config"></nvd3>
+            </div>
+        </div>
+    </div>
+    <div class="card-content-footer" ng-if="options.caption.enable" ng-bind-html="options.caption.text">
+    </div>
+</div>

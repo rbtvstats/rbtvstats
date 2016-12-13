@@ -1,0 +1,41 @@
+.navbar-custom {
+    background-color: #3d4a57;
+    border: 0;
+    .box-shadow-level(2);
+    .border-radius(0);
+    @media (max-width: 767px) {
+        .collapse {
+            .box-shadow-level(3);
+        }
+    }
+    > div {
+        max-width: 1400px;
+        > .navbar-header {
+            > .navbar-brand {
+                color: #fbfbfb !important;
+            }
+        }
+        > .navbar-collapse {
+            border: 0;
+            > .navbar-nav {
+                a {
+                    border-bottom: 2px solid transparent;
+                    color: #fbfbfb !important;
+                }
+                > .active {
+                    > a {
+                        background-color: #465563 !important;
+                        border-bottom: 2px solid #d9534f;
+                    }
+                    > a:hover {
+                        background-color: #465563 !important;
+                    }
+                }
+                > li > a:hover {
+                    .transition(200ms ease-in-out all);
+                    background-color: #465563 !important;
+                }
+            }
+        }
+    }
+}

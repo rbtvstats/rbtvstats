@@ -14,16 +14,12 @@ angular.module('app.common').service('StateSrv', function($rootScope, $location)
     }
 
     function loadState(path, scope, properties) {
-        if (path in storage) {
-            for (var i = 0; i < properties.length; i++) {
-                var property = properties[i];
-                var value = storage[path][property];
-                if (typeof(value) !== 'undefined') {
-                    scope[property] = value;
-                }
+        for (var i = 0; i < properties.length; i++) {
+            var property = properties[i];
+            var value = storage[path][property];
+            if (typeof(value) !== 'undefined') {
+                scope[property] = value;
             }
-        } else {
-            saveState(path, scope, properties);
         }
     }
 
@@ -32,7 +28,11 @@ angular.module('app.common').service('StateSrv', function($rootScope, $location)
         scope.$watch(property, function(newVal, oldVal) {
             if (!init) {
                 init = true;
-                loadState(path, scope, properties);
+                if (path in storage) {
+                    loadState(path, scope, properties);
+                } else {
+                    saveState(path, scope, properties);
+                }
             } else {
                 saveState(path, scope, properties);
             }

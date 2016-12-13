@@ -1,0 +1,20 @@
+<div class="container-fluid animate-main-content" ng-if="initialized">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-content">
+                <div class="card-content-header">
+                    Format
+                </div>
+                <div class="card-content-body">
+                    <pre>{{show | json}}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-repeat="chart in charts">
+        <div class="col-lg-12">
+            <div options="chart.options" update="chart.update" chart></div>
+        </div>
+    </div>
+    <div videos-view="videos" videos-mode="'view'"></div>
+</div>

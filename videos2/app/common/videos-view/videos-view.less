@@ -48,6 +48,7 @@
             top: 0;
             right: 0;
             color: #ddd;
+            cursor: default;
             font-weight: bold;
             font-size: 0.8em;
             padding: 2px 3px;
@@ -82,25 +83,15 @@
     }
     /* footer */
     > .card-image-footer {
-        > .left {
-            width: 30%;
-            .toolbar {
-                position: absolute;
-                left: 43px;
-                bottom: 3px;
-                width: 140px;
-                padding-left: 3px;
-            }
+        .toolbar {
+            position: absolute;
+            left: 43px;
+            bottom: 3px;
+            width: 140px;
+            padding-left: 3px;
         }
-        > .right {
-            width: 70%;
+        .dates {
             cursor: default;
-            > .dates {
-                > * {
-                    float: right;
-                    margin-left: 5px;
-                }
-            }
         }
     }
 }
@@ -153,3 +144,6 @@
         }
     }
 }
+
+@import "videos-options/videos-options.less";
+@import "videos-edit/videos-edit.less";

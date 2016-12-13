@@ -1,78 +1,74 @@
-<div ng-controller="VideosAllCtrl">
-    <div class="container-fluid animate-view" ng-if="initialized">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card-content">
-                    <div class="card-content-header">
-                        Video Daten
-                    </div>
-                    <div class="card-content-body">
-                        <div class="form-horizontal">
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">Video Liste Abrufen</label>
-                                <div class="col-md-6">
-                                    <div class="inline-wrap">
-                                        <button class="btn btn-default" type="button" ng-click="updateVideosAll()">
-                                            <i class="fa fa-refresh"></i> Alle Videos
+<div class="container-fluid animate-main-content" ng-if="initialized">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-content">
+                <div class="card-content-header">
+                    Video Daten
+                </div>
+                <div class="card-content-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Video Liste Abrufen</label>
+                            <div class="col-md-6">
+                                <div class="inline-wrap">
+                                    <button class="btn btn-default" type="button" ng-click="updateVideosAll()">
+                                        <i class="fa fa-refresh"></i> Alle Videos
+                                    </button>
+                                    <button class="btn btn-default" type="button" ng-click="updateVideosNew()">
+                                        <i class="fa fa-refresh"></i> Neue Videos
+                                    </button>
+                                    <div class="btn-group" uib-tooltip="{{updateUntil.format('LL')}}">
+                                        <button class="btn btn-default" type="button" ng-click="updateVideosAllUntil(updateUntil)">
+                                            <i class="fa fa-refresh"></i> Alle Videos bis...
                                         </button>
-                                        <button class="btn btn-default" type="button" ng-click="updateVideosNew()">
-                                            <i class="fa fa-refresh"></i> Neue Videos
+                                        <button type="button" class="btn btn-default" ng-model="updateUntil" options="updateUntilOptions" date-range-picker>
+                                            <i class="fa fa-calendar"></i>
                                         </button>
-                                        <div class="btn-group" uib-tooltip="{{updateUntil.format('LL')}}">
-                                            <button class="btn btn-default" type="button" ng-click="updateVideosAllUntil(updateUntil)">
-                                                <i class="fa fa-refresh"></i> Alle Videos bis...
-                                            </button>
-                                            <button type="button" class="btn btn-default" ng-model="updateUntil" options="updateUntilOptions" date-range-picker>
-                                                <i class="fa fa-calendar"></i>
-                                            </button>
-                                        </div>
                                     </div>
-                                    <span class="help-block">
-                                        Aktualisieren der Video Liste für alle definierten <a href="#/editor/channels">Kanäle</a>. Die abgerufenen Informationen beinhaltet nur die Video ID, den Titel und das Veröffentlichungsdatum. Weitere Video Details müssen seperat abgerufen werden.
-                                    </span>
                                 </div>
+                                <span class="help-block">
+                                    Aktualisieren der Video Liste für alle definierten <a href="#/editor/channels">Kanäle</a>. Die abgerufenen Informationen beinhaltet nur die Video ID, den Titel und das Veröffentlichungsdatum. Weitere Video Details müssen seperat abgerufen werden.
+                                </span>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">Video Details Abrufen</label>
-                                <div class="col-md-6">
-                                    <div class="inline-wrap">
-                                        <button class="btn btn-default" type="button" ng-click="updateVideoDetailsAll()">
-                                            <i class="fa fa-refresh"></i> Alle Videos
-                                        </button>
-                                        <button class="btn btn-default" type="button" ng-click="updateVideoDetailsNew()">
-                                            <i class="fa fa-refresh"></i> Neue Videos
-                                        </button>
-                                        <button class="btn btn-default" type="button" ng-click="updateVideoDetailsFiltered()">
-                                            <i class="fa fa-refresh"></i> Gefilterte Videos
-                                        </button>
-                                    </div>
-                                    <span class="help-block">
-                                        Abrufen weiterer Video Details. Diese Details beinhaltet unter anderem die Video Laufzeit, sowie Video Statistiken (Views, Likes, usw.). Um die Statistiken aller Videos im selben Zeitraum vorliegen zu haben, sollten daher immer die Video Details aller Videos abgerufen werden.
-                                    </span>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Video Details Abrufen</label>
+                            <div class="col-md-6">
+                                <div class="inline-wrap">
+                                    <button class="btn btn-default" type="button" ng-click="updateVideoDetailsAll()">
+                                        <i class="fa fa-refresh"></i> Alle Videos
+                                    </button>
+                                    <button class="btn btn-default" type="button" ng-click="updateVideoDetailsNew()">
+                                        <i class="fa fa-refresh"></i> Neue Videos
+                                    </button>
+                                    <button class="btn btn-default" type="button" ng-click="updateVideoDetailsFiltered()">
+                                        <i class="fa fa-refresh"></i> Gefilterte Videos
+                                    </button>
                                 </div>
+                                <span class="help-block">
+                                    Abrufen weiterer Video Details. Diese Details beinhaltet unter anderem die Video Laufzeit, sowie Video Statistiken (Views, Likes, usw.). Um die Statistiken aller Videos im selben Zeitraum vorliegen zu haben, sollten daher immer die Video Details aller Videos abgerufen werden.
+                                </span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row videos-update" ng-if="updateState.active">
-            <div class="col-md-12">
-                <div class="card-content">
-                    <div class="card-content-body">
-                        <div class="videos-update-container">
-                            <div class="spinner">
-                                <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
-                            </div>
-                            <div class="info" ng-bind="updateState.info"></div>
-                            <div class="latest" ng-bind="updateState.latest.title"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button class="btn btn-default" ng-click="mode='view'" ng-init="mode='edit'">view</button>
-        <button class="btn btn-default" ng-click="mode='edit'">edit</button>
-        <div videos-view="videos" videos-mode="mode" ng-if="!updateState.active"></div>
     </div>
+    <div class="row videos-update" ng-if="updateState.active">
+        <div class="col-md-12">
+            <div class="card-content">
+                <div class="card-content-body">
+                    <div class="videos-update-container">
+                        <div class="spinner">
+                            <i class="fa fa-spinner fa-pulse fa-lg fa-fw"></i>
+                        </div>
+                        <div class="info" ng-bind="updateState.info"></div>
+                        <div class="latest" ng-bind="updateState.latest.title"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div videos-view="videos" videos-mode="'edit'" ng-if="!updateState.active"></div>
 </div>

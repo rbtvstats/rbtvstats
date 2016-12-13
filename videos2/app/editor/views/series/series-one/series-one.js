@@ -1,21 +1,25 @@
-angular.module('app.editor').controller('SeriesOneCtrl', function($scope, $timeout, $state, $stateParams, SeriesSrv) {
-    $scope.init = function() {
-        $scope.series = SeriesSrv.findById($stateParams.seriesId);
+angular.module('app.editor').config(function($stateProvider) {
+    $stateProvider.state('editor.series.one', {
+        url: '/:seriesId',
+        templateUrl: 'app/editor/views/series/series-one/series-one.html',
+        controller: function($scope, $state, $stateParams, InitSrv, SeriesSrv) {
+            $scope.init = function() {
+                $scope.series = SeriesSrv.findById($stateParams.seriesId);
 
-        $scope.$watch('series', function(newVal, oldVal) {
-            $scope.valid = SeriesSrv.isValid($scope.series);
+                $scope.$watch('series', function(newVal, oldVal) {
+                    $scope.valid = SeriesSrv.isValid($scope.series);
 
-            SeriesSrv.save();
-        }, true);
+                    SeriesSrv.save();
+                }, true);
+            };
 
-        $scope.initialized = true;
-    };
+            $scope.delete = function(series) {
+                SeriesSrv.delete(({ id: series.id }));
+                SeriesSrv.save();
+                $state.transitionTo('editor.series.all');
+            };
 
-    $scope.delete = function(series) {
-        SeriesSrv.delete(({ id: series.id }));
-        SeriesSrv.save();
-        $state.transitionTo('editor.series.all');
-    };
-
-    $timeout($scope.init, 50);
+            InitSrv.init($scope, $scope.init, 50);
+        }
+    });
 });

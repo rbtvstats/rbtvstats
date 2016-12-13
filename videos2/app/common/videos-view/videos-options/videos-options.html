@@ -27,7 +27,7 @@
     <fieldset class="row">
         <legend>Sortierung</legend>
         <!-- column -->
-        <div class="form-group">
+        <div class="form-group">tableOptions | json
             <label class="col-md-4 control-label" for="orderBy">Nach</label>
             <div class="col-md-4">
                 <ui-select ng-model="tableOptions.order.column" skip-focusser="true" search-enabled="false">
@@ -230,7 +230,7 @@
             <label class="col-md-4 control-label" for="filterLength">Laufzeit</label>
             <div class="col-md-2">
                 <div class="input-group width-md">
-                    <div uib-timepicker ng-model="tableOptions.filter.duration.start" hour-step="1" minute-step="5" show-spinners="false" show-meridian="false"></div>
+                    <div uib-timepicker ng-model="tableOptions.filter.duration.start" hour-step="1" minute-step="5" show-spinners="false" show-meridian="false" duration-converter></div>
                     <span class="input-group-btn">
                         <button class="btn btn-default clear" ng-click="tableOptions.filter.duration.start=0" ng-disabled="!tableOptions.filter.duration.start">
                             <i class="fa fa-times"></i>
@@ -242,7 +242,7 @@
         <div class="form-group">
             <div class="col-md-2 col-md-offset-4">
                 <div class="input-group width-md">
-                    <div uib-timepicker ng-model="tableOptions.filter.duration.end" hour-step="1" minute-step="5" show-spinners="false" show-meridian="false"></div>
+                    <div uib-timepicker ng-model="tableOptions.filter.duration.end" hour-step="1" minute-step="5" show-spinners="false" show-meridian="false" duration-converter></div>
                     <span class="input-group-btn">
                         <button class="btn btn-default clear" ng-click="tableOptions.filter.duration.end=0" ng-disabled="!tableOptions.filter.duration.end">
                             <i class="fa fa-times"></i>
@@ -256,9 +256,9 @@
             <label class="col-md-4 control-label" for="filterPublished">Veröffentlichung</label>
             <div class="col-md-2">
                 <div class="input-group width-md">
-                    <input type="text" placeholder="Von" class="form-control date" ng-model="tableOptions.filter.published.start" options="filterPublishedOptions" date-range-picker>
+                    <input type="text" placeholder="Von" class="form-control date" ng-model="published.start" options="filterPublishedOptions" date-converter="tableOptions.filter.published.start" date-range-picker>
                     <span class="input-group-btn">
-                        <button class="btn btn-default clear" ng-click="tableOptions.filter.published.start=0" ng-disabled="!tableOptions.filter.published.start">
+                        <button class="btn btn-default clear" ng-click="published.start=0" ng-disabled="!published.start">
                             <i class="fa fa-times"></i>
                         </button>
                     </span>
@@ -268,9 +268,9 @@
         <div class="form-group">
             <div class="col-md-2 col-md-offset-4">
                 <div class="input-group width-md">
-                    <input type="text" placeholder="Bis" class="form-control date" ng-model="tableOptions.filter.published.end" options="filterPublishedOptions" date-range-picker>
+                    <input type="text" placeholder="Bis" class="form-control date" ng-model="published.end" options="filterPublishedOptions" date-range-picker date-converter="tableOptions.filter.published.end">
                     <span class="input-group-btn">
-                        <button class="btn btn-default clear" ng-click="tableOptions.filter.published.end=0" ng-disabled="!tableOptions.filter.published.end">
+                        <button class="btn btn-default clear" ng-click="published.end=0" ng-disabled="!published.end">
                             <i class="fa fa-times"></i>
                         </button>
                     </span>
@@ -282,9 +282,9 @@
             <label class="col-md-4 control-label" for="filterAired">Ausstrahlung</label>
             <div class="col-md-2">
                 <div class="input-group width-md">
-                    <input type="text" placeholder="Von" class="form-control date" ng-model="tableOptions.filter.aired.start" options="filterAiredOptions" date-range-picker>
+                    <input type="text" placeholder="Von" class="form-control date" ng-model="aired.start" options="filterAiredOptions" date-range-picker date-converter="tableOptions.filter.aired.start">
                     <span class="input-group-btn">
-                        <button class="btn btn-default clear" ng-click="tableOptions.filter.aired.start=0" ng-disabled="!tableOptions.filter.aired.start">
+                        <button class="btn btn-default clear" ng-click="aired.start=0" ng-disabled="!aired.start">
                             <i class="fa fa-times"></i>
                         </button>
                     </span>
@@ -294,9 +294,9 @@
         <div class="form-group">
             <div class="col-md-2 col-md-offset-4">
                 <div class="input-group width-md">
-                    <input type="text" placeholder="Bis" class="form-control date" ng-model="tableOptions.filter.aired.end" options="filterAiredOptions" date-range-picker>
+                    <input type="text" placeholder="Bis" class="form-control date" ng-model="aired.end" options="filterAiredOptions" date-range-picker date-converter="tableOptions.filter.aired.end">
                     <span class="input-group-btn">
-                        <button class="btn btn-default clear" ng-click="tableOptions.filter.aired.end=0" ng-disabled="!tableOptions.filter.aired.end">
+                        <button class="btn btn-default clear" ng-click="aired.end=0" ng-disabled="!aired.end">
                             <i class="fa fa-times"></i>
                         </button>
                     </span>
@@ -335,7 +335,7 @@
         </div>
         <!-- no series videos -->
         <div class="form-group" ng-if="mode === 'edit'">
-            <label class="col-md-4 control-label">Keine Serie</label>
+            <label class="col-md-4 control-label">Keine Serien</label>
             <div class="col-md-4">
                 <div class="radio radio-primary radio-inline" ng-repeat="selection in filterSelectionOptions">
                     <input id="filterNoSeries{{$index}}" type="radio" ng-value="{{selection.value}}" name="filterNoSeries" ng-model="tableOptions.filter.noSeries" ng-checked="tableOptions.filter.noSeries === selection.value">

@@ -1,0 +1,64 @@
+.chart {
+    #tmpCanvas {
+        display: none;
+    }
+    > .card-content-header {}
+    > .card-content-body {
+        position: relative;
+        > .chart-overlay {
+            font-size: 1.6em;
+            color: #333333;
+            > * {
+                position: absolute;
+                .transition(200ms ease-in-out opacity);
+                .transform(translate(-50%, -50%));
+                top: 50%;
+                left: 50%;
+                opacity: 1;
+                &.ng-hide {
+                    opacity: 0;
+                }
+            }
+            > .chart-loading {
+
+            }
+            > .chart-error {
+                color: #d9534f;
+            }
+            > .chart-empty {}
+        }
+        > .chart-container {
+            overflow-x: auto;
+            margin: -10px;
+            > .chart-container-scroll {
+                > nvd3 {
+                    .nvd3 {
+                        text {
+                            fill: #444444;
+                        }
+                        .nv-axis path {
+                            stroke: #444444;
+                        }
+                        &.nv-noData {
+                            display: none;
+                        }
+                    }
+                    > .title,
+                    > .subtitle,
+                    > .caption {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+    > .card-content-footer {}
+}
+
+.chart-tooltip {
+    border: 0;
+    background-color: rgba(0, 0, 0, 0.80);
+    .border-radius(2px);
+    color: #ffffff;
+    padding: 0;
+}

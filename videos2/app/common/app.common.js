@@ -1,7 +1,9 @@
 angular.module('app.common', [
+	'app.data',
     'ui.bootstrap',
     'ui.router',
-    'ngAnimate'
+    'ngAnimate',
+    'ngTable',
 ]);
 
 angular.module('app.common').config(function($stateProvider) {

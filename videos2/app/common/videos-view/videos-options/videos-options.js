@@ -1,8 +1,8 @@
-angular.module('app.common').directive('videosOptions', function($timeout) {
+angular.module('app.common').directive('videosOptions', function($timeout, $parse) {
     return {
         restrict: 'A',
         templateUrl: 'app/common/videos-view/videos-options/videos-options.html',
-        controller: function($scope, VideosFilterSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+        controller: function($scope, InitSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
             $scope.init = function() {
                 $scope.channels = ChannelsSrv.all();
                 $scope.shows = ShowsSrv.all();
@@ -39,9 +39,9 @@ angular.module('app.common').directive('videosOptions', function($timeout) {
                     { value: 'or', name: 'Oder' }
                 ];
                 $scope.filterSelectionOptions = [
-                    { value: 0, name: 'Alle' },
-                    { value: 1, name: 'Ja' },
-                    { value: 2, name: 'Nein' }
+                    { value: null, name: 'Egal' },
+                    { value: true, name: 'Ja' },
+                    { value: false, name: 'Nein' }
                 ];
                 $scope.filterPublishedOptions = {
                     singleDatePicker: true
@@ -60,7 +60,53 @@ angular.module('app.common').directive('videosOptions', function($timeout) {
                         column: 'published',
                         type: 'desc'
                     },
-                    filter: VideosFilterSrv.default()
+                    filter: {
+                        title: {
+                            text: null,
+                            regex: false,
+                            sensitive: false
+                        },
+                        channels: {
+                            filter: []
+                        },
+                        shows: {
+                            filter: [],
+                            match: 'or'
+                        },
+                        hosts: {
+                            filter: [],
+                            match: 'or'
+                        },
+                        series: {
+                            filter: [],
+                            match: 'or'
+                        },
+                        duration: {
+                            start: 0,
+                            end: 0
+                        },
+                        published: {
+                            start: 0,
+                            end: 0
+                        },
+                        aired: {
+                            start: 0,
+                            end: 0
+                        },
+                        event: null,
+                        noShow: null,
+                        noHost: null,
+                        noSeries: null,
+                        online: true,
+                        valid: null,
+                        invert: false
+                    }
+                };
+
+
+                $scope.aired = {
+                    start: {},
+                    end: {}
                 };
 
                 $scope.$watchCollection('tableOptions.display', function(newVal, oldVal) {
@@ -71,7 +117,11 @@ angular.module('app.common').directive('videosOptions', function($timeout) {
                     $scope.tableParams.sorting($scope.tableOptions.order.column, $scope.tableOptions.order.type);
                 });
 
-                if (!$scope.tableOptions) {
+                $scope.$watch('tableOptions.filter', function(newVal, oldVal) {
+                    $scope.clearVideosCache();
+                }, true);
+
+                if (angular.equals({}, $scope.tableOptions)) {
                     $scope.resetOptions();
                 }
             };
@@ -129,21 +179,20 @@ angular.module('app.common').directive('videosOptions', function($timeout) {
             };
 
             $scope.resetOptions = function() {
-                $scope.tableOptions = angular.copy($scope.defaultOptions);
+                angular.copy($scope.defaultOptions, $scope.tableOptions);
             };
 
             $scope.applyFilter = function() {
-                $timeout(function() {
-                    $scope.tableParams.reload();
-                }, 100);
+                $scope.update();
             };
 
             $scope.resetFilter = function() {
+                $scope.clearVideosCache();
                 $scope.resetOptions();
                 $scope.applyFilter();
             };
 
-            $scope.init();
+            InitSrv.init($scope, $scope.init);
         }
     };
 });

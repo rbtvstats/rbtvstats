@@ -1,4 +1,4 @@
-angular.module('app.editor.utils').directive('imgInput', function() {
+angular.module('app.editor').directive('imgInput', function() {
     return {
         restrict: 'A',
         scope: {

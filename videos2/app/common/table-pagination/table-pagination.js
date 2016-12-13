@@ -5,7 +5,7 @@ angular.module('app.common').directive('tablePagination', function(ngTableEvents
             tableParams: '=tablePagination'
         },
         templateUrl: 'app/common/table-pagination/table-pagination.html',
-        controller: function($scope) {
+        controller: function($scope, InitSrv) {
             $scope.init = function() {
                 $scope.pagination = {};
 
@@ -14,10 +14,6 @@ angular.module('app.common').directive('tablePagination', function(ngTableEvents
                 ngTableEventsChannel.onDatasetChanged($scope.syncPagination, $scope, $scope.tableParams);
 
                 $scope.syncPagination();
-            };
-
-            function totalPages() {
-                return Math.ceil($scope.tableParams.total() / $scope.tableParams.count());
             };
 
             $scope.prev = function() {
@@ -36,8 +32,8 @@ angular.module('app.common').directive('tablePagination', function(ngTableEvents
                 var prevTotal = $scope.pagination.total;
 
                 $scope.pagination.current = $scope.tableParams.page();
-                $scope.pagination.total = totalPages();
                 $scope.pagination.count = $scope.tableParams.count();
+                $scope.pagination.total = Math.ceil($scope.tableParams.total() / $scope.pagination.count);
                 $scope.pagination.first = $scope.pagination.current <= 1;
                 $scope.pagination.last = $scope.pagination.current >= $scope.pagination.total;
 
@@ -46,7 +42,7 @@ angular.module('app.common').directive('tablePagination', function(ngTableEvents
                 }
             };
 
-            $scope.init();
+            InitSrv.init($scope, $scope.init);
         }
     };
 });

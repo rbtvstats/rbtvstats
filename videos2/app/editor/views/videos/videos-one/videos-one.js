@@ -1,26 +1,30 @@
-angular.module('app.editor').controller('VideosOneCtrl', function($scope, $timeout, $state, $stateParams, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
-    $scope.init = function() {
-        $scope.video = VideosSrv.findById($stateParams.videoId);
-        $scope.videos = VideosSrv.all();
-        $scope.channels = ChannelsSrv.all();
-        $scope.shows = ShowsSrv.all();
-        $scope.hosts = HostsSrv.all();
-        $scope.series = SeriesSrv.all();
+angular.module('app.editor').config(function($stateProvider) {
+    $stateProvider.state('editor.videos.one', {
+        url: '/:videoId',
+        templateUrl: 'app/editor/views/videos/videos-one/videos-one.html',
+        controller: function($scope, $state, $stateParams, InitSrv, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+            $scope.init = function() {
+                $scope.video = VideosSrv.findById($stateParams.videoId);
+                $scope.videos = VideosSrv.all();
+                $scope.channels = ChannelsSrv.all();
+                $scope.shows = ShowsSrv.all();
+                $scope.hosts = HostsSrv.all();
+                $scope.series = SeriesSrv.all();
 
-        $scope.$watch('video', function(newVal, oldVal) {
-            $scope.valid = VideosSrv.isValid($scope.video);
+                $scope.$watch('video', function(newVal, oldVal) {
+                    $scope.valid = VideosSrv.isValid($scope.video);
 
-            VideosSrv.save();
-        }, true);
+                    VideosSrv.save();
+                }, true);
+            };
 
-        $scope.initialized = true;
-    };
+            $scope.delete = function(video) {
+                VideosSrv.delete({ id: video.id });
+                VideosSrv.save();
+                $state.transitionTo('editor.videos.all');
+            };
 
-    $scope.delete = function(video) {
-        VideosSrv.delete({ id: video.id });
-        VideosSrv.save();
-        $state.transitionTo('editor.videos.all');
-    };
-
-    $timeout($scope.init, 50);
+            InitSrv.init($scope, $scope.init, 50);
+        }
+    });
 });

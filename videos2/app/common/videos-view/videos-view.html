@@ -19,6 +19,8 @@
             <div videos-options="tableOptions" videos-table="tableParams"></div>
         </div>
     </div>
-    <div ng-include="'app/common/videos-view/videos-view-list.html'" ng-if="tableOptions.display.view === 'list'"></div>
-    <div ng-include="'app/common/videos-view/videos-view-card.html'" ng-if="tableOptions.display.view === 'card'"></div>
+    <div ng-if="tableParams.visible">
+        <div ng-include="'app/common/videos-view/videos-view-list.html'" ng-if="tableOptions.display.view === 'list'"></div>
+        <div ng-include="'app/common/videos-view/videos-view-card.html'" ng-if="tableOptions.display.view === 'card'"></div>
+    </div>
 </div>

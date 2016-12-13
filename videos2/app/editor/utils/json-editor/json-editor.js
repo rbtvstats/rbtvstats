@@ -1,4 +1,4 @@
-angular.module('app.editor.utils').directive('jsonEditor', function() {
+angular.module('app.editor').directive('jsonEditor', function() {
     return {
         restrict: 'A',
         scope: {

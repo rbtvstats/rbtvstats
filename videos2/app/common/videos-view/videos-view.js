@@ -6,7 +6,7 @@ angular.module('app.common').directive('videosView', function($timeout) {
             mode: '=videosMode'
         },
         templateUrl: 'app/common/videos-view/videos-view.html',
-        controller: function($scope, NgTableParams, StateSrv, VideosFilterSrv, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+        controller: function($scope, NgTableParams, InitSrv, StateSrv, VideosSrv, ShowsSrv, HostsSrv, SeriesSrv) {
             $scope.init = function() {
                 //import from parent scope
                 $scope.imagePlaceholders = $scope.$parent.imagePlaceholders;
@@ -20,7 +20,7 @@ angular.module('app.common').directive('videosView', function($timeout) {
                     filterOptions: {
                         filterFn: function(videos) {
                             if (!$scope.videosCache) {
-                                $scope.videosCache = VideosFilterSrv.filter(videos, $scope.tableOptions.filter);
+                                $scope.videosCache = VideosSrv.filter(videos, $scope.tableOptions.filter);
                             }
 
                             return $scope.videosCache;
@@ -28,19 +28,21 @@ angular.module('app.common').directive('videosView', function($timeout) {
                     }
                 });
 
-                $scope.tableOptions = null;
+                $scope.tableOptions = {};
                 $scope.tableOptionsVisible = false;
 
-                $scope.$watch('tableOptions.filter', function(newVal, oldVal) {
-                    $scope.clearVideosCache();
-                }, true);
+                //delay visibility -> smoother UI
+                $scope.tableParams.visible = false;
+                $timeout(function() {
+                    $scope.tableParams.visible = true;
+                }, 50);
 
                 $scope.$on('video.changed', function(video) {
                     $scope.clearVideosCache();
                 });
 
                 StateSrv.watch($scope, ['tableOptions']);
-            }
+            };
 
             function escapeRegExp(str) {
                 return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
@@ -55,22 +57,30 @@ angular.module('app.common').directive('videosView', function($timeout) {
             };
 
             $scope.getDuration = function(video) {
-                var seconds = video.duration;
-                var days = Math.floor(seconds / 86400);
-                var hours = Math.floor((seconds % 86400) / 3600);
-                var minutes = Math.floor(((seconds % 86400) % 3600) / 60);
-                var seconds = Math.floor((((seconds % 86400) % 3600) % 60));
+                var duration = video.duration;
+                var days = Math.floor(duration / 86400);
+                var hours = Math.floor((duration % 86400) / 3600);
+                var minutes = Math.floor(((duration % 86400) % 3600) / 60);
+                var seconds = Math.floor((((duration % 86400) % 3600) % 60));
                 var timeStr = '';
-                if (days > 0) timeStr += days + "T ";
-                if (hours > 0) timeStr += hours + "h ";
-                if (minutes > 0) timeStr += minutes + "m ";
-                if (seconds > 0 && days == 0 && hours == 0) timeStr += seconds + "s ";
+                if (days > 0) {
+                    timeStr += days + "T ";
+                }
+                if (hours > 0) {
+                    timeStr += hours + "h ";
+                }
+                if (minutes > 0) {
+                    timeStr += minutes + "m ";
+                }
+                if (seconds > 0 && days === 0 && hours === 0) {
+                    timeStr += seconds + "s ";
+                }
 
                 return timeStr;
             };
 
             $scope.getHighlight = function(video) {
-                return $scope.mode === 'edit' && (video.shows.length == 0 || video.hosts.length == 0);
+                return video.shows.length === 0 || video.hosts.length === 0;
             };
 
             $scope.getLiveFrom = function(video) {
@@ -213,7 +223,7 @@ angular.module('app.common').directive('videosView', function($timeout) {
                 $scope.tableParams.reload();
             };
 
-            $scope.init();
+            InitSrv.init($scope, $scope.init);
         }
-    }
+    };
 });

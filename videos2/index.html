@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html ng-app="videoCrawler">
+<html ng-app="rbtvStats">
 
 <head>
     <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
+    <link href="vendor.less" type="text/css" rel="stylesheet/less">
     <link href="app.less" type="text/css" rel="stylesheet/less">
 </head>
 
-<body ng-cloak>
+<body>
     <!-- Livereload script for development only (stripped during dist build) -->
     <script src="http://localhost:35729/livereload.js" data-concat="false"></script>
     <!-- JS from Bower Components -->
@@ -22,6 +23,7 @@
     <script src="bower_components/angular-moment/angular-moment.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-uuid4/angular-uuid4.js"></script>
     <script src="bower_components/angular-md5/angular-md5.js"></script>
@@ -39,6 +41,12 @@
     <script src="bower_components/url-join/lib/url-join.js"></script>
     <script src="bower_components/file-saver/FileSaver.js"></script>
     <script src="bower_components/jszip/dist/jszip.js"></script>
+    <script src="bower_components/d3/d3.js"></script>
+    <script src="bower_components/nvd3/build/nv.d3.js"></script>
+    <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+    <script src="bower_components/Blob/Blob.js"></script>
+    <script src="bower_components/canvg/dist/canvg.bundle.js"></script>
+    <script src="bower_components/canvas-to-Blob.js/canvas-toBlob.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
     <!-- Add New Bower Component JS Above -->
     <!-- Main App JS -->
@@ -47,10 +55,11 @@
     <script src="app/app.js"></script>
     <!-- app.common -->
     <script src="app/common/app.common.js"></script>
+    <script src="app/common/init/init.js"></script>
+    <script src="app/common/navigation/navigation.js"></script>
     <script src="app/common/config/config.js"></script>
     <script src="app/common/state/state.js"></script>
     <script src="app/common/img-src/img-src.js"></script>
-    <script src="app/common/videos-filter/videos-filter.js"></script>
     <script src="app/common/videos-view/videos-view.js"></script>
     <script src="app/common/videos-view/videos-options/videos-options.js"></script>
     <script src="app/common/videos-view/videos-edit/videos-edit.js"></script>
@@ -58,13 +67,13 @@
     <script src="app/common/table-pagination/table-pagination.js"></script>
     <!-- app.data -->
     <script src="app/data/app.data.js"></script>
+    <script src="app/data/backend/youtube-api/youtube-api.js"></script>
+    <script src="app/data/backend/github-api/github-api.js"></script>
     <!-- app.data.video -->
     <script src="app/data/videos/app.data.videos.js"></script>
     <script src="app/data/videos/controller/controller.js"></script>
     <script src="app/data/videos/backup/backup.js"></script>
-    <script src="app/data/videos/backend/youtube-api/youtube-api.js"></script>
-    <script src="app/data/videos/backend/github-api/github-api.js"></script>
-    <script src="app/data/videos/videos-resolve/videos-resolve.js"></script>
+    <script src="app/data/videos/resolve/resolve.js"></script>
     <script src="app/data/videos/models/base/base.js"></script>
     <script src="app/data/videos/models/channels/channels.js"></script>
     <script src="app/data/videos/models/videos/videos.js"></script>
@@ -73,7 +82,8 @@
     <script src="app/data/videos/models/series/series.js"></script>
     <!-- app.editor -->
     <script src="app/editor/app.editor.js"></script>
-    <script src="app/editor/views/navigation/navigation.js"></script>
+    <script src="app/editor/utils/img-input/img-input.js"></script>
+    <script src="app/editor/utils/json-editor/json-editor.js"></script>
     <script src="app/editor/views/config/config.js"></script>
     <script src="app/editor/views/data/data.js"></script>
     <script src="app/editor/views/channels/channels.js"></script>
@@ -91,12 +101,36 @@
     <script src="app/editor/views/series/series.js"></script>
     <script src="app/editor/views/series/series-all/series-all.js"></script>
     <script src="app/editor/views/series/series-one/series-one.js"></script>
-    <!-- app.editor.utils -->
-    <script src="app/editor/utils/app.editor.utils.js"></script>
-    <script src="app/editor/utils/img-input/img-input.js"></script>
-    <script src="app/editor/utils/json-editor/json-editor.js"></script>
+    <!-- app.viewer -->
+    <script src="app/viewer/app.viewer.js"></script>
+    <script src="app/viewer/utils/chart/chart.js"></script>
+    <script src="app/viewer/views/channels/channels.js"></script>
+    <script src="app/viewer/views/channels/channels-all/channels-all.js"></script>
+    <script src="app/viewer/views/channels/channels-one/channels-one.js"></script>
+    <script src="app/viewer/views/videos/videos.js"></script>
+    <script src="app/viewer/views/videos/videos-all/videos-all.js"></script>
+    <script src="app/viewer/views/shows/shows.js"></script>
+    <script src="app/viewer/views/shows/shows-all/shows-all.js"></script>
+    <script src="app/viewer/views/shows/shows-one/shows-one.js"></script>
+    <script src="app/viewer/views/hosts/hosts.js"></script>
+    <script src="app/viewer/views/hosts/hosts-all/hosts-all.js"></script>
+    <script src="app/viewer/views/hosts/hosts-one/hosts-one.js"></script>
+    <script src="app/viewer/views/series/series.js"></script>
+    <script src="app/viewer/views/series/series-all/series-all.js"></script>
+    <script src="app/viewer/views/series/series-one/series-one.js"></script>
+    <script src="app/viewer/views/live/live.js"></script>
+    <script src="app/common/converter/duration-converter/duration-converter.js"></script>
+    <script src="app/common/converter/date-converter/date-converter.js"></script>
+    <script src="app/common/date-range-picker/date-range-picker.js"></script>
     <!-- Add New Component JS Above -->
-    <div ui-view></div>
+    <!-- navigation -->
+    <div navigation></div>
+    <!-- main -->
+    <div ui-view ng-cloak></div>
+    <!-- footer -->
+    <div class="footer">
+        footer
+    </div>
 </body>
 
 </html>

@@ -5,7 +5,7 @@ angular.module('app.common').service('ConfigSrv', function() {
     service.default = function() {
         return angular.copy({
             youtubeApiKey: '',
-            githubOAuthToken: '',
+            githubApiOAuthToken: '',
             githubBaseUrl: 'https://raw.githubusercontent.com',
             githubRepository: 'rbtvstats/rbtvdata',
             githubBranch: 'master',
@@ -22,22 +22,14 @@ angular.module('app.common').service('ConfigSrv', function() {
     service.loadLocal = function(config) {
         return localforage.getItem('config')
             .then(function(data) {
-                service.clear();
-
-                if (!data) {
-                    data = service.default();
-                }
-
-                angular.copy(data, cache);
-
-                return cache;
+                return service.load(data || service.default());
             });
     };
 
     service.load = function(config) {
-        if (config !== cache && angular.isObject(config)) {
-            service.clear();
+        service.clear();
 
+        if (config !== cache && angular.isObject(config)) {
             angular.copy(config, cache);
         }
 
