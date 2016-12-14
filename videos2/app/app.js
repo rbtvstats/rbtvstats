@@ -28,7 +28,22 @@ function benchmark(func, run) { //TODO remove
     }
 }
 
-angular.module('app').config(function(NotificationProvider, cfpLoadingBarProvider, $tooltipProvider, $timepickerProvider, $datepickerProvider) {
+angular.module('app').config(function($urlRouterProvider, NotificationProvider, cfpLoadingBarProvider, $tooltipProvider, $timepickerProvider, $datepickerProvider) {
+    $urlRouterProvider.rule(function($injector, $location) {
+        var path = $location.url();
+
+        // check to see if the path already has a slash where it should be
+        if (path[path.length - 1] === '/' || path.indexOf('/?') > -1) {
+            return;
+        }
+
+        if (path.indexOf('?') > -1) {
+            return path.replace('?', '/?');
+        }
+
+        return path + '/';
+    });
+
     NotificationProvider.setOptions({
         delay: 3000,
         startTop: 20,

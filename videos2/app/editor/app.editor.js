@@ -18,7 +18,7 @@ angular.module('app.editor').config(function($stateProvider, $urlRouterProvider)
         url: '/editor',
         templateUrl: 'app/editor/app.editor.html'
     });
-    $urlRouterProvider.when('/editor', '/editor/channels/');
+    $urlRouterProvider.when('/editor/', '/editor/videos/data/');
 });
 
 angular.module('app.editor').controller('EditorCtrl', function($scope, $q, InitSrv, ConfigSrv, StateSrv, VideosDataBackupSrv, VideosDataControllerSrv) {

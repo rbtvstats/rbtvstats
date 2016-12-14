@@ -16,7 +16,7 @@ angular.module('app.viewer').config(function($stateProvider, $urlRouterProvider)
         url: '',
         templateUrl: 'app/viewer/app.viewer.html'
     });
-    $urlRouterProvider.otherwise('/channels/');
+    $urlRouterProvider.otherwise('/videos/channels/');
 });
 
 angular.module('app.viewer').controller('ViewerCtrl', function($scope, $q, InitSrv, ConfigSrv, StateSrv, VideosDataBackupSrv, VideosDataControllerSrv) {
