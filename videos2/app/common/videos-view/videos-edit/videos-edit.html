@@ -1,33 +1,33 @@
 <div class="metadata">
     <div class="metadata-header">
         <div class="left">
-            <button class="btn btn-default" type="button" uib-tooltip="Schließen" ng-click="$parent.metadataVisible=false">
+            <button class="btn btn-default" type="button" data-title="Schließen" ng-click="close()" bs-tooltip>
                 <i class="fa fa-fw fa-close"></i>
             </button>
-            <button class="btn btn-default" type="button" uib-tooltip="Auto" ng-click="autoAll(video)">
+            <button class="btn btn-default" type="button" data-title="Auto" ng-click="autoAll(video)" bs-tooltip>
                 <i class="fa fa-fw fa-magic"></i>
             </button>
-            <button class="btn btn-default" type="button" uib-tooltip="Ansicht: Formular" ng-click="active=0" ng-class="{'active': active === 0}">
+            <button class="btn btn-default" type="button" data-title="Ansicht: Formular" ng-click="tabs.selected='form'" ng-class="{'active': tabs.selected === 'form'}" bs-tooltip>
                 <i class="fa fa-fw fa-bars"></i>
             </button>
-            <button class="btn btn-default" type="button" uib-tooltip="Ansicht: Editor" ng-click="active=1" ng-class="{'active': active === 1}">
+            <button class="btn btn-default" type="button" data-title="Ansicht: Editor" ng-click="tabs.selected='editor'" ng-class="{'active': tabs.selected === 'editor'}" bs-tooltip>
                 <i class="fa fa-fw fa-code"></i>
             </button>
         </div>
         <div class="right">
             <div class="text-right">
-                <button class="btn btn-default btn-circle" type="button" ng-class="valid ? 'btn-success': 'btn-danger'" uib-tooltip="Schema Validierung">
+                <button class="btn btn-default btn-circle" type="button" ng-class="valid ? 'btn-success': 'btn-danger'" data-title="Schema Validierung" bs-tooltip>
                     <i class="fa fa-fw" ng-class="valid ? 'fa-check': 'fa-times'"></i>
                 </button>
-                <button class="btn btn-danger" type="button" uib-tooltip="Löschen" ng-click="delete(video)">
+                <button class="btn btn-danger" type="button" data-title="Löschen" ng-click="delete(video)" bs-tooltip>
                     <i class="fa fa-fw fa-trash"></i>
                 </button>
             </div>
         </div>
     </div>
     <div class="metadata-body">
-        <uib-tabset active="active">
-            <uib-tab index="0" heading="Formular" class="row">
+        <div bs-active-pane="tabs.selected" bs-tabs>
+            <div name="form" bs-pane>
                 <div class="form-horizontal view-form">
                     <!-- shows -->
                     <div class="form-group">
@@ -54,7 +54,7 @@
                     <div class="form-group" ng-if="video.shows.length">
                         <div class="col-md-12">
                             <div class="button-list">
-                                <button type="button" class="btn btn-default" uib-tooltip="{{show.name || show.id}}" ng-click="removeShow(video, show)" ng-repeat="show in (video.shows | videosResolve:'shows' | orderBy)">
+                                <button type="button" class="btn btn-default" data-title="{{show.name || show.id}}" ng-click="removeShow(video, show)" ng-repeat="show in (video.shows | videosResolve:'shows' | orderBy)" bs-tooltip>
                                     <img class="badge-round badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                                     <span ng-bind="show.name"></span>
                                 </button>
@@ -87,7 +87,7 @@
                     <div class="form-group" ng-if="video.hosts.length">
                         <div class="col-md-12">
                             <div class="button-list">
-                                <button type="button" class="btn btn-default" uib-tooltip="{{host.firstname}} {{host.lastname}}" ng-click="removeHost(video, host)" ng-repeat="host in (video.hosts | videosResolve:'hosts' | orderBy)">
+                                <button type="button" class="btn btn-default" data-title="{{host.firstname}} {{host.lastname}}" ng-click="removeHost(video, host)" ng-repeat="host in (video.hosts | videosResolve:'hosts' | orderBy)" bs-tooltip>
                                     <img class="badge-round badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                                     <span>{{host.firstname}} {{host.lastname}}</span>
                                 </button>
@@ -119,7 +119,7 @@
                     <div class="form-group" ng-if="video.series.length">
                         <div class="col-md-12">
                             <div class="button-list">
-                                <button type="button" class="btn btn-default" uib-tooltip="{{series.name || series.id}}" ng-click="removeSeries(video, series)" ng-repeat="series in (video.series | videosResolve:'series' | orderBy)">
+                                <button type="button" class="btn btn-default" data-title="{{series.name || series.id}}" ng-click="removeSeries(video, series)" ng-repeat="series in (video.series | videosResolve:'series' | orderBy)" bs-tooltip>
                                     <img class="badge-round badge-md" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                                     <span ng-bind="series.name"></span>
                                 </button>
@@ -127,12 +127,12 @@
                         </div>
                     </div>
                 </div>
-            </uib-tab>
-            <uib-tab index="1" heading="Editor">
+            </div>
+            <div name="editor" bs-pane>
                 <div class="view-editor">
                     <div json-editor="video" editor-only="true"></div>
                 </div>
-            </uib-tab>
-        </uib-tabset>
+            </div>
+        </div>
     </div>
 </div>

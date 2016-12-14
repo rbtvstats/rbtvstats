@@ -3,12 +3,7 @@ angular.module('app', [
     'app.data',
     'app.editor',
     'app.viewer',
-    'ui.bootstrap',
     'ui.router',
-    'ngAnimate',
-    'ngSanitize',
-    'daterangepicker',
-    'angularMoment',
     'angular-loading-bar',
     'ui-notification'
 ]);
@@ -33,7 +28,7 @@ function benchmark(func, run) { //TODO remove
     }
 }
 
-angular.module('app').config(function(NotificationProvider, cfpLoadingBarProvider, $uibTooltipProvider) {
+angular.module('app').config(function(NotificationProvider, cfpLoadingBarProvider, $tooltipProvider, $timepickerProvider, $datepickerProvider) {
     NotificationProvider.setOptions({
         delay: 3000,
         startTop: 20,
@@ -47,9 +42,26 @@ angular.module('app').config(function(NotificationProvider, cfpLoadingBarProvide
     cfpLoadingBarProvider.includeSpinner = false;
     cfpLoadingBarProvider.latencyThreshold = 500;
 
-    $uibTooltipProvider.options({
-        appendToBody: true,
-        animation: false
+    angular.extend($tooltipProvider.defaults, {
+        container: 'body'
+    });
+
+    angular.extend($timepickerProvider.defaults, {
+        container: 'body',
+        timeFormat: 'HH:mm',
+        length: 3,
+        useNative: false,
+        timeType: 'unix',
+        iconUp: 'fa fa-fw fa-chevron-up',
+        iconDown: 'fa fa-fw fa-chevron-down'
+    });
+
+    angular.extend($datepickerProvider.defaults, {
+        container: 'body',
+        useNative: false,
+        dateType: 'unix',
+        iconLeft: 'fa fa-fw fa-chevron-left',
+        iconRight: 'fa fa-fw fa-chevron-right'
     });
 });
 
@@ -80,41 +92,6 @@ angular.module('app').run(function($rootScope, amMoment, Notification, $parse) {
     });
     d3.format = d3GermanFormat.numberFormat;
     d3.time.format = d3GermanFormat.timeFormat;
-
-    $rootScope.dateRangePickerLocale = {
-        format: 'DD.MM.YYYY',
-        separator: ' - ',
-        applyLabel: 'Anwenden',
-        cancelLabel: 'Abbrechen',
-        fromLabel: 'Bis',
-        toLabel: 'Von',
-        customRangeLabel: 'Manuell',
-        weekLabel: 'W',
-        daysOfWeek: [
-            'So',
-            'Mo',
-            'Di',
-            'Mi',
-            'Do',
-            'Fr',
-            'Sa'
-        ],
-        monthNames: [
-            'Januar',
-            'Frebruar',
-            'März',
-            'April',
-            'Mai',
-            'Juni',
-            'Juli',
-            'August',
-            'September',
-            'Oktober',
-            'November',
-            'Dezember'
-        ],
-        firstDay: 1
-    };
 
     //extend notification service
     Notification.parseError = function(options) {

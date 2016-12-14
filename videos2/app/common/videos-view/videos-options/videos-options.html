@@ -5,29 +5,31 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="view">Ansicht</label>
             <div class="col-md-4">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default" uib-tooltip="{{view.name}}" ng-click="tableOptions.display.view = view.value" ng-class="{'active' : tableOptions.display.view === view.value}" ng-repeat="view in displayViewOptions">
+                <span class="btn-group" ng-model="tableOptions.display.view" bs-radio-group>
+                    <label class="btn btn-default" ng-repeat="view in displayViewOptions">
+                        <input type="radio" class="btn btn-default" value="{{view.value}}">
                         <i class="fa {{view.icon}}"></i>
-                    </button>
-                </div>
+                    </label>
+                </span>
             </div>
         </div>
         <!-- count -->
         <div class="form-group">
             <label class="col-md-4 control-label" for="count">Einträge pro Seite</label>
             <div class="col-md-4">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default" ng-click="tableOptions.display.count = count" ng-class="{'active' : tableOptions.display.count == count}" ng-repeat="count in displayCountOptions">
+                <span class="btn-group" ng-model="tableOptions.display.count" bs-radio-group>
+                    <label class="btn btn-default" ng-repeat="count in displayCountOptions">
+                        <input type="radio" class="btn btn-default" value="{{count}}">
                         {{count}}
-                    </button>
-                </div>
+                    </label>
+                </span>
             </div>
         </div>
     </fieldset>
     <fieldset class="row">
         <legend>Sortierung</legend>
         <!-- column -->
-        <div class="form-group">tableOptions | json
+        <div class="form-group">
             <label class="col-md-4 control-label" for="orderBy">Nach</label>
             <div class="col-md-4">
                 <ui-select ng-model="tableOptions.order.column" skip-focusser="true" search-enabled="false">
@@ -102,7 +104,7 @@
         <div class="form-group" ng-if="tableOptions.filter.channels.filter.length">
             <div class="col-md-offset-4 col-md-8">
                 <div class="button-list">
-                    <button type="button" class="btn btn-default" uib-tooltip="{{channel.title || channel.id}}" ng-click="removeFilterChannel(channel.id)" ng-repeat="channel in tableOptions.filter.channels.filter | videosResolve:'channels' | orderBy">
+                    <button type="button" class="btn btn-default" data-title="{{channel.title || channel.id}}" ng-click="removeFilterChannel(channel.id)" ng-repeat="channel in tableOptions.filter.channels.filter | videosResolve:'channels' | orderBy" bs-tooltip>
                         <img class="badge-round badge-md" img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
                         <span ng-bind="channel.title"></span>
                     </button>
@@ -140,7 +142,7 @@
         <div class="form-group" ng-if="tableOptions.filter.shows.filter.length">
             <div class="col-md-offset-4 col-md-8">
                 <div class="button-list">
-                    <button type="button" class="btn btn-default" uib-tooltip="{{show.name || show.id}}" ng-click="removeFilterShow(show.id)" ng-repeat="show in tableOptions.filter.shows.filter | videosResolve:'shows' | orderBy">
+                    <button type="button" class="btn btn-default" data-title="{{show.name || show.id}}" ng-click="removeFilterShow(show.id)" ng-repeat="show in tableOptions.filter.shows.filter | videosResolve:'shows' | orderBy" bs-tooltip>
                         <img class="badge-round badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                         <span ng-bind="show.name"></span>
                     </button>
@@ -179,7 +181,7 @@
         <div class="form-group" ng-if="tableOptions.filter.hosts.filter.length">
             <div class="col-md-offset-4 col-md-8">
                 <div class="button-list">
-                    <button type="button" class="btn btn-default" uib-tooltip="{{host.name || host.id}}" ng-click="removeFilterHost(host.id)" ng-repeat="host in tableOptions.filter.hosts.filter | videosResolve:'hosts' | orderBy">
+                    <button type="button" class="btn btn-default" data-title="{{host.firstname}} {{host.lastname}}" ng-click="removeFilterHost(host.id)" ng-repeat="host in tableOptions.filter.hosts.filter | videosResolve:'hosts' | orderBy" bs-tooltip>
                         <img class="badge-round badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                         <span>{{host.firstname}} {{host.lastname}}</span>
                         <span ng-if="host.nickname">({{host.nickname}})</span>
@@ -218,7 +220,7 @@
         <div class="form-group" ng-if="tableOptions.filter.series.filter.length">
             <div class="col-md-offset-4 col-md-8">
                 <div class="button-list">
-                    <button type="button" class="btn btn-default" uib-tooltip="{{series_.name || show.id}}" ng-click="removeFilterSeries(series_.id)" ng-repeat="series_ in tableOptions.filter.series.filter | videosResolve:'series' | orderBy">
+                    <button type="button" class="btn btn-default" data-title="{{series_.name || show.id}}" ng-click="removeFilterSeries(series_.id)" ng-repeat="series_ in tableOptions.filter.series.filter | videosResolve:'series' | orderBy" bs-tooltip>
                         <img class="badge-round badge-md" img-src="{{series_.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                         <span ng-bind="series_.name"></span>
                     </button>
@@ -229,10 +231,10 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="filterLength">Laufzeit</label>
             <div class="col-md-2">
-                <div class="input-group width-md">
-                    <div uib-timepicker ng-model="tableOptions.filter.duration.start" hour-step="1" minute-step="5" show-spinners="false" show-meridian="false" duration-converter></div>
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model="tableOptions.filter.duration.start" bs-timepicker>
                     <span class="input-group-btn">
-                        <button class="btn btn-default clear" ng-click="tableOptions.filter.duration.start=0" ng-disabled="!tableOptions.filter.duration.start">
+                        <button class="btn btn-default clear" ng-click="tableOptions.filter.duration.start=null" ng-disabled="!tableOptions.filter.duration.start">
                             <i class="fa fa-times"></i>
                         </button>
                     </span>
@@ -241,10 +243,10 @@
         </div>
         <div class="form-group">
             <div class="col-md-2 col-md-offset-4">
-                <div class="input-group width-md">
-                    <div uib-timepicker ng-model="tableOptions.filter.duration.end" hour-step="1" minute-step="5" show-spinners="false" show-meridian="false" duration-converter></div>
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model="tableOptions.filter.duration.end" bs-timepicker>
                     <span class="input-group-btn">
-                        <button class="btn btn-default clear" ng-click="tableOptions.filter.duration.end=0" ng-disabled="!tableOptions.filter.duration.end">
+                        <button class="btn btn-default clear" ng-click="tableOptions.filter.duration.end=null" ng-disabled="!tableOptions.filter.duration.end">
                             <i class="fa fa-times"></i>
                         </button>
                     </span>
@@ -255,10 +257,10 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="filterPublished">Veröffentlichung</label>
             <div class="col-md-2">
-                <div class="input-group width-md">
-                    <input type="text" placeholder="Von" class="form-control date" ng-model="published.start" options="filterPublishedOptions" date-converter="tableOptions.filter.published.start" date-range-picker>
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model="tableOptions.filter.published.start" bs-datepicker>
                     <span class="input-group-btn">
-                        <button class="btn btn-default clear" ng-click="published.start=0" ng-disabled="!published.start">
+                        <button class="btn btn-default clear" ng-click="tableOptions.filter.published.start=null" ng-disabled="!tableOptions.filter.published.start">
                             <i class="fa fa-times"></i>
                         </button>
                     </span>
@@ -267,10 +269,10 @@
         </div>
         <div class="form-group">
             <div class="col-md-2 col-md-offset-4">
-                <div class="input-group width-md">
-                    <input type="text" placeholder="Bis" class="form-control date" ng-model="published.end" options="filterPublishedOptions" date-range-picker date-converter="tableOptions.filter.published.end">
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model="tableOptions.filter.published.end" bs-datepicker>
                     <span class="input-group-btn">
-                        <button class="btn btn-default clear" ng-click="published.end=0" ng-disabled="!published.end">
+                        <button class="btn btn-default clear" ng-click="tableOptions.filter.published.end=null" ng-disabled="!tableOptions.filter.published.end">
                             <i class="fa fa-times"></i>
                         </button>
                     </span>
@@ -281,10 +283,10 @@
         <div class="form-group">
             <label class="col-md-4 control-label" for="filterAired">Ausstrahlung</label>
             <div class="col-md-2">
-                <div class="input-group width-md">
-                    <input type="text" placeholder="Von" class="form-control date" ng-model="aired.start" options="filterAiredOptions" date-range-picker date-converter="tableOptions.filter.aired.start">
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model="tableOptions.filter.aired.start" bs-datepicker>
                     <span class="input-group-btn">
-                        <button class="btn btn-default clear" ng-click="aired.start=0" ng-disabled="!aired.start">
+                        <button class="btn btn-default clear" ng-click="tableOptions.filter.aired.start=null" ng-disabled="!tableOptions.filter.aired.start">
                             <i class="fa fa-times"></i>
                         </button>
                     </span>
@@ -293,10 +295,10 @@
         </div>
         <div class="form-group">
             <div class="col-md-2 col-md-offset-4">
-                <div class="input-group width-md">
-                    <input type="text" placeholder="Bis" class="form-control date" ng-model="aired.end" options="filterAiredOptions" date-range-picker date-converter="tableOptions.filter.aired.end">
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model="tableOptions.filter.aired.end" bs-datepicker>
                     <span class="input-group-btn">
-                        <button class="btn btn-default clear" ng-click="aired.end=0" ng-disabled="!aired.end">
+                        <button class="btn btn-default clear" ng-click="tableOptions.filter.aired.end=null" ng-disabled="!tableOptions.filter.aired.end">
                             <i class="fa fa-times"></i>
                         </button>
                     </span>

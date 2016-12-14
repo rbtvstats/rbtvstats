@@ -9,13 +9,13 @@
                     </div>
                 </div>
                 <div class="col-md-6 text-right">
-                    <button type="button" class="btn btn-default" ng-click="tableOptionsVisible=!tableOptionsVisible">
+                    <button type="button" class="btn btn-default" ng-click="tableOptionsHidden=!tableOptionsHidden">
                         <i class="fa fa-sliders"></i> Optionen
                     </button>
                 </div>
             </div>
         </div>
-        <div class="card-content-body" uib-collapse="!tableOptionsVisible">
+        <div class="card-content-body" ng-model="tableOptionsHidden" bs-collapse bs-collapse-target>
             <div videos-options="tableOptions" videos-table="tableParams"></div>
         </div>
     </div>

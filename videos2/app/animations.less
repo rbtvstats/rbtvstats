@@ -1,0 +1,228 @@
+/* main view animation */
+
+.animate-main-content {
+    &.ng-enter {
+        .transition(200ms ease-in-out all);
+        .transform(translateY(40px));
+    }
+    &.ng-leave {
+        opacity: 0;
+    }
+    &.ng-enter-active {
+        opacity: 1;
+        .transform(translateY(0));
+    }
+}
+
+
+/* table view animation */
+
+.animate-table-view {
+    position: relative;
+    &.ng-enter {
+        .transition(200ms ease-in-out all);
+        .transform(scale(1, 0));
+        .transform-origin(top);
+    }
+    &.ng-leave {
+        .transition(200ms ease-in-out all);
+        position: absolute;
+        top: 0;
+        opacity: 0;
+    }
+    &.ng-enter-active {
+        .transform(scale(1, 1));
+    }
+    &.ng-leave-active {
+        opacity: 0;
+    }
+}
+
+
+/* table row animation */
+
+.animate-table-row {
+    &.ng-enter {
+        .transition(200ms ease-in-out all);
+        opacity: 0.3;
+        .transform-origin(top);
+    }
+    &.ng-leave {
+        .transition(200ms ease-in-out all);
+        position: absolute;
+        top: 0;
+        opacity: 0;
+    }
+    &.ng-enter-active {
+        opacity: 1;
+    }
+    &.ng-leave-active {
+        opacity: 0;
+    }
+    &.link {
+        cursor: pointer;
+    }
+    &.middle {
+        > td {
+            vertical-align: middle;
+        }
+    }
+}
+
+
+/* collapse animation */
+
+@keyframes expand {
+    from {
+        max-height: 0;
+    }
+    to {
+        max-height: 1200px;
+    }
+}
+
+@keyframes collapse {
+    from {
+        max-height: 1200px;
+    }
+    to {
+        max-height: 0;
+    }
+}
+
+.collapse.am-collapse {
+    animation-duration: 400ms;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: backwards;
+    overflow: hidden;
+    &.in-remove {
+        animation-name: collapse;
+        display: block;
+    }
+    &.in-add {
+        animation-name: expand;
+    }
+}
+
+
+/* date/time picker animation */
+
+.timepicker,
+.datepicker {
+    padding: 5px;
+    &.ng-enter {
+        .transition(200ms ease-in-out all);
+        .transform(scale(1, 0));
+        .transform-origin(top);
+    }
+    &.ng-leave {
+        .transition(200ms ease-in-out all);
+        position: absolute;
+        top: 0;
+        opacity: 0;
+    }
+    &.ng-enter-active {
+        .transform(scale(1, 1));
+    }
+    &.ng-leave-active {
+        opacity: 0;
+    }
+    button {
+        border: 0 !important;
+        .box-shadow(0 0 0) !important;
+        .border-radius(0) !important;
+    }
+}
+
+
+/* dropdown animation */
+
+.dropdown {
+    &.direction-up {
+        .dropdown-menu {
+            .transform-origin(bottom) !important;
+        }
+    }
+    > .dropdown-menu {
+        border-color: #cccccc;
+        .border-radius(2px);
+        .box-shadow-level(2);
+        &.ng-enter {
+            .transition(200ms ease-in-out all);
+            .transform(scale(1, 0));
+            .transform-origin(top);
+        }
+        &.ng-leave {
+            opacity: 0;
+        }
+        &.ng-enter-active {
+            .transform(scale(1, 1));
+        }
+        &.ng-leave-active {
+            opacity: 0;
+        }
+        .dropdown-header {
+            padding: 7px 20px;
+            font-size: 14px;
+            font-weight: normal;
+        }
+        > li {
+            &.active {
+                > a {
+                    color: #fff;
+                    text-decoration: none;
+                    background-color: #428bca;
+                }
+            }
+        }
+    }
+}
+
+
+/* ui-select animation */
+
+.ui-select-container {
+    &.open {
+        .ui-select-choices {
+            .transition(200ms ease-in-out transform);
+            .transform-origin(top);
+            .transform(scale(1, 1));
+        }
+    }
+    > .ui-select-choices {
+        display: block !important;
+        .transform(scale(1, 0));
+    }
+}
+
+
+/* checkbox/radio animation */
+
+.checkbox,
+.radio {
+    > label {
+        &::before,
+        &::after {
+            .transition(200ms ease-in-out all);
+        }
+    }
+}
+
+
+/* tooltip animation */
+
+.tooltip {
+    .transition(200ms ease-in-out transform);
+    &.ng-enter {
+        .transform(scale(0));
+    }
+    &.ng-enter-active {
+        .transform(scale(1));
+    }
+    &.ng-leave {
+        .transform(scale(1));
+    }
+    &.ng-leave-active {
+        .transform(scale(0));
+    }
+}

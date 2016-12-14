@@ -1,10 +1,11 @@
 angular.module('app.editor', [
     'app.common',
     'app.data',
-    'ui.bootstrap',
+    'ngAnimate',
+    'ngSanitize',
     'ui.router',
     'ui.select',
-    'ngAnimate',
+    'angularMoment',
     'ngTable',
     'angular-md5',
     'youtube-embed',
@@ -20,17 +21,8 @@ angular.module('app.editor').config(function($stateProvider, $urlRouterProvider)
     $urlRouterProvider.when('/editor', '/editor/channels/');
 });
 
-angular.module('app.editor').controller('EditorCtrl', function($scope, $q, InitSrv, NavigationSrv, ConfigSrv, StateSrv, VideosDataBackupSrv, VideosDataControllerSrv) {
+angular.module('app.editor').controller('EditorCtrl', function($scope, $q, InitSrv, ConfigSrv, StateSrv, VideosDataBackupSrv, VideosDataControllerSrv) {
     $scope.init = function() {
-        NavigationSrv.clear();
-        NavigationSrv.register('/editor/channels/', 'Kanäle');
-        NavigationSrv.register('/editor/shows/', 'Formate');
-        NavigationSrv.register('/editor/hosts/', 'Moderatoren');
-        NavigationSrv.register('/editor/series/', 'Serien');
-        NavigationSrv.register('/editor/videos/', 'Videos');
-        NavigationSrv.register('/editor/data/', 'Daten');
-        NavigationSrv.register('/editor/config/', 'Einstellungen');
-
         var promises = [];
         promises.push(ConfigSrv.loadLocal());
         promises.push(StateSrv.loadLocal());

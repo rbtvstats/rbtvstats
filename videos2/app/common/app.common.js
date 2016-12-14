@@ -1,12 +1,11 @@
 angular.module('app.common', [
 	'app.data',
-    'ui.bootstrap',
-    'ui.router',
     'ngAnimate',
     'ngTable',
+    'mgcrea.ngStrap'
 ]);
 
-angular.module('app.common').config(function($stateProvider) {
+angular.module('app.common').config(function() {
 
 
 });

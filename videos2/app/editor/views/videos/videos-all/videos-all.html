@@ -17,11 +17,11 @@
                                     <button class="btn btn-default" type="button" ng-click="updateVideosNew()">
                                         <i class="fa fa-refresh"></i> Neue Videos
                                     </button>
-                                    <div class="btn-group" uib-tooltip="{{updateUntil.format('LL')}}">
+                                    <div class="btn-group" data-title="{{updateUntil * 1000 | date:'dd.MM.yyyy' }}" bs-tooltip>
                                         <button class="btn btn-default" type="button" ng-click="updateVideosAllUntil(updateUntil)">
                                             <i class="fa fa-refresh"></i> Alle Videos bis...
                                         </button>
-                                        <button type="button" class="btn btn-default" ng-model="updateUntil" options="updateUntilOptions" date-range-picker>
+                                        <button type="button" class="btn btn-default" ng-model="updateUntil" bs-datepicker>
                                             <i class="fa fa-calendar"></i>
                                         </button>
                                     </div>
@@ -71,4 +71,27 @@
         </div>
     </div>
     <div videos-view="videos" videos-mode="'edit'" ng-if="!updateState.active"></div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-content">
+                <div class="card-content-header">
+                    Code Ausführen
+                </div>
+                <div class="card-content-body">
+                    <div>
+                        <code>
+                            _.each(videos, function(video) {
+                                <textarea class="form-control" rows="10" ng-model="exec.code"></textarea>
+                            });
+                        </code>
+                    </div>
+                    <div>
+                        <button class="btn btn-default" type="button" ng-click="run(exec)">
+                            <i class="fa fa-exclamation"></i> Ausführen
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

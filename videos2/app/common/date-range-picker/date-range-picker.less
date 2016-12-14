@@ -1,0 +1,84 @@
+.date-range-picker {
+    min-width: 20px !important;
+    width: 300px;
+    padding: 0;
+    z-index: 1000;
+    > .tabs {
+        .tab-content {
+            padding: 5px;
+            > .quickselect {
+                > table {
+                    table-layout: fixed;
+                    tr {
+                        vertical-align: top;
+                        > .ranges {
+                            width: 50%;
+                            overflow: hidden;
+                            > .range {
+                                margin-bottom: 5px;
+                                > button {
+                                    width: 100%;
+                                }
+                            }
+                        }
+                        > .dates {
+                            text-align: left;
+                            color: #333333;
+                            width: 50%;
+                            padding-left: 10px;
+                            font-weight: normal;
+                            label {
+                                display: block;
+                                border-bottom: 1px solid #cccccc;
+                                font-size: 16px;
+                                margin-bottom: 6px;
+                                margin-top: 4px;
+                            }
+                        }
+                    }
+                }
+            }
+            > .datetime-container {
+                position: relative;
+                height: 355px;
+                > .timepicker,
+                > .datepicker {
+                    border: 0;
+                    display: block !important;
+                    position: static !important;
+                    .transition(none) !important;
+                    .box-shadow(0 0 0) !important;
+                    padding: 0;
+                    margin: 0;
+                }
+                > .datepicker {
+                    height: 265px;
+                    max-width: inherit !important;
+                    margin-top: 5px;
+                }
+                > .clear {
+                    clear: right;
+                }
+                > input {
+                    float: right;
+                    width: 140px;
+                    padding-left: 24px;
+                    margin: 5px auto;
+                }
+                > i {
+                    position: absolute;
+                    right: 122px;
+                    &.time {
+                        top: 15px;
+                    }
+                    &.date {
+                        top: 58px;
+                    }
+                }
+            }
+        }
+    }
+    > .actions {
+        padding: 5px 10px;
+    }
+}

@@ -1,11 +1,11 @@
-angular.module('app.viewer').directive('chart', function($q, $timeout) {
+angular.module('app.common').directive('chart', function($q, $timeout) {
     return {
         restrict: 'A',
         scope: {
             options: '=options',
             update: '=update'
         },
-        templateUrl: 'app/viewer/utils/chart/chart.html',
+        templateUrl: 'app/common/chart/chart.html',
         controller: function($scope, $rootScope, Notification) {
             $scope.init = function() {
                 var defaultCommon = {
@@ -91,12 +91,6 @@ angular.module('app.viewer').directive('chart', function($q, $timeout) {
                         selected: {
                             start: null,
                             end: null
-                        },
-                        options: {
-                            showDropdowns: true,
-                            opens: 'left',
-                            clearLabel: 'Zurücksetzen',
-                            locale: $rootScope.dateRangePickerLocale
                         }
                     },
                     styles: {
@@ -166,7 +160,7 @@ angular.module('app.viewer').directive('chart', function($q, $timeout) {
 
                 _.defaultsDeep($scope.options, defaultOptions[$scope.options.chart.type] || defaultOptions['lineChart'], defaultCommon);
 
-                $scope.$watchGroup(['options.dateGroup.selected', 'options.dateRange.selected'], function(newVal, oldVal) {
+                $scope.$watchGroup(['options.dateGroup.selected', 'options.dateRange.selected.start', 'options.dateRange.selected.end'], function(newVal, oldVal) {
                     $scope.update();
                 });
 

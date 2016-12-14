@@ -15,38 +15,39 @@
     <!-- JS from Bower Components -->
     <script src="bower_components/less.js/dist/less.js" data-concat="false"></script>
     <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <!--<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>-->
     <script src="bower_components/lodash/dist/lodash.js"></script>
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/moment/locale/de.js"></script>
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-i18n/angular-locale_de-de.js"></script>
     <script src="bower_components/angular-moment/angular-moment.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/angular-uuid4/angular-uuid4.js"></script>
-    <script src="bower_components/angular-md5/angular-md5.js"></script>
-    <script src="bower_components/angular-youtube-mb/dist/angular-youtube-embed.min.js"></script>
     <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-ui-select/dist/select.js"></script>
     <script src="bower_components/angular-ui-notification/dist/angular-ui-notification.js"></script>
-    <script src="bower_components/angular-daterangepicker/js/angular-daterangepicker.js"></script>
-    <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="bower_components/localforage/dist/localforage.js"></script>
-    <script src="bower_components/jsoneditor/dist/jsoneditor.min.js"></script>
-    <script src="bower_components/ng-jsoneditor/ng-jsoneditor.min.js"></script>
     <script src="bower_components/ng-table/dist/ng-table.js"></script>
     <script src="bower_components/url-join/lib/url-join.js"></script>
     <script src="bower_components/file-saver/FileSaver.js"></script>
-    <script src="bower_components/jszip/dist/jszip.js"></script>
+    <script src="bower_components/angular-uuid4/angular-uuid4.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
+    <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+    <!-- viewer dependencies -->
     <script src="bower_components/d3/d3.js"></script>
     <script src="bower_components/nvd3/build/nv.d3.js"></script>
     <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
     <script src="bower_components/Blob/Blob.js"></script>
     <script src="bower_components/canvg/dist/canvg.bundle.js"></script>
     <script src="bower_components/canvas-to-Blob.js/canvas-toBlob.js"></script>
+    <!-- editor dependencies -->
+    <script src="bower_components/angular-md5/angular-md5.js"></script>
+    <script src="bower_components/jsoneditor/dist/jsoneditor.min.js"></script>
+    <script src="bower_components/ng-jsoneditor/ng-jsoneditor.min.js"></script>
+    <script src="bower_components/jszip/dist/jszip.js"></script>
+    <script src="bower_components/angular-youtube-mb/dist/angular-youtube-embed.min.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
     <!-- Add New Bower Component JS Above -->
     <!-- Main App JS -->
@@ -56,7 +57,7 @@
     <!-- app.common -->
     <script src="app/common/app.common.js"></script>
     <script src="app/common/init/init.js"></script>
-    <script src="app/common/navigation/navigation.js"></script>
+    <script src="app/common/chart/chart.js"></script>
     <script src="app/common/config/config.js"></script>
     <script src="app/common/state/state.js"></script>
     <script src="app/common/img-src/img-src.js"></script>
@@ -103,7 +104,6 @@
     <script src="app/editor/views/series/series-one/series-one.js"></script>
     <!-- app.viewer -->
     <script src="app/viewer/app.viewer.js"></script>
-    <script src="app/viewer/utils/chart/chart.js"></script>
     <script src="app/viewer/views/channels/channels.js"></script>
     <script src="app/viewer/views/channels/channels-all/channels-all.js"></script>
     <script src="app/viewer/views/channels/channels-one/channels-one.js"></script>
@@ -119,18 +119,12 @@
     <script src="app/viewer/views/series/series-all/series-all.js"></script>
     <script src="app/viewer/views/series/series-one/series-one.js"></script>
     <script src="app/viewer/views/live/live.js"></script>
-    <script src="app/common/converter/duration-converter/duration-converter.js"></script>
-    <script src="app/common/converter/date-converter/date-converter.js"></script>
     <script src="app/common/date-range-picker/date-range-picker.js"></script>
+    <script src="app/viewer/navigation/navigation.js"></script>
+    <script src="app/viewer/footer/footer.js"></script>
+    <script src="app/editor/navigation/navigation.js"></script>
     <!-- Add New Component JS Above -->
-    <!-- navigation -->
-    <div navigation></div>
-    <!-- main -->
     <div ui-view ng-cloak></div>
-    <!-- footer -->
-    <div class="footer">
-        footer
-    </div>
 </body>
 
 </html>

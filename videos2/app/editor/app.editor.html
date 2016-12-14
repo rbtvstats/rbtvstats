@@ -1,5 +1,6 @@
 <div ng-controller="EditorCtrl">
-    <div ng-if="initialized">
-        <div class="main" ui-view></div>
-    </div>
+    <!-- navigation -->
+    <div ng-include="'app/editor/navigation/navigation.html'"></div>
+    <!-- main -->
+    <div class="main" ng-if="initialized" ui-view></div>
 </div>

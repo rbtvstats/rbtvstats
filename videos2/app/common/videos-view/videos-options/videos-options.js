@@ -43,12 +43,6 @@ angular.module('app.common').directive('videosOptions', function($timeout, $pars
                     { value: true, name: 'Ja' },
                     { value: false, name: 'Nein' }
                 ];
-                $scope.filterPublishedOptions = {
-                    singleDatePicker: true
-                };
-                $scope.filterAiredOptions = {
-                    singleDatePicker: true
-                };
 
                 //default options
                 $scope.defaultOptions = {
@@ -82,16 +76,16 @@ angular.module('app.common').directive('videosOptions', function($timeout, $pars
                             match: 'or'
                         },
                         duration: {
-                            start: 0,
-                            end: 0
+                            start: null,
+                            end: null
                         },
                         published: {
-                            start: 0,
-                            end: 0
+                            start: null,
+                            end: null
                         },
                         aired: {
-                            start: 0,
-                            end: 0
+                            start: null,
+                            end: null
                         },
                         event: null,
                         noShow: null,

@@ -12,7 +12,7 @@
         <div class="col-md-12 text-right">
             <div class="card-content">
                 <div class="card-content-header">
-                    <button class="btn btn-default btn-circle" type="button" ng-class="valid ? 'btn-success': 'btn-danger'" uib-tooltip="Schema Validierung">
+                    <button class="btn btn-default btn-circle" type="button" data-title="Schema Validierung" ng-class="valid ? 'btn-success': 'btn-danger'" bs-tooltip>
                         <i class="fa fa-fw" ng-class="valid ? 'fa-check': 'fa-times'"></i>
                     </button>
                     <button class="btn btn-default" type="button" ng-click="">
@@ -110,7 +110,7 @@
                         <div class="form-group" ng-if="video.shows.length">
                             <div class="col-md-offset-4 col-md-8">
                                 <div class="button-list">
-                                    <button type="button" class="btn btn-default" uib-tooltip="{{show.name || show.id}}" ng-click="removeShow(video, show)" ng-repeat="show in video.shows | videosResolve:'shows' | orderBy">
+                                    <button type="button" class="btn btn-default" data-title="{{show.name || show.id}}" ng-click="removeShow(video, show)" ng-repeat="show in video.shows | videosResolve:'shows' | orderBy" bs-tooltip>
                                         <img class="badge-round badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                                         <span ng-bind="show.name"></span>
                                     </button>
@@ -137,7 +137,7 @@
                         <div class="form-group" ng-if="video.hosts.length">
                             <div class="col-md-offset-4 col-md-8">
                                 <div class="button-list">
-                                    <button type="button" class="btn btn-default" uib-tooltip="{{host.name || host.id}}" ng-click="removeHost(video, host)" ng-repeat="host in video.hosts | videosResolve:'hosts' | orderBy">
+                                    <button type="button" class="btn btn-default" data-title="{{host.name || host.id}}" ng-click="removeHost(video, host)" ng-repeat="host in video.hosts | videosResolve:'hosts' | orderBy" bs-tooltip>
                                         <img class="badge-round badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                                         <span>{{host.firstname}} {{host.lastname}}</span>
                                         <span ng-if="host.nickname">({{host.nickname}})</span>
@@ -164,7 +164,7 @@
                         <div class="form-group" ng-if="video.series.length">
                             <div class="col-md-offset-4 col-md-8">
                                 <div class="button-list">
-                                    <button type="button" class="btn btn-default" uib-tooltip="{{series.name || series.id}}" ng-click="removeSeries(video, series)" ng-repeat="series in video.series | videosResolve:'series' | orderBy">
+                                    <button type="button" class="btn btn-default" data-title="{{series.name || series.id}}" ng-click="removeSeries(video, series)" ng-repeat="series in video.series | videosResolve:'series' | orderBy" bs-tooltip>
                                         <img class="badge-round badge-md" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                                         <span ng-bind="series.name"></span>
                                     </button>

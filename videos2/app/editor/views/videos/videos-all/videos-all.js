@@ -2,7 +2,7 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.videos.all', {
         url: '/',
         templateUrl: 'app/editor/views/videos/videos-all/videos-all.html',
-        controller: function($scope, $filter, $q, Notification, InitSrv, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+        controller: function($scope, $filter, $q, Notification, InitSrv, StateSrv, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
             $scope.init = function() {
                 $scope.videos = VideosSrv.all();
                 $scope.channels = ChannelsSrv.all();
@@ -15,12 +15,13 @@ angular.module('app.editor').config(function($stateProvider) {
                     info: null,
                     latest: null
                 };
-
-                //update until
-                $scope.updateUntilOptions = {
-                    singleDatePicker: true
+                $scope.exec = {
+                    code: 'console.log(video);'
                 };
-                $scope.updateUntil = moment(new Date(2015, 0, 15));
+
+                $scope.updateUntil = moment(new Date(2015, 0, 15)).unix();
+
+                StateSrv.watch($scope, ['exec']);
             };
 
             $scope.updateVideos = function(channels, untilCallback) {
@@ -150,6 +151,15 @@ angular.module('app.editor').config(function($stateProvider) {
                 var videos = $scope.videosFiltered; //TODO
 
                 $scope.updateVideoDetails(videos);
+            };
+
+            $scope.run = function(exec) {
+                var code = '';
+                code += '_.each($scope.videos, function(video) {';
+                code += exec.code || '';
+                code += '});';
+
+                eval(code);
             };
 
             InitSrv.init($scope, $scope.init, 50);

@@ -20,6 +20,9 @@ angular.module('app.editor').config(function($stateProvider) {
                         count: 25
                     }
                 };
+                $scope.exec = {
+                    code: 'console.log(series);'
+                };
 
                 //view
                 $scope.displayViewOptions = [
@@ -32,7 +35,7 @@ angular.module('app.editor').config(function($stateProvider) {
                     $scope.tableParams.count($scope.tableOptions.display.count);
                 });
 
-                StateSrv.watch($scope, ['tableOptions']);
+                StateSrv.watch($scope, ['tableOptions', 'exec']);
             };
 
             $scope.one = function(series) {
@@ -49,6 +52,15 @@ angular.module('app.editor').config(function($stateProvider) {
                 SeriesSrv.delete({ id: series.id });
                 SeriesSrv.save();
                 $scope.update();
+            };
+
+            $scope.run = function(exec) {
+                var code = '';
+                code += '_.each($scope.series, function(series) {';
+                code += exec.code || '';
+                code += '});';
+
+                eval(code);
             };
 
             $scope.update = function() {

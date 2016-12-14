@@ -18,24 +18,24 @@
                             <!-- hosts -->
                             <div class="hosts">
                                 <span ng-repeat="host in video.hosts | videosResolve:'hosts' | orderBy">
-                                    <a ng-href="#/editor/hosts/{{host.id}}" uib-tooltip="{{host.firstname}} {{host.lastname}}" tooltip-class="badge-zoom-tooltip" tooltip-is-open="tooltipVisible" touch-tooltip="tooltipVisible" ng-class="{'badge-zoom': tooltipVisible}">
-                                        <img class="badge-round badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                                    <a ng-href="#/hosts/{{host.id}}" data-title="{{host.firstname}} {{host.lastname}}" data-animation="badge-zoom-tooltip" bs-tooltip touch-tooltip>
+                                        <img class="badge-round badge-md badge-zoom" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                                     </a>
                                 </span>
                             </div>
                             <!-- shows -->
                             <div class="shows">
                                 <span ng-repeat="show in video.shows | videosResolve:'shows' | orderBy">
-                                    <a ng-href="#/editor/shows/{{show.id}}" uib-tooltip="{{show.name}}" tooltip-class="badge-zoom-tooltip" tooltip-is-open="tooltipVisible" touch-tooltip="tooltipVisible" ng-class="{'badge-zoom': tooltipVisible}">
-                                        <img class="badge-round badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                                    <a ng-href="#/shows/{{show.id}}" data-title="{{show.name}}" data-animation="badge-zoom-tooltip" bs-tooltip touch-tooltip>
+                                        <img class="badge-round badge-md badge-zoom" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                                     </a>
                                 </span>
                             </div>
                             <!-- series -->
                             <div class="series">
                                 <span ng-repeat="series in video.series | videosResolve:'series' | orderBy">
-                                    <a ng-href="#/editor/series/{{series.id}}" uib-tooltip="{{series.name}}" tooltip-class="badge-zoom-tooltip" tooltip-is-open="tooltipVisible" touch-tooltip="tooltipVisible" ng-class="{'badge-zoom': tooltipVisible}">
-                                        <img class="badge-round badge-md" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
+                                    <a ng-href="#/series/{{series.id}}" data-title="{{series.name}}" data-animation="badge-zoom-tooltip" bs-tooltip touch-tooltip>
+                                        <img class="badge-round badge-md badge-zoom" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                                     </a>
                                 </span>
                             </div>
@@ -44,7 +44,7 @@
                                 {{getDuration(video)}}
                             </div>
                             <!-- rating -->
-                            <div class="rating" uib-tooltip="{{getRatingPercent(video)}}%">
+                            <div class="rating" data-title="{{getRatingPercent(video)}}%" bs-tooltip>
                                 <div class="bar" style="width: {{getRatingPercent(video)}}%"></div>
                             </div>
                         </div>
@@ -52,16 +52,16 @@
                         <div class="card-image-body card-image-body-xs">
                             <!-- stats -->
                             <div class="stats">
-                                <div uib-tooltip="Views">
+                                <div data-title="Views" bs-tooltip>
                                     <i class="fa fa-eye"></i> {{video.stats.viewCount | number}}
                                 </div>
-                                <div uib-tooltip="Kommentare">
+                                <div data-title="Kommentare" bs-tooltip>
                                     <i class="fa fa-comments"></i> {{video.stats.commentCount | number}}
                                 </div>
-                                <div uib-tooltip="Positive Bewertungen">
+                                <div data-title="Positive Bewertungen" bs-tooltip>
                                     <i class="fa fa-thumbs-up"></i> {{video.stats.likeCount | number}}
                                 </div>
-                                <div uib-tooltip="Negative Bewertungen">
+                                <div data-title="Negative Bewertungen" bs-tooltip>
                                     <i class="fa fa-thumbs-down"></i> {{video.stats.dislikeCount | number}}
                                 </div>
                             </div>
@@ -82,12 +82,12 @@
                                 <tr>
                                     <td class="dates text-right">
                                         <!-- dates -->
-                                        <span uib-tooltip="Veröffentlichung" ng-show="video.published">
+                                        <span data-title="Veröffentlichung" ng-show="video.published" bs-tooltip>
                                             <i class="fa fa-upload"></i> {{video.published * 1000 | date:'dd.MM.yy'}}
                                         </span>
-                                        <span uib-tooltip="Ausstrahlung" tooltip-is-open="tooltipVisible" ng-if="video.aired">
+                                        <span data-title="Ausstrahlung" ng-show="video.aired" bs-tooltip>
                                             <i class="fa fa-calendar"></i>
-                                            <a ng-href="#/live?from={{getLiveFrom(video)}}&to={{getLiveTo(video)}}" touch-tooltip="tooltipVisible">
+                                            <a ng-href="#/live?from={{getLiveFrom(video)}}&to={{getLiveTo(video)}}" touch-tooltip>
                                                 {{video.aired * 1000 | date:'dd.MM.yyyy'}}
                                             </a>
                                         </span>

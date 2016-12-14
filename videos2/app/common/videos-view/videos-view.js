@@ -29,7 +29,7 @@ angular.module('app.common').directive('videosView', function($timeout) {
                 });
 
                 $scope.tableOptions = {};
-                $scope.tableOptionsVisible = false;
+                $scope.tableOptionsHidden = true;
 
                 //delay visibility -> smoother UI
                 $scope.tableParams.visible = false;
