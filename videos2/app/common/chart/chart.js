@@ -69,19 +69,19 @@ angular.module('app.common').directive('chart', function($q, $timeout) {
                             week: {
                                 name: 'Woche',
                                 format: function(d) {
-                                    return d3.time.format('%x')(d);
+                                    return d3.time.format('%x')(new Date(d * 1000));
                                 }
                             },
                             month: {
                                 name: 'Monat',
                                 format: function(d) {
-                                    return d3.time.format('%b %Y')(d);
+                                    return d3.time.format('%b %Y')(new Date(d * 1000));
                                 }
                             },
                             quarter: {
                                 name: 'Quartal',
                                 format: function(d) {
-                                    return d3.time.format('%b %Y')(d);
+                                    return d3.time.format('%b %Y')(new Date(d * 1000));
                                 }
                             }
                         }

@@ -2,7 +2,10 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.config', {
         url: '/config/',
         templateUrl: 'app/editor/config/config.html',
-        controller: function($scope, InitSrv, ConfigSrv, GithubApiSrv) {
+        controller: function($scope, ConfigSrv, GithubApiSrv) {
+            $scope.initDelay = 50;
+            $scope.initDependencies = ['videos-data'];
+
             $scope.init = function() {
                 $scope.config = ConfigSrv.get();
 
@@ -14,8 +17,6 @@ angular.module('app.editor').config(function($stateProvider) {
             $scope.reset = function() {
                 ConfigSrv.load(ConfigSrv.default());
             };
-
-            InitSrv.init($scope, $scope.init, 50);
         }
     });
 });

@@ -2,7 +2,10 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.videos.videos.all', {
         url: '/',
         templateUrl: 'app/editor/videos/videos/videos-all/videos-all.html',
-        controller: function($scope, $filter, $q, Notification, InitSrv, StateSrv, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+        controller: function($scope, $filter, $q, Notification, StateSrv, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+            $scope.initDelay = 50;
+            $scope.initDependencies = ['videos-data'];
+
             $scope.init = function() {
                 $scope.videos = VideosSrv.all();
                 $scope.channels = ChannelsSrv.all();
@@ -161,8 +164,6 @@ angular.module('app.editor').config(function($stateProvider) {
 
                 eval(code);
             };
-
-            InitSrv.init($scope, $scope.init, 50);
         }
     });
 });

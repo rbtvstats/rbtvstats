@@ -6,7 +6,7 @@ angular.module('app.common').directive('videosView', function($timeout) {
             mode: '=videosMode'
         },
         templateUrl: 'app/common/videos-view/videos-view.html',
-        controller: function($scope, NgTableParams, InitSrv, StateSrv, VideosSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+        controller: function($scope, NgTableParams, StateSrv, VideosSrv, ShowsSrv, HostsSrv, SeriesSrv) {
             $scope.init = function() {
                 //import from parent scope
                 $scope.imagePlaceholders = $scope.$parent.imagePlaceholders;
@@ -223,7 +223,7 @@ angular.module('app.common').directive('videosView', function($timeout) {
                 $scope.tableParams.reload();
             };
 
-            InitSrv.init($scope, $scope.init);
+            $scope.init();
         }
     };
 });

@@ -2,7 +2,10 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.videos.hosts.one', {
         url: '/:hostId',
         templateUrl: 'app/editor/videos/hosts/hosts-one/hosts-one.html',
-        controller: function($scope, $state, $stateParams, InitSrv, HostsSrv) {
+        controller: function($scope, $state, $stateParams, HostsSrv) {
+            $scope.initDelay = 50;
+            $scope.initDependencies = ['videos-data'];
+
             $scope.init = function() {
                 $scope.host = HostsSrv.findById($stateParams.hostId);
 
@@ -18,8 +21,6 @@ angular.module('app.editor').config(function($stateProvider) {
                 HostsSrv.save();
                 $state.transitionTo('editor.videos.hosts.all');
             };
-
-            InitSrv.init($scope, $scope.init, 50);
         }
     });
 });

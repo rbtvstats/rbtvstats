@@ -2,7 +2,7 @@ angular.module('app.common').directive('videosOptions', function($timeout, $pars
     return {
         restrict: 'A',
         templateUrl: 'app/common/videos-view/videos-options/videos-options.html',
-        controller: function($scope, InitSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+        controller: function($scope, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
             $scope.init = function() {
                 $scope.channels = ChannelsSrv.all();
                 $scope.shows = ShowsSrv.all();
@@ -186,7 +186,7 @@ angular.module('app.common').directive('videosOptions', function($timeout, $pars
                 $scope.applyFilter();
             };
 
-            InitSrv.init($scope, $scope.init);
+            $scope.init();
         }
     };
 });

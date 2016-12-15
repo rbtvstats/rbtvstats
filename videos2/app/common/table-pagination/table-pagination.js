@@ -5,7 +5,7 @@ angular.module('app.common').directive('tablePagination', function(ngTableEvents
             tableParams: '=tablePagination'
         },
         templateUrl: 'app/common/table-pagination/table-pagination.html',
-        controller: function($scope, InitSrv) {
+        controller: function($scope) {
             $scope.init = function() {
                 $scope.pagination = {};
 
@@ -42,7 +42,7 @@ angular.module('app.common').directive('tablePagination', function(ngTableEvents
                 }
             };
 
-            InitSrv.init($scope, $scope.init);
+            $scope.init();
         }
     };
 });

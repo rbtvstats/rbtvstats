@@ -108,6 +108,33 @@ angular.module('app').run(function($rootScope, amMoment, Notification, $parse) {
     d3.format = d3GermanFormat.numberFormat;
     d3.time.format = d3GermanFormat.timeFormat;
 
+    //angular assign without copy
+    angular.assign = function(source, target, clear) {
+        if (angular.isUndefined(clear)) {
+            clear = true;
+        }
+
+        if (typeof(source) === typeof(target)) {
+            if (angular.isObject(source)) {
+                if (clear) {
+                    angular.copy({}, target);
+                }
+
+                for (var key in source) {
+                    target[key] = source[key];
+                }
+            } else if (angular.isArray(source)) {
+                if (clear) {
+                    target.length = 0;
+                }
+
+                for (var i = 0; i < source.length; i++) {
+                    target.push(source[i]);
+                }
+            }
+        }
+    };
+
     //extend notification service
     Notification.parseError = function(options) {
         options.message = 'Unbekannter Fehler';

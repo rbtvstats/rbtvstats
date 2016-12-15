@@ -37,6 +37,8 @@ angular.module('app.common').service('ConfigSrv', function() {
     };
 
     service.save = _.debounce(function() {
+        console.log('save config');
+
         var config = service.all();
         localforage.setItem('config', config);
     }, 1000);

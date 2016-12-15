@@ -2,7 +2,10 @@ angular.module('app.viewer').config(function($stateProvider) {
     $stateProvider.state('viewer.videos.hosts.one', {
         url: '/:hostId',
         templateUrl: 'app/viewer/videos/hosts/hosts-one/hosts-one.html',
-        controller: function($scope, $stateParams, InitSrv, VideosSrv, HostsSrv) {
+        controller: function($scope, $stateParams, VideosSrv, HostsSrv) {
+            $scope.initDelay = 50;
+            $scope.initDependencies = ['videos-data'];
+
             $scope.init = function() {
                 $scope.hostId = $stateParams.hostId;
                 $scope.host = HostsSrv.findById($scope.hostId);
@@ -119,8 +122,6 @@ angular.module('app.viewer').config(function($stateProvider) {
                     options: options
                 };
             };
-
-            InitSrv.init($scope, $scope.init, 50);
         }
     });
 });

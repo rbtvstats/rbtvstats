@@ -1,8 +1,8 @@
-<div ng-controller="ViewerCtrl">
+<div init>
     <!-- navigation -->
     <div ng-include="'app/viewer/navigation/navigation.html'"></div>
     <!-- main -->
-    <div class="main" ng-if="initialized" ui-view></div>
+    <div class="main" ui-view></div>
     <!-- footer -->
     <div ng-include="'app/viewer/footer/footer.html'"></div>
 </div>

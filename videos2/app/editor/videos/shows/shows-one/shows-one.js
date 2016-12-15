@@ -2,7 +2,10 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.videos.shows.one', {
         url: '/:showId',
         templateUrl: 'app/editor/videos/shows/shows-one/shows-one.html',
-        controller: function($scope, $state, $stateParams, InitSrv, ShowsSrv) {
+        controller: function($scope, $state, $stateParams, ShowsSrv) {
+            $scope.initDelay = 50;
+            $scope.initDependencies = ['videos-data'];
+
             $scope.init = function() {
                 $scope.show = ShowsSrv.findById($stateParams.showId);
 
@@ -18,8 +21,6 @@ angular.module('app.editor').config(function($stateProvider) {
                 ShowsSrv.save();
                 $state.transitionTo('editor.videos.shows.all');
             };
-
-            InitSrv.init($scope, $scope.init, 50);
         }
     });
 });

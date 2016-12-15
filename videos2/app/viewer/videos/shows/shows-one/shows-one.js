@@ -2,7 +2,10 @@ angular.module('app.viewer').config(function($stateProvider) {
     $stateProvider.state('viewer.videos.shows.one', {
         url: '/:showId',
         templateUrl: 'app/viewer/videos/shows/shows-one/shows-one.html',
-        controller: function($scope, $stateParams, InitSrv, VideosSrv, ShowsSrv) {
+        controller: function($scope, $stateParams, VideosSrv, ShowsSrv) {
+            $scope.initDelay = 50;
+            $scope.initDependencies = ['videos-data'];
+
             $scope.init = function() {
                 $scope.showId = $stateParams.showId;
                 $scope.show = ShowsSrv.findById($scope.showId);
@@ -119,8 +122,6 @@ angular.module('app.viewer').config(function($stateProvider) {
                     options: options
                 };
             };
-
-            InitSrv.init($scope, $scope.init, 50);
         }
     });
 });

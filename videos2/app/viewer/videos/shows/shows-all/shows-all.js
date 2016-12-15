@@ -2,7 +2,10 @@ angular.module('app.viewer').config(function($stateProvider) {
     $stateProvider.state('viewer.videos.shows.all', {
         url: '/',
         templateUrl: 'app/viewer/videos/shows/shows-all/shows-all.html',
-        controller: function($scope, $state, NgTableParams, InitSrv, StateSrv, ShowsSrv) {
+        controller: function($scope, $state, NgTableParams, StateSrv, ShowsSrv) {
+            $scope.initDelay = 50;
+            $scope.initDependencies = ['videos-data'];
+
             $scope.init = function() {
                 $scope.shows = ShowsSrv.all();
                 $scope.tableParams = new NgTableParams({
@@ -54,8 +57,6 @@ angular.module('app.viewer').config(function($stateProvider) {
             $scope.update = function() {
                 $scope.tableParams.reload();
             };
-
-            InitSrv.init($scope, $scope.init, 50);
         }
     });
 });

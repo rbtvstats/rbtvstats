@@ -2,7 +2,10 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.videos.channels.one', {
         url: '/:channelId',
         templateUrl: 'app/editor/videos/channels/channels-one/channels-one.html',
-        controller: function($scope, $state, $stateParams, Notification, InitSrv, YoutubeApiSrv, ChannelsSrv) {
+        controller: function($scope, $state, $stateParams, Notification, YoutubeApiSrv, ChannelsSrv) {
+            $scope.initDelay = 50;
+            $scope.initDependencies = ['videos-data'];
+
             $scope.init = function() {
                 $scope.channel = ChannelsSrv.findById($stateParams.channelId);
 
@@ -46,8 +49,6 @@ angular.module('app.editor').config(function($stateProvider) {
                         $scope.loadingMetadata = false;
                     });
             };
-
-            InitSrv.init($scope, $scope.init, 50);
         }
     });
 });

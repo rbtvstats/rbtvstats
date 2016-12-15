@@ -2,7 +2,10 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.videos.hosts.all', {
         url: '/',
         templateUrl: 'app/editor/videos/hosts/hosts-all/hosts-all.html',
-        controller: function($scope, $state, NgTableParams, InitSrv, StateSrv, HostsSrv) {
+        controller: function($scope, $state, NgTableParams, StateSrv, HostsSrv) {
+            $scope.initDelay = 50;
+            $scope.initDependencies = ['videos-data'];
+
             $scope.init = function() {
                 $scope.hosts = HostsSrv.all();
                 $scope.tableParams = new NgTableParams({
@@ -66,8 +69,6 @@ angular.module('app.editor').config(function($stateProvider) {
             $scope.update = function() {
                 $scope.tableParams.reload();
             };
-
-            InitSrv.init($scope, $scope.init, 50);
         }
     });
 });

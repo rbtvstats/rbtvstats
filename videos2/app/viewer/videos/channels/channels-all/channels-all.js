@@ -2,7 +2,10 @@ angular.module('app.viewer').config(function($stateProvider) {
     $stateProvider.state('viewer.videos.channels.all', {
         url: '/',
         templateUrl: 'app/viewer/videos/channels/channels-all/channels-all.html',
-        controller: function($scope, $state, NgTableParams, InitSrv, StateSrv, VideosSrv, ChannelsSrv) {
+        controller: function($scope, $state, NgTableParams, StateSrv, VideosSrv, ChannelsSrv) {
+            $scope.initDelay = 50;
+            $scope.initDependencies = ['videos-data'];
+
             $scope.init = function() {
                 $scope.videos = VideosSrv.filter(VideosSrv.all(), { online: true });
                 $scope.channels = ChannelsSrv.all();
@@ -338,8 +341,6 @@ angular.module('app.viewer').config(function($stateProvider) {
             $scope.update = function() {
                 $scope.tableParams.reload();
             };
-
-            InitSrv.init($scope, $scope.init, 50);
         }
     });
 });

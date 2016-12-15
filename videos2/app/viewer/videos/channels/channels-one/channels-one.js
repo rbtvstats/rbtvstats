@@ -2,7 +2,10 @@ angular.module('app.viewer').config(function($stateProvider) {
     $stateProvider.state('viewer.videos.channels.one', {
         url: '/:channelId',
         templateUrl: 'app/viewer/videos/channels/channels-one/channels-one.html',
-        controller: function($scope, $state, $stateParams, InitSrv, VideosSrv, ChannelsSrv) {
+        controller: function($scope, $state, $stateParams, VideosSrv, ChannelsSrv) {
+            $scope.initDelay = 50;
+            $scope.initDependencies = ['videos-data'];
+
             $scope.init = function() {
                 $scope.channelId = $stateParams.channelId;
                 $scope.channel = ChannelsSrv.findById($scope.channelId);
@@ -127,8 +130,6 @@ angular.module('app.viewer').config(function($stateProvider) {
                     options: options
                 };
             };
-
-            InitSrv.init($scope, $scope.init, 50);
         }
     });
 });

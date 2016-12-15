@@ -47,6 +47,8 @@ angular.module('app.common').service('StateSrv', function($rootScope, $location)
     };
 
     service.save = _.debounce(function() {
+        console.log('save state');
+
         localforage.setItem('state', storage);
     }, 1000);
 
