@@ -39,12 +39,11 @@ def updateMetadata():
     metadata['time'] = currentTimestamp
 
     #save metadata
-    filepath = LIVE_METADATA_FILEPATH
+    filepath = LIVE_METADATA_FILEPATH2
     with open(filepath, 'w') as file:
         json.dump(metadata, file, indent='\t')
 
     #################################
-    #metadata 2
     metadataFiles = []
     totalSize = 0
     for filepath in files:
@@ -66,7 +65,7 @@ def updateMetadata():
     metadata['files'] = metadataFiles
     metadata['size'] = totalSize
 
-    filepath = LIVE_METADATA_FILEPATH2
+    filepath = LIVE_METADATA_FILEPATH
     with open(filepath, 'w') as file:
         json.dump(metadata, file, indent=2)
 
