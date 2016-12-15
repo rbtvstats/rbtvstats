@@ -73,8 +73,8 @@ def updateMetadata():
 if __name__ == "__main__":
     os.chdir(DATA_REPO_DIR)
 
-    #os.system('git pull')
+    os.system('git pull')
     updateMetadata()
-    #os.system('git add %s' % LIVE_DATA_DIR)
-    #os.system('git commit -m "update live data"')
-    #os.system('git push')
+    os.system('git add %s' % LIVE_DATA_DIR)
+    os.system('git commit -m "update live data"')
+    os.system('git push')
