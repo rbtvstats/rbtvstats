@@ -96,7 +96,7 @@ module.exports = function (grunt) {
       main: {
         files: [
           {src: ['img/**'], dest: 'dist/'},
-          {src: ['bower_components/font-awesome/fonts/**'], dest: 'dist/',filter:'isFile',expand:true},
+          {src: ['bower_components/font-awesome/fonts/**'], dest: 'dist/fonts/',filter:'isFile',expand:true,flatten:true},
           //{src: ['bower_components/bootstrap/fonts/**'], dest: 'dist/',filter:'isFile',expand:true}
           //{src: ['bower_components/angular-ui-utils/ui-utils-ieshiv.min.js'], dest: 'dist/'},
           //{src: ['bower_components/select2/*.png','bower_components/select2/*.gif'], dest:'dist/css/',flatten:true,expand:true},
@@ -108,8 +108,8 @@ module.exports = function (grunt) {
       read: {
         options: {
           read:[
-            {selector:'script[data-concat!="false"]',attribute:'src',writeto:'appjs'},
-            {selector:'link[rel="stylesheet"][data-concat!="false"]',attribute:'href',writeto:'appcss'}
+            {selector:'script[src^="bower_components"][data-concat!="false"]',attribute:'src',writeto:'vendorjs'},
+            {selector:'script[src^="app"][data-concat!="false"]',attribute:'src',writeto:'appjs'}
           ]
         },
         src: 'index.html'
@@ -118,7 +118,8 @@ module.exports = function (grunt) {
         options: {
           remove: ['script[data-remove!="false"]','link[data-remove!="false"]'],
           append: [
-            {selector:'body',html:'<script src="app.full.min.js"></script>'},
+            {selector:'body',html:'<script src="vendor.min.js"></script>'},
+            {selector:'body',html:'<script src="app.min.js"></script>'},
             {selector:'head',html:'<link rel="stylesheet" href="vendor.min.css">'},
             {selector:'head',html:'<link rel="stylesheet" href="app.min.css">'}
           ]
@@ -130,27 +131,36 @@ module.exports = function (grunt) {
     cssmin: {
       main: {
         files: {
-          'dist/vendor.min.css': ['<%= dom_munger.data.appcss %>','temp/vendor.css'],
+          'dist/vendor.min.css': 'temp/vendor.css',
           'dist/app.min.css': 'temp/app.css'
         }
       }
     },
     concat: {
       main: {
-        src: ['<%= dom_munger.data.appjs %>','<%= ngtemplates.main.dest %>'],
-        dest: 'temp/app.full.js'
+        files: {
+          'temp/vendor.js': ['<%= dom_munger.data.vendorjs %>'],
+          'temp/app.js': ['<%= dom_munger.data.appjs %>', '<%= ngtemplates.main.dest %>']
+        }
       }
     },
     ngAnnotate: {
       main: {
-        src:'temp/app.full.js',
-        dest: 'temp/app.full.js'
+        files: {
+          'temp/vendor.js': 'temp/vendor.js',
+          'temp/app.js': 'temp/app.js'
+        }
       }
     },
     uglify: {
       main: {
-        src: 'temp/app.full.js',
-        dest:'dist/app.full.min.js'
+        files: [{
+          src: 'temp/vendor.js',
+          dest: 'dist/vendor.min.js'
+        }, {
+          src: 'temp/app.js',
+          dest: 'dist/app.min.js'
+        }]
       }
     },
     htmlmin: {
