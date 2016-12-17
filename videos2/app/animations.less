@@ -1,16 +1,111 @@
+/* keyframes */
+
+.keyframes(fadeIn, {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+);
+.keyframes(fadeOut, {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+);
+.keyframes(expandY, {
+    from {
+        max-height: 0;
+    }
+    to {
+        max-height: 1200px;
+    }
+}
+
+);
+.keyframes(collapseY, {
+    from {
+        max-height: 1200px;
+    }
+    to {
+        max-height: 0;
+    }
+}
+
+);
+.keyframes(expandYSmall, {
+    from {
+        .transform(scale(1, 0.8));
+        opacity: 0.3;
+    }
+    to {
+        .transform(scale(1, 1));
+        opacity: 1;
+    }
+}
+
+);
+.keyframes(collapseYSmall, {
+    from {
+        .transform(scale(1, 1));
+        opacity: 1;
+    }
+    to {
+        .transform(scale(1, 0.8));
+        opacity: 0.3;
+    }
+}
+
+);
+.keyframes(scaleIn, {
+    from {
+        .transform(scale(0));
+        opacity: 0.3;
+    }
+    to {
+        .transform(scale(1));
+        opacity: 1;
+    }
+}
+
+);
+.keyframes(scaleOut, {
+    from {
+        .transform(scale(1));
+        opacity: 1;
+    }
+    to {
+        .transform(scale(0));
+        opacity: 0.3;
+    }
+}
+
+);
+.keyframes(slideInYSmall, {
+    from {
+        .transform(translateY(30px));
+        opacity: 0.3;
+    }
+    to {
+        .transform(translateY(0));
+        opacity: 1;
+    }
+}
+
+);
+
 /* main view animation */
 
 .animate-main-content {
     &.ng-enter {
-        .transition(200ms ease-in-out all);
-        .transform(translateY(40px));
-    }
-    &.ng-leave {
-        opacity: 0;
-    }
-    &.ng-enter-active {
-        opacity: 1;
-        .transform(translateY(0));
+        .animation(slideInYSmall 200ms ease-in-out);
     }
 }
 
@@ -20,51 +115,36 @@
 .animate-table-view {
     position: relative;
     &.ng-enter {
-        .transition(200ms ease-in-out all);
-        .transform(scale(1, 0));
-        .transform-origin(top);
-    }
-    &.ng-leave {
-        .transition(200ms ease-in-out all);
-        position: absolute;
-        top: 0;
-        opacity: 0;
-    }
-    &.ng-enter-active {
-        .transform(scale(1, 1));
-    }
-    &.ng-leave-active {
-        opacity: 0;
+        .animation(slideInYSmall 200ms ease-in-out);
     }
 }
 
 
 /* table row animation */
 
-.animate-table-row {
-    &.ng-enter {
-        .transition(200ms ease-in-out all);
-        opacity: 0.3;
-        .transform-origin(top);
+.table {
+    &.list {
+        > tbody {
+            > tr {
+                &.ng-enter {
+                    .animation(fadeIn 200ms ease-in-out);
+                }
+            }
+        }
     }
-    &.ng-leave {
-        .transition(200ms ease-in-out all);
-        position: absolute;
-        top: 0;
-        opacity: 0;
-    }
-    &.ng-enter-active {
-        opacity: 1;
-    }
-    &.ng-leave-active {
-        opacity: 0;
-    }
-    &.link {
-        cursor: pointer;
-    }
-    &.middle {
-        > td {
-            vertical-align: middle;
+    &.cards {
+        > tbody {
+            > tr {
+                > td {
+                    > .row {
+                        > div {
+                            &.ng-enter {
+                                .animation(fadeIn 200ms ease-in-out);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -72,60 +152,23 @@
 
 /* collapse animation */
 
-@keyframes expand {
-    from {
-        max-height: 0;
-    }
-    to {
-        max-height: 1200px;
-    }
-}
-
-@keyframes collapse {
-    from {
-        max-height: 1200px;
-    }
-    to {
-        max-height: 0;
-    }
-}
-
-.collapse.am-collapse {
-    animation-duration: 400ms;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: backwards;
+.collapse {
     overflow: hidden;
     &.in-remove {
-        animation-name: collapse;
+        .animation(collapseY 400ms ease-in-out);
         display: block;
     }
     &.in-add {
-        animation-name: expand;
+        .animation(expandY 400ms ease-in-out);
     }
 }
 
 
 /* tabs animation */
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-.tab-pane.am-fade {
-    animation-duration: 200ms;
-    animation-timing-function: ease-in-out;
-    animation-fill-mode: backwards;
-    opacity: 1;
-    &.active-remove {
-        display: none !important;
-    }
+.tab-pane {
     &.active-add {
-        animation-name: fadeIn;
+        .animation(fadeIn 200ms ease-in-out);
     }
 }
 
@@ -136,21 +179,8 @@
 .datepicker {
     padding: 5px;
     &.ng-enter {
-        .transition(200ms ease-in-out all);
-        .transform(scale(1, 0));
+        .animation(expandYSmall 200ms);
         .transform-origin(top);
-    }
-    &.ng-leave {
-        .transition(200ms ease-in-out all);
-        position: absolute;
-        top: 0;
-        opacity: 0;
-    }
-    &.ng-enter-active {
-        .transform(scale(1, 1));
-    }
-    &.ng-leave-active {
-        opacity: 0;
     }
     button {
         border: 0 !important;
@@ -163,43 +193,34 @@
 /* dropdown animation */
 
 .dropdown {
-    &.direction-up {
-        .dropdown-menu {
-            .transform-origin(bottom) !important;
-        }
-    }
     > .dropdown-menu {
+        &.bottom-left {
+            .transform-origin(top left);
+        }
+        &.bottom-right {
+            .transform-origin(top right);
+        }
         &.ng-enter {
-            .transition(200ms ease-in-out all);
-            .transform(scale(1, 0));
-            .transform-origin(top);
-        }
-        &.ng-leave {
-            opacity: 0;
-        }
-        &.ng-enter-active {
-            .transform(scale(1, 1));
-        }
-        &.ng-leave-active {
-            opacity: 0;
+            .animation(expandYSmall 200ms);
         }
     }
 }
 
-
-/* ui-select animation */
-
 .ui-select-container {
-    &.open {
-        .ui-select-choices {
-            .transition(200ms ease-in-out transform);
-            .transform-origin(top);
-            .transform(scale(1, 1));
+    &.direction-up {
+        &.open {
+            >.ui-select-choices {
+                //TODO dropdown position is calculated wrong
+                //probably because of the initial scale of 0.8
+                .transform-origin(bottom) !important;
+            }
         }
     }
-    > .ui-select-choices {
-        display: block !important;
-        .transform(scale(1, 0));
+    .ui-select-choices {
+        &.ng-hide-remove {
+            .transform-origin(top);
+            .animation(expandYSmall 200ms);
+        }
     }
 }
 
@@ -220,17 +241,10 @@
 /* tooltip animation */
 
 .tooltip {
-    .transition(200ms ease-in-out transform);
     &.ng-enter {
-        .transform(scale(0));
-    }
-    &.ng-enter-active {
-        .transform(scale(1));
+        .animation(scaleIn 200ms ease-in-out);
     }
     &.ng-leave {
-        .transform(scale(1));
-    }
-    &.ng-leave-active {
-        .transform(scale(0));
+        .animation(scaleOut 200ms ease-in-out);
     }
 }
