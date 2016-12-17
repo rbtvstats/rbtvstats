@@ -1,4 +1,6 @@
 angular.module('app.common').directive('chart', function($q, $timeout) {
+    var now = moment();
+
     return {
         restrict: 'A',
         scope: {
@@ -7,6 +9,30 @@ angular.module('app.common').directive('chart', function($q, $timeout) {
         },
         templateUrl: 'app/common/chart/chart.html',
         controller: function($scope, $rootScope, Notification) {
+            function tickFormatAutoDate(d, axis) {
+                var range;
+                var min = [];
+                var max = [];
+                _.each($scope.data, function(data) {
+                    min.push(data.values[0][axis]);
+                    max.push(data.values[data.values.length - 1][axis]);
+                });
+
+                min = _.min(min);
+                max = _.max(max);
+                range = max - min;
+
+                var format;
+                if (range > 2628000) { //1 month
+                    format = '%b %Y';
+                } else if (range > 259200) { //3 days
+                    format = '%x';
+                } else {
+                    format = '%H:%M';
+                }
+
+                return d3.time.format(format)(new Date(d * 1000));
+            }
             $scope.init = function() {
                 var defaultCommon = {
                     chart: {
@@ -25,8 +51,12 @@ angular.module('app.common').directive('chart', function($q, $timeout) {
                             showMaxMin: false,
                             axisLabelDistance: 0,
                             tickFormat: function(d) {
-                                if ($scope.options.dateGroup.enable) {
-                                    return $scope.options.dateGroup.options[$scope.options.dateGroup.selected].format(d);
+                                if ($scope.options.chart.xAxis.tickFormatAutoDate) {
+                                    return tickFormatAutoDate(d, 'x');
+                                } else if ($scope.options.dateGroup.enable) {
+                                    return _.find($scope.options.dateGroup.groups, function(group) {
+                                        return group.id === $scope.options.dateGroup.selected;
+                                    }).format(d);
                                 } else {
                                     return d;
                                 }
@@ -36,7 +66,11 @@ angular.module('app.common').directive('chart', function($q, $timeout) {
                             showMaxMin: false,
                             axisLabelDistance: 5,
                             tickFormat: function(d) {
-                                return d;
+                                if ($scope.options.chart.yAxis.tickFormatAutoDate) {
+                                    return tickFormatAutoDate(d, 'y');
+                                } else {
+                                    return d;
+                                }
                             }
                         },
                         margin: {
@@ -65,33 +99,53 @@ angular.module('app.common').directive('chart', function($q, $timeout) {
                     dateGroup: {
                         enable: false,
                         selected: 'month',
-                        options: {
-                            week: {
-                                name: 'Woche',
-                                format: function(d) {
-                                    return d3.time.format('%x')(new Date(d * 1000));
-                                }
-                            },
-                            month: {
-                                name: 'Monat',
-                                format: function(d) {
-                                    return d3.time.format('%b %Y')(new Date(d * 1000));
-                                }
-                            },
-                            quarter: {
-                                name: 'Quartal',
-                                format: function(d) {
-                                    return d3.time.format('%b %Y')(new Date(d * 1000));
-                                }
+                        groups: [{
+                            id: 'week',
+                            name: 'Woche',
+                            format: function(d) {
+                                return d3.time.format('%x')(new Date(d * 1000));
                             }
-                        }
+                        }, {
+                            id: 'month',
+                            name: 'Monat',
+                            format: function(d) {
+                                return d3.time.format('%b %Y')(new Date(d * 1000));
+                            }
+                        }, {
+                            id: 'quarter',
+                            name: 'Quartal',
+                            format: function(d) {
+                                return d3.time.format('%b %Y')(new Date(d * 1000));
+                            }
+                        }]
                     },
                     dateRange: {
                         enable: false,
                         selected: {
                             start: null,
                             end: null
-                        }
+                        },
+                        ranges: [{
+                            name: 'Letzten 7 Tage',
+                            start: moment(now).subtract(7, 'd').unix(),
+                            end: null
+                        }, {
+                            name: 'Letzter Monat',
+                            start: moment(now).subtract(30, 'd').unix(),
+                            end: null
+                        }, {
+                            name: 'Letzten 3 Monate',
+                            start: moment(now).subtract(3, 'M').unix(),
+                            end: null
+                        }, {
+                            name: 'Letztes Jahr',
+                            start: moment(now).subtract(1, 'y').unix(),
+                            end: null
+                        }, {
+                            name: 'Seit Sendestart',
+                            start: 1421276400,
+                            end: null
+                        }]
                     },
                     styles: {
                         classes: {

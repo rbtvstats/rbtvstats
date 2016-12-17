@@ -105,6 +105,31 @@
 }
 
 
+/* tabs animation */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.tab-pane.am-fade {
+    animation-duration: 200ms;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: backwards;
+    opacity: 1;
+    &.active-remove {
+        display: none !important;
+    }
+    &.active-add {
+        animation-name: fadeIn;
+    }
+}
+
+
 /* date/time picker animation */
 
 .timepicker,
@@ -144,9 +169,6 @@
         }
     }
     > .dropdown-menu {
-        border-color: #cccccc;
-        .border-radius(2px);
-        .box-shadow-level(2);
         &.ng-enter {
             .transition(200ms ease-in-out all);
             .transform(scale(1, 0));
@@ -160,20 +182,6 @@
         }
         &.ng-leave-active {
             opacity: 0;
-        }
-        .dropdown-header {
-            padding: 7px 20px;
-            font-size: 14px;
-            font-weight: normal;
-        }
-        > li {
-            &.active {
-                > a {
-                    color: #fff;
-                    text-decoration: none;
-                    background-color: #428bca;
-                }
-            }
         }
     }
 }

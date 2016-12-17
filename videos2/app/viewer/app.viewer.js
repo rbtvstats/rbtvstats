@@ -15,17 +15,14 @@ angular.module('app.viewer').config(function($stateProvider, $urlRouterProvider)
         abstract: true,
         url: '',
         templateUrl: 'app/viewer/app.viewer.html',
-        controller: function($scope, InitSrv, ConfigSrv, StateSrv, LiveDataControllerSrv, VideosDataControllerSrv) {
+        controller: function($scope, DependencySrv, ConfigSrv, StateSrv, LiveDataSrv, VideosDataSrv) {
             $scope.initDependencies = ['config', 'state'];
 
-            $scope.init = function() {
-                InitSrv.register('metadata-live', LiveDataControllerSrv.getRemoteMetadata());
-                InitSrv.register('metadata-videos', VideosDataControllerSrv.getRemoteMetadata());
-                InitSrv.register('videos-data', VideosDataControllerSrv.loadRemote());
-            };
-
-            InitSrv.register('config', ConfigSrv.loadLocal());
-            InitSrv.register('state', StateSrv.loadLocal());
+            DependencySrv.register('config', ConfigSrv.loadLocal);
+            DependencySrv.register('state', StateSrv.loadLocal);
+            DependencySrv.register('live-metadata', LiveDataSrv.loadRemoteMetadata);
+            DependencySrv.register('videos-metadata', VideosDataSrv.loadRemoteMetadata);
+            DependencySrv.register('videos-data', VideosDataSrv.loadRemote);
         }
     });
     $urlRouterProvider.otherwise('/videos/channels/');

@@ -2,7 +2,11 @@
     #tmpCanvas {
         display: none;
     }
-    > .card-content-header {}
+    > .card-content-header {
+        > table {
+            width: 100%;
+        }
+    }
     > .card-content-body {
         position: relative;
         > .chart-overlay {
@@ -19,9 +23,7 @@
                     opacity: 0;
                 }
             }
-            > .chart-loading {
-
-            }
+            > .chart-loading {}
             > .chart-error {
                 color: #d9534f;
             }
@@ -42,6 +44,10 @@
                         &.nv-noData {
                             display: none;
                         }
+                        .nv-area {
+                            stroke-width: 1.5;
+                            stroke-opacity: 1;
+                        }
                     }
                     > .title,
                     > .subtitle,
@@ -59,6 +65,7 @@
     border: 0;
     background-color: rgba(0, 0, 0, 0.80);
     .border-radius(2px);
+    .box-shadow-level(2);
     color: #ffffff;
     padding: 0;
 }

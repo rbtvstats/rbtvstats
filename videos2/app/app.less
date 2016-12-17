@@ -12,14 +12,63 @@ body {
     margin-bottom: 60px;
 }
 
-table {
-    width: 100%;
-}
-
 [ng\:cloak],
 [ng-cloak],
 .ng-cloak {
     display: none !important;
+}
+
+
+/* loading bar */
+
+#loading-bar .bar {
+    background: #d9534f;
+}
+
+#loading-bar .peg {
+    .box-shadow-level(3);
+}
+
+@media (max-width: 767px) {
+    #loading-bar-spinner {
+        left: 0 !important;
+        right: 0 !important;
+        width: 2em;
+        margin: 0 auto;
+    }
+}
+
+#loading-bar-spinner {
+    right: 15px;
+    left: inherit;
+    .spinner-icon {
+        .spinner-icon;
+        width: 2em;
+        height: 2em;
+        border-width: 3px;
+        border-top-color: #d9534f;
+        border-left-color: #d9534f;
+    }
+}
+
+.spinner-icon {
+    width: 1em;
+    height: 1em;
+    border: solid 2px transparent;
+    border-top-color: #333;
+    border-left-color: #333;
+    border-radius: 50%;
+    .animation(loading-bar-spinner 700ms linear infinite);
+    &.s2 {
+        width: 2em;
+        height: 2em;
+        border-width: 3px;
+    }
+    &.s3 {
+        width: 3em;
+        height: 3em;
+        border-width: 5px;
+    }
 }
 
 
@@ -55,6 +104,7 @@ table {
                     .dropdown-menu {
                         background-color: @navbar-color-bg;
                         border: 0;
+                        padding: 0;
                         > li {
                             &.active {
                                 > a {
@@ -108,7 +158,6 @@ table {
 .footer {
     position: absolute;
     background-color: @navbar-color-bg;
-    border: 1px solid #333333;
     .box-shadow(0 -1px 3px rgba(0, 0, 0, 0.12), 0 -1px 2px rgba(0, 0, 0, 0.24);
     );
     bottom: 0;
@@ -271,7 +320,6 @@ a[role="button"]:hover,
     border-color: transparent;
     &:hover,
     &:focus {
-        background-color: rgba(0, 0, 0, 0.05);
         .box-shadow(0 0 0) !important;
     }
 }
@@ -304,6 +352,31 @@ a[role="button"]:hover,
 .radio {
     > label {
         padding-left: 5px;
+    }
+}
+
+
+/* dropdown */
+
+.dropdown {
+    > .dropdown-menu {
+        border-color: #cccccc;
+        .border-radius(2px);
+        .box-shadow-level(2);
+        .dropdown-header {
+            padding: 7px 20px;
+            font-size: 14px;
+            font-weight: normal;
+        }
+        > li {
+            &.active {
+                > a {
+                    color: #fff;
+                    text-decoration: none;
+                    background-color: #428bca;
+                }
+            }
+        }
     }
 }
 
@@ -568,6 +641,7 @@ a[role="button"]:hover,
     > .tooltip-inner {
         background-color: rgba(0, 0, 0, 0.89);
         .border-radius(2px);
+        .box-shadow-level(2);
         font-weight: bold;
         padding: 5px 8px;
     }

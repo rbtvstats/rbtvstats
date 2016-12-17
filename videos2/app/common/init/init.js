@@ -1,19 +1,43 @@
-angular.module('app.common').factory('InitSrv', function($q, $timeout) {
+angular.module('app.common').factory('DependencySrv', function($q, $timeout, Notification) {
     var service = {};
 
-    var dependencies = {};
-    service.register = function(id, promise) {
-        dependencies[id] = promise;
+    var dependencies = [];
+    service.register = function(id, func) {
+        dependencies.push({
+            id: id,
+            execute: func,
+            promise: null
+        });
     };
 
-    service.wait = function(dependency) {
-        if (!angular.isArray(dependency)) {
-            dependency = [dependency];
+    service.wait = function(ids) {
+        if (!angular.isArray(ids)) {
+            ids = [ids];
         }
 
         var promises = _(dependencies)
-            .pick(dependency)
-            .values()
+            //find the relevant dependencies
+            .filter(function(dependency) {
+                return ids.indexOf(dependency.id) !== -1;
+            })
+            //get the promises
+            .map(function(dependency) {
+                if (dependency.promise === null) {
+                    dependency.promise = $q.when(dependency.execute())
+                        .then(function() {
+
+                        })
+                        .catch(function(err) {
+                            Notification.error({
+                                title: 'Fehler bei der Initialisierung',
+                                message: 'Einige Teile der Seite konnten nicht geladen werden',
+                                delay: null
+                            });
+                        });
+                }
+
+                return dependency.promise;
+            })
             .value();
 
         return $q.all(promises);
@@ -23,7 +47,7 @@ angular.module('app.common').factory('InitSrv', function($q, $timeout) {
 });
 
 //https://github.com/angular/angular.js/blob/master/src/ng/directive/ngIf.js#L81
-angular.module('app.common').directive('init', function($animate, $q, $timeout, InitSrv) {
+angular.module('app.common').directive('init', function($animate, $q, $timeout, DependencySrv) {
     return {
         restrict: 'A',
         transclude: 'element',
@@ -54,7 +78,7 @@ angular.module('app.common').directive('init', function($animate, $q, $timeout, 
 
             function initialize() {
                 //wait for dependencies
-                InitSrv.wait(dependencies)
+                DependencySrv.wait(dependencies)
                     .then(function() {
                         //initialize controller
                         var result = init();

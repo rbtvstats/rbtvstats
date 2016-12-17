@@ -3,21 +3,27 @@
     width: 300px;
     padding: 0;
     z-index: 1000;
+    .nav-tabs > li.active > a {
+        border-top-color: transparent;
+    }
     > .tabs {
         .tab-content {
             padding: 5px;
             > .quickselect {
                 > table {
+                    width: 100%;
                     table-layout: fixed;
                     tr {
                         vertical-align: top;
                         > .ranges {
                             width: 50%;
                             overflow: hidden;
+                            padding-bottom: 1px;
                             > .range {
-                                margin-bottom: 5px;
+                                margin-bottom: -1px;
                                 > button {
                                     width: 100%;
+                                    padding: 10px 0;
                                 }
                             }
                         }
@@ -79,6 +85,6 @@
         }
     }
     > .actions {
-        padding: 5px 10px;
+        padding: 5px;
     }
 }

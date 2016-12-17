@@ -1,33 +1,15 @@
 angular.module('app.common').directive('dateRangePicker', function() {
-    var now = moment();
-
     return {
         restrict: 'A',
         scope: {
             dateTarget: '=dateRangePicker',
-            options2: '=options'
+            options: '=options'
         },
         templateUrl: 'app/common/date-range-picker/date-range-picker.html',
         controller: function($scope, $timeout) {
             $scope.init = function() {
                 var defaultOptions = {
-                    ranges: [{
-                        name: 'Letzten 7 Tage',
-                        start: moment(now).subtract(7, 'd').unix(),
-                        end: now.unix()
-                    }, {
-                        name: 'Letzter Monat',
-                        start: moment(now).subtract(30, 'd').unix(),
-                        end: now.unix()
-                    }, {
-                        name: 'Letztes Jahr',
-                        start: moment(now).subtract(1, 'y').unix(),
-                        end: now.unix()
-                    }, {
-                        name: 'Seit Sendestart',
-                        start: 1421280000,
-                        end: now.unix()
-                    }],
+                    ranges: [],
                     min: undefined,
                     max: undefined
                 };
@@ -95,6 +77,8 @@ angular.module('app.common').directive('dateRangePicker', function() {
             $scope.setRange = function(range) {
                 $scope.date.start = range.start;
                 $scope.date.end = range.end;
+
+                $scope.apply();
             };
 
             $scope.apply = function() {

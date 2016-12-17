@@ -9,36 +9,36 @@
                     <span class="dropdown" ng-show="options.dateGroup.enable">
                         <button class="btn btn-transparent dropdown-toggle" type="button" data-placement="bottom-right" bs-dropdown>
                             <span class="fa fa-list"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li class="dropdown-header" ng-click="$event.stopPropagation()">Gruppieren nach...</li>
-                            <li ng-class="options.dateGroup.selected === id ? 'active' : ''" ng-repeat="(id, group) in options.dateGroup.options">
-                                <a href="" ng-click="options.dateGroup.selected=id">{{group.name}}</a>
-                            </li>
-                        </ul>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="dropdown-header" ng-click="$event.stopPropagation()">Gruppieren nach...</li>
+                        <li ng-class="options.dateGroup.selected === group.id ? 'active' : ''" ng-repeat="group in options.dateGroup.groups">
+                            <a href="" ng-click="options.dateGroup.selected=group.id">{{group.name}}</a>
+                        </li>
+                    </ul>
                     </span>
                     <span class="dropdown" ng-show="options.dateRange.enable">
                         <button class="btn btn-transparent dropdown-toggle" type="button" data-placement="bottom-right" bs-dropdown>
                             <span class="fa fa-calendar"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
-                            <div date-range-picker="options.dateRange.selected"></div>
-                        </ul>
+                    </button>
+                    <ul class="dropdown-menu date-range-picker" role="menu" ng-click="$event.stopPropagation()">
+                        <div options="options.dateRange" date-range-picker="options.dateRange.selected"></div>
+                    </ul>
                     </span>
                     <span class="dropdown">
                         <button class="btn btn-transparent dropdown-toggle" type="button" data-placement="bottom-right" bs-dropdown>
                             <span class="fa fa-ellipsis-v"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li class="dropdown-header" ng-click="$event.stopPropagation()">Exportiere Grafik als...</li>
-                            <li ng-repeat="export in exportChart">
-                                <a href="" ng-click="export.exec()">{{export.name}}</a>
-                            </li>
-                            <li class="dropdown-header" ng-click="$event.stopPropagation()">Exportiere Daten als...</li>
-                            <li ng-repeat="export in exportData">
-                                <a href="" ng-click="export.exec()">{{export.name}}</a>
-                            </li>
-                        </ul>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="dropdown-header" ng-click="$event.stopPropagation()">Exportiere Grafik als...</li>
+                        <li ng-repeat="export in exportChart">
+                            <a href="" ng-click="export.exec()">{{export.name}}</a>
+                        </li>
+                        <li class="dropdown-header" ng-click="$event.stopPropagation()">Exportiere Daten als...</li>
+                        <li ng-repeat="export in exportData">
+                            <a href="" ng-click="export.exec()">{{export.name}}</a>
+                        </li>
+                    </ul>
                     </span>
                 </td>
             </tr>
@@ -47,7 +47,7 @@
     <div class="card-content-body">
         <div class="chart-overlay">
             <div class="chart-loading" ng-show="loading">
-                <i class="fa fa-refresh fa-spin fa-3x fa-fw"></i>
+                <div class="spinner-icon s3"></div>
             </div>
             <div class="chart-error" ng-show="!loading && error">
                 Fehler bei der Darstellung

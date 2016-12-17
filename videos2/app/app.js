@@ -54,7 +54,6 @@ angular.module('app').config(function($urlRouterProvider, NotificationProvider, 
         positionY: 'top'
     });
 
-    cfpLoadingBarProvider.includeSpinner = false;
     cfpLoadingBarProvider.latencyThreshold = 500;
 
     angular.extend($tooltipProvider.defaults, {
@@ -115,21 +114,21 @@ angular.module('app').run(function($rootScope, amMoment, Notification, $parse) {
         }
 
         if (typeof(source) === typeof(target)) {
-            if (angular.isObject(source)) {
-                if (clear) {
-                    angular.copy({}, target);
-                }
-
-                for (var key in source) {
-                    target[key] = source[key];
-                }
-            } else if (angular.isArray(source)) {
+            if (angular.isArray(source)) {
                 if (clear) {
                     target.length = 0;
                 }
 
                 for (var i = 0; i < source.length; i++) {
                     target.push(source[i]);
+                }
+            } else if (angular.isObject(source)) {
+                if (clear) {
+                    angular.copy({}, target);
+                }
+
+                for (var key in source) {
+                    target[key] = source[key];
                 }
             }
         }
