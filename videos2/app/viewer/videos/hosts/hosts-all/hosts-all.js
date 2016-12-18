@@ -8,32 +8,36 @@ angular.module('app.viewer').config(function($stateProvider) {
 
             $scope.init = function() {
                 $scope.hosts = HostsSrv.all();
-                $scope.tableParams = new NgTableParams({
-                    sorting: {
-                        firstname: 'asc'
+                $scope.table = {
+                    header: {
+                        title: 'Moderatoren'
                     },
-                    count: 10
-                }, {
-                    dataset: $scope.hosts,
-                    counts: []
-                });
-                $scope.tableOptions = {
-                    display: {
-                        view: 'list',
-                        count: 10
-                    }
+                    params: new NgTableParams({}, {
+                        dataset: $scope.hosts
+                    }),
+                    options: {
+                        display: {
+                            view: 'list',
+                            count: 10
+                        },
+                        order: {
+                            column: 'firstname',
+                            type: 'asc'
+                        },
+                        filter: ''
+                    },
+                    views: [{
+                        id: 'list',
+                        name: 'Liste',
+                        icon: 'fa-th-list',
+                        template: 'app/viewer/videos/hosts/hosts-all/hosts-all-list.html'
+                    }, {
+                        id: 'card',
+                        name: 'Kacheln',
+                        icon: 'fa-th-large',
+                        template: 'app/viewer/videos/hosts/hosts-all/hosts-all-card.html'
+                    }]
                 };
-
-                //view
-                $scope.displayViewOptions = [
-                    { value: 'list', name: 'Liste', icon: 'fa-th-list' },
-                    { value: 'card', name: 'Kacheln', icon: 'fa-th-large' }
-                ];
-                $scope.displayCountOptions = [10, 25, 50];
-
-                $scope.$watchCollection('tableOptions.display', function(newVal, oldVal) {
-                    $scope.tableParams.count($scope.tableOptions.display.count);
-                });
 
                 StateSrv.watch($scope, ['tableOptions']);
             };
@@ -42,20 +46,8 @@ angular.module('app.viewer').config(function($stateProvider) {
                 $state.transitionTo('viewer.videos.hosts.one', { hostId: host.id });
             };
 
-            $scope.add = function() {
-                var host = HostsSrv.create();
-                HostsSrv.save();
-                $scope.one(host);
-            };
-
-            $scope.delete = function(host) {
-                HostsSrv.delete({ id: host.id });
-                HostsSrv.save();
-                $scope.update();
-            };
-
             $scope.update = function() {
-                $scope.tableParams.reload();
+                $scope.table.params.reload();
             };
         }
     });

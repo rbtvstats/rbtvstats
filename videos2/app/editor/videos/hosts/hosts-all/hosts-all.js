@@ -8,35 +8,37 @@ angular.module('app.editor').config(function($stateProvider) {
 
             $scope.init = function() {
                 $scope.hosts = HostsSrv.all();
-                $scope.tableParams = new NgTableParams({
-                    sorting: {
-                        firstname: 'asc'
+                $scope.table = {
+                    header: {
+                        title: 'Moderatoren',
+                        add: $scope.add
                     },
-                    count: 25
-                }, {
-                    dataset: $scope.hosts,
-                    counts: []
-                });
-                $scope.tableOptions = {
-                    display: {
-                        view: 'list',
-                        count: 25
-                    }
+                    params: new NgTableParams({}, {
+                        dataset: $scope.hosts
+                    }),
+                    options: {
+                        display: {
+                            view: 'list',
+                            count: 10
+                        },
+                        order: {
+                            column: 'firstname',
+                            type: 'asc'
+                        },
+                        filter: ''
+                    },
+                    views: [{
+                        id: 'list',
+                        name: 'Liste',
+                        icon: 'fa-th-list',
+                        template: 'app/editor/videos/hosts/hosts-all/hosts-all-list.html'
+                    }, {
+                        id: 'card',
+                        name: 'Kacheln',
+                        icon: 'fa-th-large',
+                        template: 'app/editor/videos/hosts/hosts-all/hosts-all-card.html'
+                    }]
                 };
-                $scope.exec = {
-                    code: 'console.log(host);'
-                };
-
-                //view
-                $scope.displayViewOptions = [
-                    { value: 'list', name: 'Liste', icon: 'fa-th-list' },
-                    { value: 'card', name: 'Kacheln', icon: 'fa-th-large' }
-                ];
-                $scope.displayCountOptions = [10, 25, 50];
-
-                $scope.$watchCollection('tableOptions.display', function(newVal, oldVal) {
-                    $scope.tableParams.count($scope.tableOptions.display.count);
-                });
 
                 StateSrv.watch($scope, ['tableOptions', 'exec']);
             };
@@ -67,7 +69,7 @@ angular.module('app.editor').config(function($stateProvider) {
             };
 
             $scope.update = function() {
-                $scope.tableParams.reload();
+                $scope.table.params.reload();
             };
         }
     });

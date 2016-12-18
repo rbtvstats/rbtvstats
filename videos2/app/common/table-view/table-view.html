@@ -1,0 +1,16 @@
+<div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-content">
+                <div class="card-content-header form-inline text-right">
+                    <div table-view-options></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" ng-show="table.params.total() > 0">
+            <div class="animate-table-view" ng-include="view.template" ng-repeat="view in table.views" ng-if="table.options.display.view === view.id"></div>
+        </div>
+    </div>
+</div>

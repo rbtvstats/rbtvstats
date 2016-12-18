@@ -8,32 +8,36 @@ angular.module('app.viewer').config(function($stateProvider) {
 
             $scope.init = function() {
                 $scope.series = SeriesSrv.all();
-                $scope.tableParams = new NgTableParams({
-                    sorting: {
-                        name: 'asc'
+                $scope.table = {
+                    header: {
+                        title: 'Serien'
                     },
-                    count: 10
-                }, {
-                    dataset: $scope.series,
-                    counts: []
-                });
-                $scope.tableOptions = {
-                    display: {
-                        view: 'list',
-                        count: 10
-                    }
+                    params: new NgTableParams({}, {
+                        dataset: $scope.series
+                    }),
+                    options: {
+                        display: {
+                            view: 'list',
+                            count: 10
+                        },
+                        order: {
+                            column: 'name',
+                            type: 'asc'
+                        },
+                        filter: ''
+                    },
+                    views: [{
+                        id: 'list',
+                        name: 'Liste',
+                        icon: 'fa-th-list',
+                        template: 'app/viewer/videos/series/series-all/series-all-list.html'
+                    }, {
+                        id: 'card',
+                        name: 'Kacheln',
+                        icon: 'fa-th-large',
+                        template: 'app/viewer/videos/series/series-all/series-all-card.html'
+                    }]
                 };
-
-                //view
-                $scope.displayViewOptions = [
-                    { value: 'list', name: 'Liste', icon: 'fa-th-list' },
-                    { value: 'card', name: 'Kacheln', icon: 'fa-th-large' }
-                ];
-                $scope.displayCountOptions = [10, 25, 50];
-
-                $scope.$watchCollection('tableOptions.display', function(newVal, oldVal) {
-                    $scope.tableParams.count($scope.tableOptions.display.count);
-                });
 
                 StateSrv.watch($scope, ['tableOptions']);
             };
@@ -42,20 +46,8 @@ angular.module('app.viewer').config(function($stateProvider) {
                 $state.transitionTo('viewer.videos.series.one', { seriesId: series.id });
             };
 
-            $scope.add = function() {
-                var series = SeriesSrv.create();
-                SeriesSrv.save();
-                $scope.one(series);
-            };
-
-            $scope.delete = function(series) {
-                SeriesSrv.delete({ id: series.id });
-                SeriesSrv.save();
-                $scope.update();
-            };
-
             $scope.update = function() {
-                $scope.tableParams.reload();
+                $scope.table.params.reload();
             };
         }
     });

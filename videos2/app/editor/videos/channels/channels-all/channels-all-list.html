@@ -1,7 +1,7 @@
 <div class="card-content">
     <div class="card-content-body">
         <div class="table-container">
-            <table class="table table-hover list" ng-table="tableParams">
+            <table class="table table-hover list" ng-table="table.params">
                 <tr class="middle link" ng-repeat="channel in $data" ng-click="one(channel)">
                     <td width="1">
                         <img img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
@@ -31,6 +31,6 @@
                 </tr>
             </table>
         </div>
-        <div table-pagination="tableParams"></div>
+        <div table-pagination="table.params"></div>
     </div>
 </div>

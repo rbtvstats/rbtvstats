@@ -9,33 +9,38 @@ angular.module('app.viewer').config(function($stateProvider) {
             $scope.init = function() {
                 $scope.videos = VideosSrv.filter(VideosSrv.all(), { online: true });
                 $scope.channels = ChannelsSrv.all();
-                $scope.tableParams = new NgTableParams({
-                    sorting: {
-                        title: 'asc'
-                    }
-                }, {
-                    dataset: $scope.channels,
-                    counts: []
-                });
-                $scope.tableOptions = {
-                    display: {
-                        view: 'list',
-                        count: 10
-                    }
+                $scope.table = {
+                    header: {
+                        title: 'Kanäle'
+                    },
+                    params: new NgTableParams({}, {
+                        dataset: $scope.channels
+                    }),
+                    options: {
+                        display: {
+                            view: 'list',
+                            count: 10
+                        },
+                        order: {
+                            column: 'title',
+                            type: 'asc'
+                        },
+                        filter: ''
+                    },
+                    views: [{
+                        id: 'list',
+                        name: 'Liste',
+                        icon: 'fa-th-list',
+                        template: 'app/viewer/videos/channels/channels-all/channels-all-list.html'
+                    }, {
+                        id: 'card',
+                        name: 'Kacheln',
+                        icon: 'fa-th-large',
+                        template: 'app/viewer/videos/channels/channels-all/channels-all-card.html'
+                    }]
                 };
 
-                //view
-                $scope.displayViewOptions = [
-                    { value: 'list', name: 'Liste', icon: 'fa-th-list' },
-                    { value: 'card', name: 'Kacheln', icon: 'fa-th-large' }
-                ];
-                $scope.displayCountOptions = [10, 25, 50];
-
-                $scope.$watchCollection('tableOptions.display', function(newVal, oldVal) {
-                    $scope.tableParams.count($scope.tableOptions.display.count);
-                });
-
-                StateSrv.watch($scope, ['tableOptions']);
+                //StateSrv.watch($scope, ['table.options']);
 
                 $scope.charts = [];
                 $scope.charts.push($scope.chartVideosCount());
@@ -339,7 +344,7 @@ angular.module('app.viewer').config(function($stateProvider) {
             };
 
             $scope.update = function() {
-                $scope.tableParams.reload();
+                $scope.table.params.reload();
             };
         }
     });
