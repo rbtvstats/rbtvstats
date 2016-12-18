@@ -35,7 +35,7 @@ angular.module('app.common').directive('videosView', function($timeout) {
                 $scope.tableParams.visible = false;
                 $timeout(function() {
                     $scope.tableParams.visible = true;
-                }, 50);
+                }, 100);
 
                 $scope.$on('video.changed', function(video) {
                     $scope.clearVideosCache();

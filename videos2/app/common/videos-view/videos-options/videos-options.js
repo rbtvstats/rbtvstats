@@ -2,7 +2,7 @@ angular.module('app.common').directive('videosOptions', function($timeout, $pars
     return {
         restrict: 'A',
         templateUrl: 'app/common/videos-view/videos-options/videos-options.html',
-        controller: function($scope, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+        controller: function($scope, ngTableEventsChannel, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
             $scope.init = function() {
                 $scope.channels = ChannelsSrv.all();
                 $scope.shows = ShowsSrv.all();
@@ -20,7 +20,7 @@ angular.module('app.common').directive('videosOptions', function($timeout, $pars
                 $scope.orderByOptions = [
                     { value: 'title', name: 'Titel' },
                     { value: 'channel', name: 'Kanal' },
-                    { value: 'length', name: 'Laufzeit' },
+                    { value: 'duration', name: 'Laufzeit' },
                     { value: 'published', name: 'Veröffentlicht' },
                     { value: 'aired', name: 'Ausgestrahlt' },
                     { value: 'stats.viewCount', name: 'Views' },
@@ -39,7 +39,7 @@ angular.module('app.common').directive('videosOptions', function($timeout, $pars
                     { value: 'or', name: 'Oder' }
                 ];
                 $scope.filterSelectionOptions = [
-                    { value: null, name: 'Egal' },
+                    { value: -1, name: 'Egal' },
                     { value: true, name: 'Ja' },
                     { value: false, name: 'Nein' }
                 ];
@@ -87,30 +87,45 @@ angular.module('app.common').directive('videosOptions', function($timeout, $pars
                             start: null,
                             end: null
                         },
-                        event: null,
-                        noShow: null,
-                        noHost: null,
-                        noSeries: null,
+                        event: -1,
+                        noShow: -1,
+                        noHost: -1,
+                        noSeries: -1,
                         online: true,
-                        valid: null,
+                        valid: -1,
                         invert: false
                     }
                 };
-
 
                 $scope.aired = {
                     start: {},
                     end: {}
                 };
 
-                $scope.$watchCollection('tableOptions.display', function(newVal, oldVal) {
-                    $scope.tableParams.count($scope.tableOptions.display.count);
-                });
-
+                //sync: options -> tableParams
                 $scope.$watchCollection('tableOptions.order', function(newVal, oldVal) {
                     $scope.tableParams.sorting($scope.tableOptions.order.column, $scope.tableOptions.order.type);
                 });
 
+                $scope.$watch('tableOptions.display.count', function(newVal, oldVal) {
+                    $scope.tableParams.count($scope.tableOptions.display.count);
+                });
+
+                //sync: tableParams -> options
+                $scope.$watch('tableParams.sorting()', function(newVal, oldVal) {
+                    var sorting = $scope.tableParams.sorting();
+                    for (var column in sorting) {
+                        $scope.tableOptions.order.column = column;
+                        $scope.tableOptions.order.type = sorting[column];
+                        break;
+                    }
+                });
+
+                $scope.$watch('tableParams.count()', function(newVal, oldVal) {
+                    $scope.tableOptions.display.count = $scope.tableParams.count();
+                });
+
+                //clear videos cache on change
                 $scope.$watch('tableOptions.filter', function(newVal, oldVal) {
                     $scope.clearVideosCache();
                 }, true);

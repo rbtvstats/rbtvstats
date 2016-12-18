@@ -106,6 +106,7 @@ body {
                         border: 0;
                         padding: 0;
                         > li {
+                            border-top: 1px solid #465563;
                             &.active {
                                 > a {
                                     background-color: @navbar-color-active !important;
@@ -150,24 +151,6 @@ body {
     max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
-}
-
-
-/* footer */
-
-.footer {
-    position: absolute;
-    background-color: @navbar-color-bg;
-    .box-shadow(0 -1px 3px rgba(0, 0, 0, 0.12), 0 -1px 2px rgba(0, 0, 0, 0.24);
-    );
-    bottom: 0;
-    color: #ffffff;
-    font-size: 14px;
-    width: 100%;
-    > div {
-        max-width: 1400px;
-        padding: 10px 15px;
-    }
 }
 
 
@@ -519,7 +502,14 @@ a[role="button"]:hover,
         }
         tbody {
             > tr {
-                .animate-table-row;
+                &.link {
+                    cursor: pointer;
+                }
+                &.middle {
+                    > td {
+                        vertical-align: middle;
+                    }
+                }
                 > td {
                     &.middle {
                         vertical-align: middle;
@@ -550,11 +540,6 @@ a[role="button"]:hover,
         td {
             border: 0;
             padding: 0;
-            > .row {
-                > div {
-                    .animate-table-row;
-                }
-            }
         }
         .row {
             margin: 0 -10px;

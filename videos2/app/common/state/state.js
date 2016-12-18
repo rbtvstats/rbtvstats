@@ -17,7 +17,7 @@ angular.module('app.common').service('StateSrv', function($rootScope, $location)
         for (var i = 0; i < properties.length; i++) {
             var property = properties[i];
             var value = storage[path][property];
-            if (typeof(value) !== 'undefined') {
+            if (!angular.isUndefined(value)) {
                 scope[property] = value;
             }
         }

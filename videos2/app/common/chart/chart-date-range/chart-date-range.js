@@ -1,19 +1,10 @@
-angular.module('app.common').directive('dateRangePicker', function() {
+angular.module('app.common').directive('chartDateRange', function() {
     return {
         restrict: 'A',
-        scope: {
-            dateTarget: '=dateRangePicker',
-            options: '=options'
-        },
-        templateUrl: 'app/common/date-range-picker/date-range-picker.html',
+        replace: true,
+        templateUrl: 'app/common/chart/chart-date-range/chart-date-range.html',
         controller: function($scope, $timeout) {
             $scope.init = function() {
-                var defaultOptions = {
-                    ranges: [],
-                    min: undefined,
-                    max: undefined
-                };
-
                 $scope.date = {
                     start: null,
                     end: null
@@ -31,16 +22,10 @@ angular.module('app.common').directive('dateRangePicker', function() {
                     selected: 'quickselect'
                 };
 
-                if (!angular.isObject($scope.options)) {
-                    $scope.options = {};
-                }
-
-                _.defaultsDeep($scope.options, defaultOptions);
-
-                $scope.$watch('dateTarget', function(newVal, oldVal) {
+                $scope.$watch('options.dateRange.selected', function(newVal, oldVal) {
                     var date = {};
-                    if (angular.isObject($scope.dateTarget)) {
-                        date = $scope.dateTarget;
+                    if (angular.isObject($scope.options.dateRange.selected)) {
+                        date = $scope.options.dateRange.selected;
                     }
 
                     $scope.date = $scope.date || {};
@@ -82,12 +67,12 @@ angular.module('app.common').directive('dateRangePicker', function() {
             };
 
             $scope.apply = function() {
-                if (!angular.isObject($scope.dateTarget)) {
-                    $scope.dateTarget = {};
+                if (!angular.isObject($scope.options.dateRange.selected)) {
+                    $scope.options.dateRange.selected = {};
                 }
 
-                $scope.dateTarget.start = $scope.date.start;
-                $scope.dateTarget.end = $scope.date.end;
+                $scope.options.dateRange.selected.start = $scope.date.start;
+                $scope.options.dateRange.selected.end = $scope.date.end;
             };
 
             $scope.clear = function() {

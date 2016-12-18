@@ -134,6 +134,10 @@ angular.module('app').run(function($rootScope, amMoment, Notification, $parse) {
         }
     };
 
+    angular.isBoolean = function(v) {
+        return typeof(v) === 'boolean'
+    }
+
     //extend notification service
     Notification.parseError = function(options) {
         options.message = 'Unbekannter Fehler';

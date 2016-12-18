@@ -61,7 +61,7 @@ angular.module('app.editor').directive('imgInput', function() {
             }
 
             $scope.convertImageUrl = function(url) {
-                if (typeof(url) === 'string') {
+                if (angular.isString(url)) {
                     url = url.trim();
                     if (url.indexOf('http') === 0) {
                         urlToBase64(url)

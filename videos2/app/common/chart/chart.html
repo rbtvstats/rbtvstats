@@ -3,43 +3,12 @@
         <table>
             <tr>
                 <td>
-                    <div ng-show="options.title.enable" ng-bind-html="options.title.text"></div>
+                    <div ng-if="options.title.enable" ng-bind-html="options.title.text"></div>
                 </td>
-                <td class="text-right">
-                    <span class="dropdown" ng-show="options.dateGroup.enable">
-                        <button class="btn btn-transparent dropdown-toggle" type="button" data-placement="bottom-right" bs-dropdown>
-                            <span class="fa fa-list"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li class="dropdown-header" ng-click="$event.stopPropagation()">Gruppieren nach...</li>
-                        <li ng-class="options.dateGroup.selected === group.id ? 'active' : ''" ng-repeat="group in options.dateGroup.groups">
-                            <a href="" ng-click="options.dateGroup.selected=group.id">{{group.name}}</a>
-                        </li>
-                    </ul>
-                    </span>
-                    <span class="dropdown" ng-show="options.dateRange.enable">
-                        <button class="btn btn-transparent dropdown-toggle" type="button" data-placement="bottom-right" bs-dropdown>
-                            <span class="fa fa-calendar"></span>
-                    </button>
-                    <ul class="dropdown-menu date-range-picker" role="menu" ng-click="$event.stopPropagation()">
-                        <div options="options.dateRange" date-range-picker="options.dateRange.selected"></div>
-                    </ul>
-                    </span>
-                    <span class="dropdown">
-                        <button class="btn btn-transparent dropdown-toggle" type="button" data-placement="bottom-right" bs-dropdown>
-                            <span class="fa fa-ellipsis-v"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li class="dropdown-header" ng-click="$event.stopPropagation()">Exportiere Grafik als...</li>
-                        <li ng-repeat="export in exportChart">
-                            <a href="" ng-click="export.exec()">{{export.name}}</a>
-                        </li>
-                        <li class="dropdown-header" ng-click="$event.stopPropagation()">Exportiere Daten als...</li>
-                        <li ng-repeat="export in exportData">
-                            <a href="" ng-click="export.exec()">{{export.name}}</a>
-                        </li>
-                    </ul>
-                    </span>
+                <td class="chart-options text-right">
+                    <div chart-date-group ng-if="options.dateGroup.enable"></div>
+                    <div chart-date-range ng-if="options.dateRange.enable"></div>
+                    <div chart-export ng-if="options.export.enable"></div>
                 </td>
             </tr>
         </table>
@@ -52,16 +21,17 @@
             <div class="chart-error" ng-show="!loading && error">
                 Fehler bei der Darstellung
             </div>
-            <div class="chart-empty" ng-show="!loading && !error && !data.length">
-                Keine Daten zum darstellen
+            <div class="chart-empty" ng-show="!loading && !error && !data[0].values.length">
+                Keine Daten zum Darstellen
             </div>
         </div>
         <div class="chart-container">
             <div class="chart-container-scroll" style="min-width:{{options.chart.minWidth}}px; height:{{options.chart.height}}px">
-                <nvd3 id="{{svgId}}" options="options" data="data" config="config"></nvd3>
+                <nvd3 options="options" data="data" config="config"></nvd3>
             </div>
         </div>
     </div>
-    <div class="card-content-footer" ng-if="options.caption.enable" ng-bind-html="options.caption.text">
+    <div class="card-content-footer" ng-if="options.caption.enable">
+        <div ng-bind-html="options.caption.text"></div>
     </div>
 </div>

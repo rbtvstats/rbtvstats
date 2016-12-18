@@ -1,0 +1,15 @@
+<div class="dropdown">
+    <button class="btn btn-transparent dropdown-toggle" type="button" data-placement="bottom-right" bs-dropdown>
+        <span class="fa fa-ellipsis-v"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li class="dropdown-header" ng-click="$event.stopPropagation()">Exportiere Grafik als...</li>
+        <li ng-repeat="export in exportChart">
+            <a href="" ng-click="export.exec()">{{export.name}}</a>
+        </li>
+        <li class="dropdown-header" ng-click="$event.stopPropagation()">Exportiere Daten als...</li>
+        <li ng-repeat="export in exportData">
+            <a href="" ng-click="export.exec()">{{export.name}}</a>
+        </li>
+    </ul>
+</div>

@@ -7,7 +7,6 @@
     <meta charset="utf-8">
     <link href="vendor.less" type="text/css" rel="stylesheet/less">
     <link href="app.less" type="text/css" rel="stylesheet/less">
-    <script src="bower_components/angularjs/angular.min.js"></script>
 </head>
 
 <body>
@@ -59,6 +58,8 @@
     <script src="app/common/app.common.js"></script>
     <script src="app/common/init/init.js"></script>
     <script src="app/common/chart/chart.js"></script>
+    <script src="app/common/chart/chart-date-range/chart-date-range.js"></script>
+    <script src="app/common/chart/chart-export/chart-export.js"></script>
     <script src="app/common/config/config.js"></script>
     <script src="app/common/state/state.js"></script>
     <script src="app/common/img-src/img-src.js"></script>
@@ -82,10 +83,14 @@
     <script src="app/data/videos/models/hosts/hosts.js"></script>
     <script src="app/data/videos/models/shows/shows.js"></script>
     <script src="app/data/videos/models/series/series.js"></script>
+    <!-- app.data.live -->
+    <script src="app/data/live/app.data.live.js"></script>
+    <script src="app/data/live/controller/controller.js"></script>
     <!-- app.editor -->
     <script src="app/editor/app.editor.js"></script>
     <script src="app/editor/utils/img-input/img-input.js"></script>
     <script src="app/editor/utils/json-editor/json-editor.js"></script>
+    <script src="app/editor/navigation/navigation.js"></script>
     <script src="app/editor/config/config.js"></script>
     <script src="app/editor/videos/videos.js"></script>
     <script src="app/editor/videos/data/data.js"></script>
@@ -106,6 +111,9 @@
     <script src="app/editor/videos/series/series-one/series-one.js"></script>
     <!-- app.viewer -->
     <script src="app/viewer/app.viewer.js"></script>
+    <script src="app/viewer/navigation/navigation.js"></script>
+    <script src="app/viewer/live/live.js"></script>
+    <script src="app/viewer/footer/footer.js"></script>
     <script src="app/viewer/videos/videos.js"></script>
     <script src="app/viewer/videos/channels/channels.js"></script>
     <script src="app/viewer/videos/channels/channels-all/channels-all.js"></script>
@@ -121,13 +129,7 @@
     <script src="app/viewer/videos/series/series.js"></script>
     <script src="app/viewer/videos/series/series-all/series-all.js"></script>
     <script src="app/viewer/videos/series/series-one/series-one.js"></script>
-    <script src="app/viewer/live/live.js"></script>
-    <script src="app/common/date-range-picker/date-range-picker.js"></script>
-    <script src="app/viewer/navigation/navigation.js"></script>
-    <script src="app/viewer/footer/footer.js"></script>
-    <script src="app/editor/navigation/navigation.js"></script>
-    <script src="app/data/live/app.data.live.js"></script>
-    <script src="app/data/live/controller/controller.js"></script>
+    <script src="app/common/chart/chart-date-group/chart-date-group.js"></script>
     <!-- Add New Component JS Above -->
     <div ui-view ng-cloak></div>
 </body>

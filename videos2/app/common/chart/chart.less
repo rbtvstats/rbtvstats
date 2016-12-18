@@ -5,6 +5,11 @@
     > .card-content-header {
         > table {
             width: 100%;
+            .chart-options {
+                > * {
+                    display: inline-block;
+                }
+            }
         }
     }
     > .card-content-body {
@@ -69,3 +74,7 @@
     color: #ffffff;
     padding: 0;
 }
+
+@import "chart-date-range/chart-date-range.less";
+@import "chart-date-group/chart-date-group.less";
+@import "chart-export/chart-export.less";

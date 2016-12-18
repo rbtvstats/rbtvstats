@@ -1,0 +1,11 @@
+<div class="dropdown">
+    <button class="btn btn-transparent dropdown-toggle" type="button" data-placement="bottom-right" bs-dropdown>
+        <span class="fa fa-list"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        <li class="dropdown-header" ng-click="$event.stopPropagation()">Gruppieren nach...</li>
+        <li ng-class="options.dateGroup.selected === group.id ? 'active' : ''" ng-repeat="group in options.dateGroup.groups">
+            <a href="" ng-click="options.dateGroup.selected=group.id">{{group.name}}</a>
+        </li>
+    </ul>
+</div>

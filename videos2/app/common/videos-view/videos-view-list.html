@@ -2,23 +2,30 @@
     <div class="card-content-body">
         <div class="table-container">
             <table class="table list" ng-table="tableParams">
-                <tr class="middle link" ng-repeat="videos in $data" ng-click="details(videos)">
-                    <td width="1">
-                        <img img-src="{{videos.image}}" img-fallback="{{imagePlaceholders.video}}" img-loading="{{imagePlaceholders.video}}">
+                <tr class="middle link" ng-repeat="video in $data" ng-click="details(video)">
+                    <td title="'Titel'" sortable="'title'">
+                        <a ng-href="https://youtube.com/watch?v={{video.id}}" target="_blank">{{video.title}}</a>
                     </td>
-                    <td width="200" title="'Titel'" sortable="'title'">
-                        {{videos.title}}
+                    <td width="140" title="'Kanal'" sortable="'channel'">
+                        {{(video.channel | videosResolve:'channels').title}}
                     </td>
-                    <td width="1" title="'Kanal ID'" sortable="'videosId'">
-                        {{videos.videosId}}
+                    <td width="100" title="'Laufzeit'" sortable="'duration'">
+                        {{getDuration(video)}}
                     </td>
-                    <td width="1" title="'Video Playlist ID'" sortable="'playlistId'">
-                        {{videos.playlistId}}
+                    <td width="100" title="'Veröffentlichung'" sortable="'published'">
+                        {{video.published * 1000 | date:'dd.MM.yyyy'}}
                     </td>
-                    <td width="1">
-                        <button class="btn btn-danger" type="button" ng-click="delete(videos)" data-title="Löschen" bs-tooltip>
-                            <i class="fa fa-trash"></i>
-                        </button>
+                    <td width="100" title="'Ausstrahlung'" sortable="'aired'">
+                        {{video.aired && (video.aired * 1000 | date:'dd.MM.yyyy')}}
+                    </td>
+                    <td width="80" title="'Aufrufe'" sortable="'stats.viewCount'">
+                        {{video.stats.viewCount}}
+                    </td>
+                    <td width="85" title="'P. Bew.'" sortable="'stats.likeCount'">
+                        {{video.stats.likeCount}}
+                    </td>
+                    <td width="85" title="'N. Bew.'" sortable="'stats.dislikeCount'">
+                        {{video.stats.dislikeCount}}
                     </td>
                 </tr>
             </table>

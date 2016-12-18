@@ -18,7 +18,7 @@
                             <!-- hosts -->
                             <div class="hosts">
                                 <span ng-repeat="host in video.hosts | videosResolve:'hosts' | orderBy">
-                                    <a ng-href="#/hosts/{{host.id}}" data-title="{{host.firstname}} {{host.lastname}}" data-animation="badge-zoom-tooltip" bs-tooltip touch-tooltip>
+                                    <a ng-href="#/videos/hosts/{{host.id}}" data-title="{{host.firstname}} {{host.lastname}}" data-animation="badge-zoom-tooltip" bs-tooltip touch-tooltip>
                                         <img class="badge-round badge-md badge-zoom" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                                     </a>
                                 </span>
@@ -26,7 +26,7 @@
                             <!-- shows -->
                             <div class="shows">
                                 <span ng-repeat="show in video.shows | videosResolve:'shows' | orderBy">
-                                    <a ng-href="#/shows/{{show.id}}" data-title="{{show.name}}" data-animation="badge-zoom-tooltip" bs-tooltip touch-tooltip>
+                                    <a ng-href="#/videos/shows/{{show.id}}" data-title="{{show.name}}" data-animation="badge-zoom-tooltip" bs-tooltip touch-tooltip>
                                         <img class="badge-round badge-md badge-zoom" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                                     </a>
                                 </span>
@@ -34,7 +34,7 @@
                             <!-- series -->
                             <div class="series">
                                 <span ng-repeat="series in video.series | videosResolve:'series' | orderBy">
-                                    <a ng-href="#/series/{{series.id}}" data-title="{{series.name}}" data-animation="badge-zoom-tooltip" bs-tooltip touch-tooltip>
+                                    <a ng-href="#/videos/series/{{series.id}}" data-title="{{series.name}}" data-animation="badge-zoom-tooltip" bs-tooltip touch-tooltip>
                                         <img class="badge-round badge-md badge-zoom" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                                     </a>
                                 </span>

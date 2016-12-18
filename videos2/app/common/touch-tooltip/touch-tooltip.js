@@ -12,7 +12,7 @@ angular.module('app.common').directive('touchTooltip', function($tooltip) {
                 element.off('click', disableClick);
             };
             tooltip.$options.onHide = function() {
-                element.off('click', disableClick);
+                element.on('click', disableClick);
             };
 
             element.on('click', disableClick);

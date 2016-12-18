@@ -1,5 +1,18 @@
 <div class="footer" ng-controller="FooterCtrl">
     <div class="container-fluid">
-        footer
+        <table>
+            <tr>
+                <td>
+                    <a href="{{link.url}}" target="_blank" ng-repeat="link in rbtvLinks">
+                        <i class="fa fa-lg {{link.icon}}"></i>{{link.title}}
+                    </a>
+                </td>
+                <td class="text-right">
+                    <a href="{{link.url}}" target="_blank" ng-repeat="link in ownLinks">
+                        <i class="fa fa-lg {{link.icon}}"></i>{{link.title}}
+                    </a>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>

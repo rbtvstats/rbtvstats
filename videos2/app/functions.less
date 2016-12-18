@@ -41,6 +41,28 @@
     transform-origin: @arguments;
 }
 
+.keyframes(@name, @arguments) {
+    @-webkit-keyframes @name {
+        @arguments();
+    }
+    @-moz-keyframes @name {
+        @arguments()ents;
+    }
+    @-webkit-keyframes @name {
+        @arguments();
+    }
+    @keyframes @name {
+        @arguments();
+    }
+}
+
+.animation (...) {
+    -webkit-animation: @arguments;
+    -moz-animation: @arguments;
+    -ms-animation: @arguments;
+    animation: @arguments;
+}
+
 @level: 1;
 .box-shadow-level(@level: 1) {
     & when (@level =1) {
