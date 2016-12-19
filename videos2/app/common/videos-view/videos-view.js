@@ -12,36 +12,37 @@ angular.module('app.common').directive('videosView', function($timeout) {
                 $scope.imagePlaceholders = $scope.$parent.imagePlaceholders;
 
                 //table
-                $scope.tableParams = new NgTableParams({
-                    filter: { $: 'a' }
-                }, {
-                    dataset: $scope.videos,
-                    counts: [],
-                    filterOptions: {
-                        filterFn: function(videos) {
-                            if (!$scope.videosCache) {
-                                $scope.videosCache = VideosSrv.filter(videos, $scope.tableOptions.filter);
+                $scope.table = {
+                    params: new NgTableParams({
+                        filter: { $: 'a' }
+                    }, {
+                        dataset: $scope.videos,
+                        counts: [],
+                        filterOptions: {
+                            filterFn: function(videos) {
+                                if (!$scope.videosCache) {
+                                    $scope.videosCache = VideosSrv.filter(videos, $scope.table.options.filter);
+                                }
+
+                                return $scope.videosCache;
                             }
-
-                            return $scope.videosCache;
                         }
-                    }
-                });
+                    }),
+                    options: {},
+                    tableHidden: true,
+                    optionsHidden: true
+                };
 
-                $scope.tableOptions = {};
-                $scope.tableOptionsHidden = true;
-
-                //delay visibility -> smoother UI
-                $scope.tableParams.visible = false;
+                //defer visibility for smoother UI
                 $timeout(function() {
-                    $scope.tableParams.visible = true;
+                    $scope.table.tableHidden = false;
                 }, 100);
 
                 $scope.$on('video.changed', function(video) {
                     $scope.clearVideosCache();
                 });
 
-                StateSrv.watch($scope, ['tableOptions']);
+                StateSrv.watch($scope, ['table.options']);
             };
 
             function escapeRegExp(str) {
@@ -220,7 +221,7 @@ angular.module('app.common').directive('videosView', function($timeout) {
             };
 
             $scope.update = function() {
-                $scope.tableParams.reload();
+                $scope.table.params.reload();
             };
 
             $scope.init();

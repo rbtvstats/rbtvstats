@@ -1,8 +1,10 @@
-<div init>
+<div>
     <!-- navigation -->
     <div ng-include="'app/viewer/navigation/navigation.html'"></div>
     <!-- main -->
-    <div class="main" ui-view></div>
+    <div init>
+        <div class="main" ui-view></div>
+    </div>
     <!-- footer -->
     <div ng-include="'app/viewer/footer/footer.html'"></div>
 </div>

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-custom" role="navigation" data-start-collapsed="true" bs-navbar bs-collapse>
+<nav class="navbar navbar-inverse navbar-custom" role="navigation" ng-controller="NavigationCtrl" data-start-collapsed="true" bs-navbar bs-collapse>
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" bs-collapse-toggle>
@@ -10,7 +10,7 @@
         </div>
         <div class="collapse navbar-collapse" bs-collapse-target>
             <ul class="nav navbar-nav">
-                <li class="dropdown" data-match-route="/videos/channels/">
+                <li class="dropdown" data-match-route="/videos/*">
                     <a href="#" bs-dropdown>Videos <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li data-match-route="/videos/channels/"><a ng-href="#/videos/channels/">Kanäle</a></li>
@@ -21,6 +21,24 @@
                     </ul>
                 </li>
                 <li data-match-route="/live/"><a ng-href="#/live/">Live</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown info">
+                    <a href="#" placement="bottom-right" bs-dropdown>
+                        <i class="fa" ng-class="initialized ? 'fa-circle' : 'fa-circle-o'"></i>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
+                        <li ng-repeat="data in metadata">
+                            <div>{{data.name}}</div>
+                            <div ng-if="data.loading"><span class="spinner-icon inverse"></span></div>
+                            <div ng-if="!data.loading">{{data.update * 1000 | date:'dd.MM.yyyy HH:mm'}}</div>
+                            <div class="error" ng-if="data.error">Fehler beim Abrufen der Metadaten!</div>
+                        </li>
+                        <li ng-if="!metadata.length">
+                            <div class="no-data">Keine Daten verfügbar</div>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>

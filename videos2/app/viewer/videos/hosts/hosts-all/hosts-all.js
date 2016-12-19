@@ -38,8 +38,6 @@ angular.module('app.viewer').config(function($stateProvider) {
                         template: 'app/viewer/videos/hosts/hosts-all/hosts-all-card.html'
                     }]
                 };
-
-                StateSrv.watch($scope, ['tableOptions']);
             };
 
             $scope.one = function(host) {

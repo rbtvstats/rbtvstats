@@ -17,15 +17,33 @@ angular.module('app.editor').config(function($stateProvider, $urlRouterProvider)
         abstract: true,
         url: '/editor',
         templateUrl: 'app/editor/app.editor.html',
-        controller: function($scope, DependencySrv, ConfigSrv, StateSrv, VideosDataSrv, VideosDataBackupSrv, LiveDataSrv) {
+        controller: function($scope, InitSrv, ConfigSrv, StateSrv, VideosDataSrv, VideosDataBackupSrv, LiveDataSrv) {
             $scope.initDependencies = ['config', 'state'];
 
-            DependencySrv.register('config', ConfigSrv.loadLocal);
-            DependencySrv.register('state', StateSrv.loadLocal);
-            DependencySrv.register('live-metadata', LiveDataSrv.loadRemoteMetadata);
-            DependencySrv.register('videos-metadata', VideosDataSrv.loadRemoteMetadata);
-            DependencySrv.register('videos-data', VideosDataSrv.loadLocal);
-            DependencySrv.register('videos-data-backup', VideosDataBackupSrv.loadLocal);
+            InitSrv.register({
+                id: 'config',
+                execute: ConfigSrv.loadLocal
+            });
+            InitSrv.register({
+                id: 'state',
+                execute: StateSrv.loadLocal
+            });
+            InitSrv.register({
+                id: 'live-metadata',
+                execute: LiveDataSrv.loadRemoteMetadata
+            });
+            InitSrv.register({
+                id: 'videos-metadata',
+                execute: VideosDataSrv.loadRemoteMetadata
+            });
+            InitSrv.register({
+                id: 'videos-data',
+                execute: VideosDataSrv.loadLocal
+            });
+            InitSrv.register({
+                id: 'videos-data-backup',
+                execute: VideosDataBackupSrv.loadLocal
+            });
         }
     });
     $urlRouterProvider.when('/editor/', '/editor/videos/data/');

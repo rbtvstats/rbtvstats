@@ -3,7 +3,7 @@ angular.module('app.common').directive('tableView', function() {
         restrict: 'A',
         replace: true,
         templateUrl: 'app/common/table-view/table-view.html',
-        controller: function($scope, $rootScope) {
+        controller: function($scope, StateSrv) {
             $scope.init = function() {
                 $scope.displayCountOptions = [10, 25, 50];
 
@@ -37,6 +37,8 @@ angular.module('app.common').directive('tableView', function() {
                 $scope.$watch('table.params.filter()', function(newVal, oldVal) {
                     $scope.table.options.filter = $scope.table.params.filter().$ || '';
                 });
+
+                StateSrv.watch($scope, ['table.options'], true);
             };
 
             $scope.init();

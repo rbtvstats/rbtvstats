@@ -40,7 +40,7 @@ angular.module('app.editor').config(function($stateProvider) {
                     }]
                 };
 
-                StateSrv.watch($scope, ['tableOptions', 'exec']);
+                StateSrv.watch($scope, ['exec']);
             };
 
             $scope.one = function(host) {

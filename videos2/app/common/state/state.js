@@ -1,42 +1,24 @@
-angular.module('app.common').service('StateSrv', function($rootScope, $location) {
+angular.module('app.common').service('StateSrv', function($rootScope, $parse, $state) {
     var storage = {};
     var service = {};
 
-    function saveState(path, scope, properties) {
-        storage[path] = storage[path] || {};
-        for (var i = 0; i < properties.length; i++) {
-            var property = properties[i];
-            var value = scope[property];
-            storage[path][property] = value;
-        }
+    function saveState(container, scope, models) {
+        storage[container] = storage[container] || {};
+
+        _.each(models, function(model, path) {
+            storage[container][path] = model(scope);
+        });
 
         service.save();
     }
 
-    function loadState(path, scope, properties) {
-        for (var i = 0; i < properties.length; i++) {
-            var property = properties[i];
-            var value = storage[path][property];
+    function loadState(container, scope, models) {
+        _.each(models, function(model, path) {
+            var value = storage[container][path];
             if (!angular.isUndefined(value)) {
-                scope[property] = value;
+                model.assign(scope, value);
             }
-        }
-    }
-
-    function watch(path, scope, property, properties) {
-        var init = false;
-        scope.$watch(property, function(newVal, oldVal) {
-            if (!init) {
-                init = true;
-                if (path in storage) {
-                    loadState(path, scope, properties);
-                } else {
-                    saveState(path, scope, properties);
-                }
-            } else {
-                saveState(path, scope, properties);
-            }
-        }, true);
+        });
     }
 
     service.loadLocal = function() {
@@ -53,10 +35,28 @@ angular.module('app.common').service('StateSrv', function($rootScope, $location)
     }, 1000);
 
     service.watch = function(scope, properties) {
-        var path = $location.path();
-        for (var i = 0; i < properties.length; i++) {
-            watch(path, scope, properties[i], properties);
-        }
+        var container = $state.current.name;
+
+        var models = {};
+        _.each(properties, function(property) {
+            models[property] = $parse(property);
+        });
+
+        _.each(properties, function(property) {
+            var init = false;
+            scope.$watch(property, function(newVal, oldVal) {
+                if (!init) {
+                    init = true;
+                    if (container in storage) {
+                        loadState(container, scope, models);
+                    } else {
+                        saveState(container, scope, models);
+                    }
+                } else {
+                    saveState(container, scope, models);
+                }
+            }, true);
+        });
     };
 
     return service;

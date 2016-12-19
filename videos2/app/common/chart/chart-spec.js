@@ -1,6 +1,6 @@
 describe('chart', function() {
 
-  beforeEach(module('app.viewer'));
+  beforeEach(module('app.common'));
 
   var scope,compile;
 

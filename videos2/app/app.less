@@ -39,7 +39,7 @@ body {
 }
 
 #loading-bar-spinner {
-    right: 15px;
+    right: 21px;
     left: inherit;
     .spinner-icon {
         .spinner-icon;
@@ -52,11 +52,12 @@ body {
 }
 
 .spinner-icon {
+    display: inline-block;
     width: 1em;
     height: 1em;
     border: solid 2px transparent;
-    border-top-color: #333;
-    border-left-color: #333;
+    border-top-color: #333333;
+    border-left-color: #333333;
     border-radius: 50%;
     .animation(loading-bar-spinner 700ms linear infinite);
     &.s2 {
@@ -68,6 +69,10 @@ body {
         width: 3em;
         height: 3em;
         border-width: 5px;
+    }
+    &.inverse {
+        border-top-color: #fbfbfb;
+        border-left-color: #fbfbfb;
     }
 }
 
@@ -96,10 +101,46 @@ body {
         }
         > .navbar-collapse {
             border: 0;
+            .navbar-text {
+                color: #ffffff;
+            }
             > .navbar-nav {
                 .dropdown {
                     > a {
                         background-color: @navbar-color-bg;
+                    }
+                    @media (max-width: 767px) {
+                        &.info {
+                            > a {
+                                &::before {
+                                    content: "Status"
+                                }
+                                > i {
+                                    opacity: 0;
+                                }
+                            }
+                        }
+                    }
+                    &.info {
+                        > ul {
+                            > li {
+                                color: #fbfbfb;
+                                font-weight: normal;
+                                padding: 10px 15px;
+                                > .no-data {
+                                    text-align: center;
+                                    font-size: 16px;
+                                    padding: 15px;
+                                }
+                                > .error {
+                                    font-weight: bold;
+                                    color: #d9534f;
+                                }
+                                > div:nth-child(1) {
+                                    font-weight: bold;
+                                }
+                            }
+                        }
                     }
                     .dropdown-menu {
                         background-color: @navbar-color-bg;
@@ -124,6 +165,7 @@ body {
                         border-bottom: 2px solid transparent;
                         color: @navbar-color-font !important;
                     }
+                    &:hover,
                     > a:hover {
                         .transition(200ms ease-in-out all);
                         background-color: @navbar-color-active !important;
@@ -571,6 +613,15 @@ a[role="button"]:hover,
     }
 }
 
+/* stats */
+.form-stats {
+    > .form-group {
+        padding: 20px 0;
+    }
+    > .form-group:last-child {
+        margin-bottom: 0;
+    }
+}
 
 /* ui-select */
 

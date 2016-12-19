@@ -40,8 +40,6 @@ angular.module('app.viewer').config(function($stateProvider) {
                     }]
                 };
 
-                //StateSrv.watch($scope, ['table.options']);
-
                 $scope.charts = [];
                 $scope.charts.push($scope.chartVideosCount());
                 $scope.charts.push($scope.chartDurationTotal());
