@@ -173,6 +173,17 @@
 }
 
 
+/* cards animation */
+
+.card-image {
+    .transition(200ms ease-in-out all);
+    &:hover {
+        .box-shadow-level(2);
+        .transform(translateY(-2px));
+    }
+}
+
+
 /* date/time picker animation */
 
 .timepicker,
