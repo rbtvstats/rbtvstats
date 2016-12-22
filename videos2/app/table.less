@@ -1,0 +1,89 @@
+/* table */
+
+.table {
+    margin-bottom: 0;
+    &.list {
+        min-width: 800px;
+        thead {
+            font-weight: bold;
+            > tr {
+                > th {
+                    &.header {
+                        text-align: left;
+                    }
+                    &.sort-asc,
+                    &.sort-desc {
+                        background-color: inherit !important;
+                    }
+                }
+            }
+        }
+        tbody {
+            > tr {
+                &.link {
+                    cursor: pointer;
+                }
+                &.middle {
+                    > td {
+                        vertical-align: middle;
+                    }
+                }
+                > td {
+                    &.middle {
+                        vertical-align: middle;
+                    }
+                    > .limit-height {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        word-wrap: break-word;
+                        max-height: 4.5em;
+                        line-height: 1.5em;
+                    }
+                    > img {
+                        border: 1px solid #e2e2e2;
+                        .border-radius(50%);
+                        .box-shadow-level(1);
+                        width: 60px;
+                        height: 60px;
+                    }
+                }
+            }
+        }
+    }
+    &.cards {
+        margin-bottom: 0;
+        thead {
+            display: none;
+        }
+        td {
+            border: 0;
+            padding: 0;
+        }
+        .row {
+            margin: 0 -10px;
+            .col-xs-12,
+            .col-sm-6,
+            .col-md-4,
+            .col-lg-3 {
+                padding: 0 10px 10px 10px;
+            }
+        }
+    }
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.ng-table-pager {
+    display: none !important;
+}
+
+.card-content {
+    > .card-content-body {
+        > .table,
+        > .table-container {
+            margin: -5px -10px;
+        }
+    }
+}

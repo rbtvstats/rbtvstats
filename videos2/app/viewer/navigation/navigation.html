@@ -30,7 +30,7 @@
                     <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
                         <li ng-repeat="data in metadata">
                             <div>{{data.name}}</div>
-                            <div ng-if="data.loading"><span class="spinner-icon inverse"></span></div>
+                            <div ng-if="data.loading"><span class="icon icon-circle-notch icon-spin icon-inverse"></span></div>
                             <div ng-if="!data.loading">{{data.update * 1000 | amDateFormat:'l LT'}}</div>
                             <div class="error" ng-if="data.error">Fehler beim Abrufen der Metadaten!</div>
                         </li>

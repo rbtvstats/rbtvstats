@@ -1,0 +1,112 @@
+/* icons */
+
+.icon {
+    display: inline-block;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    width: 1em;
+    height: 1em;
+    line-height: 1em;
+    &:after {
+        content: '\00a0';
+    }
+    &.icon-bohne {
+        background-image: url('/img/icons/bohne.png');
+    }
+    &.icon-circle-notch {
+        border: solid 3px transparent;
+        border-top-color: #333333;
+        border-left-color: #333333;
+        border-radius: 50%;
+    }
+    &.icon-2x {
+        width: 2em;
+        height: 2em;
+        line-height: 2em;
+    }
+    &.icon-3x {
+        width: 3em;
+        height: 3em;
+        line-height: 2em;
+    }
+    &.icon-spin {
+        .animation(loading-bar-spinner 700ms linear infinite);
+    }
+    &.icon-inverse {
+        border-top-color: #fbfbfb;
+        border-left-color: #fbfbfb;
+    }
+}
+
+.icon-link {
+    display: inline-block;
+    .border-radius(50%);
+    padding: 8px;
+    &:hover {
+        .transition(200ms ease-in-out all);
+        background-color: #e6e6e6;
+    }
+    &:last-child {
+        margin-right: inherit;
+    }
+}
+
+
+/* fontawsome */
+
+@fa-deviantart: #4e6252;
+@fa-facebook: #3b5998;
+@fa-flickr: #ff0084;
+@fa-github: #333;
+@fa-google-plus: #dd4b39;
+@fa-instagram: #3f729b;
+@fa-linkedin: #0976b4;
+@fa-reddit: #ff4500;
+@fa-spotify: #7ab800;
+@fa-tumblr: #35465c;
+@fa-twitch: #6441a5;
+@fa-twitter: #55acee;
+@fa-youtube: #e52d27;
+.fa-colored {
+    &.fa-deviantart {
+        color: @fa-deviantart;
+    }
+    &.fa-facebook {
+        color: @fa-facebook;
+    }
+    &.fa-flickr {
+        color: @fa-flickr;
+    }
+    &.fa-github {
+        color: @fa-github;
+    }
+    &.fa-google-plus {
+        color: @fa-google-plus;
+    }
+    &.fa-instagram {
+        color: @fa-instagram;
+    }
+    &.fa-linkedin {
+        color: @fa-linkedin;
+    }
+    &.fa-reddit {
+        color: @fa-reddit;
+    }
+    &.fa-spotify {
+        color: @fa-spotify;
+    }
+    &.fa-tumblr {
+        color: @fa-tumblr;
+    }
+    &.fa-twitch {
+        color: @fa-twitch;
+    }
+    &.fa-twitter {
+        color: @fa-twitter;
+    }
+    &.fa-youtube {
+        color: @fa-youtube;
+    }
+}

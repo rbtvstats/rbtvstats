@@ -123,6 +123,11 @@
 /* table row animation */
 
 .table {
+    &.table-hover {
+        tr:hover {
+            .transition(200ms ease-in-out background-color);
+        }
+    }
     &.list {
         > tbody {
             > tr {
