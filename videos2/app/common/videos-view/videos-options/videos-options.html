@@ -94,7 +94,7 @@
                         <span class="text-muted">Kanäle..</span>
                     </ui-select-match>
                     <ui-select-choices repeat="channel in (channels | filter: $select.search | orderBy)">
-                        <img class="badge-round badge-md" img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
+                        <img class="image-badge image-badge-md" img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
                         <span ng-bind="channel.title"></span>
                     </ui-select-choices>
                 </ui-select>
@@ -105,7 +105,7 @@
             <div class="col-md-offset-4 col-md-8">
                 <div class="button-list">
                     <button type="button" class="btn btn-default" data-title="{{channel.title || channel.id}}" ng-click="removeFilterChannel(channel.id)" ng-repeat="channel in table.options.filter.channels.filter | videosResolve:'channels' | orderBy" bs-tooltip>
-                        <img class="badge-round badge-md" img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
+                        <img class="image-badge image-badge-md" img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
                         <span ng-bind="channel.title"></span>
                     </button>
                 </div>
@@ -121,11 +121,11 @@
                             <span class="text-muted">Formate..</span>
                         </ui-select-match>
                         <ui-select-choices group-by="listGroupShows" repeat="show in (shows | filter: $select.search | orderBy)">
-                            <img class="badge-round badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                            <img class="image-badge image-badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                             <span ng-bind="show.name"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <div class="input-group-btn align-left">
+                    <div class="input-group-btn">
                         <ui-select ng-model="table.options.filter.shows.match" skip-focusser="true" search-enabled="false">
                             <ui-select-match placeholder="Verknüpfung..">
                                 <span ng-bind="$select.selected.name"></span>
@@ -143,7 +143,7 @@
             <div class="col-md-offset-4 col-md-8">
                 <div class="button-list">
                     <button type="button" class="btn btn-default" data-title="{{show.name || show.id}}" ng-click="removeFilterShow(show.id)" ng-repeat="show in table.options.filter.shows.filter | videosResolve:'shows' | orderBy" bs-tooltip>
-                        <img class="badge-round badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                        <img class="image-badge image-badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                         <span ng-bind="show.name"></span>
                     </button>
                 </div>
@@ -159,12 +159,12 @@
                             <span class="text-muted">Moderatoren..</span>
                         </ui-select-match>
                         <ui-select-choices repeat="host in (hosts | filter: $select.search | orderBy)">
-                            <img class="badge-round badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                            <img class="image-badge image-badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                             <span>{{host.firstname}} {{host.lastname}}</span>
                             <span ng-if="host.nickname">({{host.nickname}})</span>
                         </ui-select-choices>
                     </ui-select>
-                    <div class="input-group-btn align-left">
+                    <div class="input-group-btn">
                         <ui-select ng-model="table.options.filter.hosts.match" skip-focusser="true" search-enabled="false">
                             <ui-select-match placeholder="Verknüpfung..">
                                 <span ng-bind="$select.selected.name"></span>
@@ -182,7 +182,7 @@
             <div class="col-md-offset-4 col-md-8">
                 <div class="button-list">
                     <button type="button" class="btn btn-default" data-title="{{host.firstname}} {{host.lastname}}" ng-click="removeFilterHost(host.id)" ng-repeat="host in table.options.filter.hosts.filter | videosResolve:'hosts' | orderBy" bs-tooltip>
-                        <img class="badge-round badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                        <img class="image-badge image-badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                         <span>{{host.firstname}} {{host.lastname}}</span>
                         <span ng-if="host.nickname">({{host.nickname}})</span>
                     </button>
@@ -199,11 +199,11 @@
                             <span class="text-muted">Serien..</span>
                         </ui-select-match>
                         <ui-select-choices repeat="series_ in (series | filter: $select.search | orderBy)">
-                            <img class="badge-round badge-md" img-src="{{series_.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
+                            <img class="image-badge image-badge-md" img-src="{{series_.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                             <span ng-bind="series_.name"></span>
                         </ui-select-choices>
                     </ui-select>
-                    <div class="input-group-btn align-left">
+                    <div class="input-group-btn">
                         <ui-select ng-model="table.options.filter.series.match" skip-focusser="true" search-enabled="false">
                             <ui-select-match placeholder="Verknüpfung..">
                                 <span ng-bind="$select.selected.name"></span>
@@ -221,7 +221,7 @@
             <div class="col-md-offset-4 col-md-8">
                 <div class="button-list">
                     <button type="button" class="btn btn-default" data-title="{{series_.name || show.id}}" ng-click="removeFilterSeries(series_.id)" ng-repeat="series_ in table.options.filter.series.filter | videosResolve:'series' | orderBy" bs-tooltip>
-                        <img class="badge-round badge-md" img-src="{{series_.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
+                        <img class="image-badge image-badge-md" img-src="{{series_.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                         <span ng-bind="series_.name"></span>
                     </button>
                 </div>

@@ -15,8 +15,11 @@
                     <button class="btn btn-default btn-circle" type="button" data-title="Schema Validierung" ng-class="valid ? 'btn-success': 'btn-danger'" bs-tooltip>
                         <i class="fa fa-fw" ng-class="valid ? 'fa-check': 'fa-times'"></i>
                     </button>
-                    <button class="btn btn-default" type="button" ng-click="">
-                        <i class="fa fa-refresh"></i> Details
+                    <button class="btn btn-default" type="button" ng-click="extractAll(video)">
+                        <i class="fa fa-magic"></i>
+                    </button>
+                    <button class="btn btn-default" type="button" ng-click="updateDetails(video)">
+                        <i class="fa fa-refresh"></i>
                     </button>
                     <button class="btn btn-danger" type="button" ng-click="delete(video)">
                         <i class="fa fa-trash"></i> Löschen
@@ -31,179 +34,152 @@
                 <div class="card-content-header">
                     Video
                 </div>
-                <div class="card-content-body">
+                <div class="card-content-body" form>
                     <div class="form-horizontal">
                         <!-- id -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="id">Primärschlüssel<span class="key-name">id</span></label>
-                            <div class="col-md-8">
-                                <div class="input-group" ng-init="lockedId=true">
-                                    <input id="id" name="id" type="text" class="form-control" ng-model="video.id" ng-disabled="lockedId">
-                                    <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="lockedId=!lockedId">
-                                    <i class="fa fa-fw" ng-class="{'fa-lock': lockedId, 'fa-unlock-alt': !lockedId}"></i>
-                                </button>
-                            </span>
-                                </div>
+                        <div name="'Primärschlüssel'" key="'id'" form-element>
+                            <div class="input-group" ng-init="lockedId=true">
+                                <input type="text" class="form-control" ng-model="video.id" ng-disabled="lockedId">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="lockedId=!lockedId">
+                                        <i class="fa fa-fw" ng-class="{'fa-lock': lockedId, 'fa-unlock-alt': !lockedId}"></i>
+                                    </button>
+                                </span>
                             </div>
                         </div>
                         <!-- title -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="title">Titel<span class="key-name">title</span></label>
-                            <div class="col-md-8">
-                                <input id="title" name="title" type="text" class="form-control" ng-model="video.title">
-                            </div>
+                        <div name="'Titel'" key="'title'" form-element>
+                            <input type="text" class="form-control" ng-model="video.title">
                         </div>
                         <!-- published -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="published">Veröffentlichung<span class="key-name">published</span></label>
-                            <div class="col-md-8">
-                                <input id="published" name="published" type="number" class="form-control" ng-model="video.published">
-                            </div>
+                        <div name="'Veröffentlichung'" key="'published'" form-element>
+                            <input type="number" class="form-control" ng-model="video.published">
                         </div>
                         <!-- aired -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="aired">Ausstrahlung<span class="key-name">aired</span></label>
-                            <div class="col-md-8">
-                                <input id="aired" name="aired" type="number" class="form-control" ng-model="video.aired">
-                            </div>
+                        <div name="'Ausstrahlung'" key="'aired'" form-element>
+                            <input type="number" class="form-control" ng-model="video.aired">
                         </div>
                         <!-- duration -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="length">Laufzeit<span class="key-name">duration</span></label>
-                            <div class="col-md-8">
-                                <input id="duration" name="duration" type="number" class="form-control" ng-model="video.duration">
-                            </div>
+                        <div name="'Laufzeit'" key="'duration'" form-element>
+                            <input type="number" class="form-control" ng-model="video.duration">
                         </div>
                         <!-- channel -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="channel">Kanal<span class="key-name">channel</span></label>
-                            <div class="col-md-8">
-                                <ui-select class="ui-select-lg" ng-model="video.channel">
-                                    <ui-select-match placeholder="Kanäle..">
-                                        <img class="badge-round badge-md" img-src="{{$select.selected.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}" ng-if="$select.selected.image">
-                                        <span ng-bind="$select.selected.title"></span>
-                                    </ui-select-match>
-                                    <ui-select-choices repeat="channel.id as channel in (channels | filter: $select.search | orderBy)">
-                                        <img class="badge-round badge-md" img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
-                                        <span ng-bind="channel.title"></span>
-                                    </ui-select-choices>
-                                </ui-select>
-                            </div>
+                        <div name="'Kanal'" key="'channel'" form-element>
+                            <ui-select class="ui-select-lg" ng-model="video.channel">
+                                <ui-select-match placeholder="Kanäle..">
+                                    <img class="image-badge image-badge-md" img-src="{{$select.selected.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}" ng-if="$select.selected.image">
+                                    <span ng-bind="$select.selected.title"></span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="channel.id as channel in (channels | filter: $select.search | orderBy)">
+                                    <img class="image-badge image-badge-md" img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
+                                    <span ng-bind="channel.title"></span>
+                                </ui-select-choices>
+                            </ui-select>
                         </div>
                         <!-- shows -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Formate<span class="key-name">shows</span></label>
-                            <div class="col-md-8">
+                        <div name="'Formate'" key="'shows'" form-element>
+                            <div class="input-group">
                                 <ui-select ng-model="show.selected" skip-focusser="true" on-select="addShow(video, show.selected)">
                                     <ui-select-match placeholder="Formate..">
                                         <span class="text-muted">Formate..</span>
                                     </ui-select-match>
                                     <ui-select-choices repeat="show in (shows | filter: $select.search | orderBy)">
-                                        <img class="badge-round badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                                        <img class="image-badge image-badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                                         <span ng-bind="show.name"></span>
                                     </ui-select-choices>
                                 </ui-select>
-                            </div>
-                        </div>
-                        <!-- shows list -->
-                        <div class="form-group" ng-if="video.shows.length">
-                            <div class="col-md-offset-4 col-md-8">
-                                <div class="button-list">
-                                    <button type="button" class="btn btn-default" data-title="{{show.name || show.id}}" ng-click="removeShow(video, show)" ng-repeat="show in video.shows | videosResolve:'shows' | orderBy" bs-tooltip>
-                                        <img class="badge-round badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
-                                        <span ng-bind="show.name"></span>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="extractShows(video)">
+                                        <i class="fa fa-magic"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
+                        <!-- shows list -->
+                        <div ng-if="video.shows.length" form-element>
+                            <div class="button-list">
+                                <button type="button" class="btn btn-default" data-title="{{show.name || show.id}}" ng-click="removeShow(video, show)" ng-repeat="show in video.shows | videosResolve:'shows' | orderBy" bs-tooltip>
+                                    <img class="image-badge image-badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                                    <span ng-bind="show.name"></span>
+                                </button>
+                            </div>
+                        </div>
                         <!-- hosts -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Moderatoren<span class="key-name">hosts</span></label>
-                            <div class="col-md-8">
+                        <div name="'Moderatoren'" key="'hosts'" form-element>
+                            <div class="input-group">
                                 <ui-select ng-model="host.selected" skip-focusser="true" on-select="addHost(video, host.selected)">
                                     <ui-select-match placeholder="Moderatoren..">
                                         <span class="text-muted">Moderatoren..</span>
                                     </ui-select-match>
                                     <ui-select-choices group-by="listGroupShows" repeat="host in (hosts | filter: $select.search | orderBy)">
-                                        <img class="badge-round badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                                        <img class="image-badge image-badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                                         <span>{{host.firstname}} {{host.lastname}}</span>
                                         <span ng-if="host.nickname">({{host.nickname}})</span>
                                     </ui-select-choices>
                                 </ui-select>
-                            </div>
-                        </div>
-                        <!-- hosts list -->
-                        <div class="form-group" ng-if="video.hosts.length">
-                            <div class="col-md-offset-4 col-md-8">
-                                <div class="button-list">
-                                    <button type="button" class="btn btn-default" data-title="{{host.name || host.id}}" ng-click="removeHost(video, host)" ng-repeat="host in video.hosts | videosResolve:'hosts' | orderBy" bs-tooltip>
-                                        <img class="badge-round badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
-                                        <span>{{host.firstname}} {{host.lastname}}</span>
-                                        <span ng-if="host.nickname">({{host.nickname}})</span>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="extractHosts(video)">
+                                        <i class="fa fa-magic"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
+                        <!-- hosts list -->
+                        <div ng-if="video.hosts.length" form-element>
+                            <div class="button-list">
+                                <button type="button" class="btn btn-default" data-title="{{host.firstname || host.id}}" ng-click="removeHost(video, host)" ng-repeat="host in video.hosts | videosResolve:'hosts' | orderBy" bs-tooltip>
+                                    <img class="image-badge image-badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                                    <span>{{host.firstname}} {{host.lastname}}</span>
+                                    <span ng-if="host.nickname">({{host.nickname}})</span>
+                                </button>
+                            </div>
+                        </div>
                         <!-- series -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Serien<span class="key-name">series</span></label>
-                            <div class="col-md-8">
+                        <div name="'Serien'" key="'series'" form-element>
+                            <div class="input-group">
                                 <ui-select ng-model="series_.selected" skip-focusser="true" on-select="addSeries(video, series_.selected)">
                                     <ui-select-match placeholder="Serien..">
                                         <span class="text-muted">Serien..</span>
                                     </ui-select-match>
                                     <ui-select-choices repeat="series in (series | filter: $select.search | orderBy)">
-                                        <img class="badge-round badge-md" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
+                                        <img class="image-badge image-badge-md" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                                         <span ng-bind="series.name"></span>
                                     </ui-select-choices>
                                 </ui-select>
-                            </div>
-                        </div>
-                        <!-- series list -->
-                        <div class="form-group" ng-if="video.series.length">
-                            <div class="col-md-offset-4 col-md-8">
-                                <div class="button-list">
-                                    <button type="button" class="btn btn-default" data-title="{{series.name || series.id}}" ng-click="removeSeries(video, series)" ng-repeat="series in video.series | videosResolve:'series' | orderBy" bs-tooltip>
-                                        <img class="badge-round badge-md" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
-                                        <span ng-bind="series.name"></span>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="extractSeries(video)">
+                                        <i class="fa fa-magic"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
+                        <!-- series list -->
+                        <div ng-if="video.series.length" form-element>
+                            <div class="button-list">
+                                <button type="button" class="btn btn-default" data-title="{{series.name || series.id}}" ng-click="removeSeries(video, series)" ng-repeat="series in video.series | videosResolve:'series' | orderBy" bs-tooltip>
+                                    <img class="image-badge image-badge-md" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
+                                    <span ng-bind="series.name"></span>
+                                </button>
+                            </div>
+                        </div>
                         <!-- stats -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="commentCount">Kommentare<span class="key-name">stats.commentCount</span></label>
-                            <div class="col-md-8">
-                                <input id="commentCount" name="commentCount" type="number" class="form-control" ng-model="video.stats.commentCount">
-                            </div>
+                        <div name="'Kommentare'" key="'commentCount'" form-element>
+                            <input type="number" class="form-control" ng-model="video.stats.commentCount">
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="viewCount">Views<span class="key-name">stats.viewCount</span></label>
-                            <div class="col-md-8">
-                                <input id="viewCount" name="viewCount" type="number" class="form-control" ng-model="video.stats.viewCount">
-                            </div>
+                        <div name="'Views'" key="'viewCount'" form-element>
+                            <input type="number" class="form-control" ng-model="video.stats.viewCount">
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="dislikeCount">Negative Bewertungen<span class="key-name">stats.dislikeCount</span></label>
-                            <div class="col-md-8">
-                                <input id="dislikeCount" name="dislikeCount" type="number" class="form-control" ng-model="video.stats.dislikeCount">
-                            </div>
+                        <div name="'Negative Bewertungen'" key="'dislikeCount'" form-element>
+                            <input type="number" class="form-control" ng-model="video.stats.dislikeCount">
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="likeCount">Positive Bewertungen<span class="key-name">stats.likeCount</span></label>
-                            <div class="col-md-8">
-                                <input id="likeCount" name="likeCount" type="number" class="form-control" ng-model="video.stats.likeCount">
-                            </div>
+                        <div name="'Positive Bewertungen'" key="'likeCount'" form-element>
+                            <input type="number" class="form-control" ng-model="video.stats.likeCount">
                         </div>
                         <!-- online -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Online</label>
-                            <div class="col-md-8">
-                                <div class="checkbox checkbox-primary">
-                                    <input id="online" type="checkbox" value="asc" ng-model="video.online">
-                                    <label for="online"></label>
-                                </div>
+                        <div name="'Online'" key="'online'" form-element>
+                            <div class="checkbox checkbox-primary">
+                                <input type="checkbox" ng-model="video.online">
+                                <label for="online"></label>
                             </div>
                         </div>
                     </div>

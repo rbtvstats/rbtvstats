@@ -5,73 +5,34 @@
                 <div class="card-content-header">
                     Einstellungen
                 </div>
-                <div class="card-content-body">
+                <div class="card-content-body" cols="6" form>
                     <legend>Authentifizierung</legend>
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="youtubeApiKey">Youtube API Key</label>
-                            <div class="col-md-4">
-                                <input id="youtubeApiKey" name="youtubeApiKey" type="text" placeholder="Youtube API Key" class="form-control" ng-model="config.youtubeApiKey">
-                            </div>
-                        </div>
+                    <div name="'Youtube API Key'" key="'youtubeApiKey'" form-element>
+                        <input type="text" class="form-control" ng-model="config.youtubeApiKey">
                     </div>
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="githubApiOAuthToken">Github API OAuth Token</label>
-                            <div class="col-md-4">
-                                <input id="githubApiOAuthToken" name="githubApiOAuthToken" type="text" placeholder="Github OAuth Token" class="form-control" ng-model="config.githubApiOAuthToken">
-                            </div>
-                        </div>
+                    <div name="'Github API OAuth Token'" key="'githubApiOAuthToken'" form-element>
+                        <input type="text" class="form-control" ng-model="config.githubApiOAuthToken">
                     </div>
                     <legend>Daten</legend>
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="githubBaseUrl">Github Basis URL</label>
-                            <div class="col-md-4">
-                                <input id="githubBaseUrl" name="githubBaseUrl" type="text" placeholder="Github Repository" class="form-control" ng-model="config.githubBaseUrl">
-                            </div>
-                        </div>
+                    <div name="'Github Basis URL'" key="'githubBaseUrl'" form-element>
+                        <input type="text" class="form-control" ng-model="config.githubBaseUrl">
                     </div>
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="githubRepository">Github Repository</label>
-                            <div class="col-md-4">
-                                <input id="githubRepository" name="githubRepository" type="text" placeholder="Github Repository" class="form-control" ng-model="config.githubRepository">
-                            </div>
-                        </div>
+                    <div name="'Github Repository'" key="'githubRepository'" form-element>
+                        <input type="text" class="form-control" ng-model="config.githubRepository">
                     </div>
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="githubBranch">Github Branch</label>
-                            <div class="col-md-4">
-                                <input id="githubBranch" name="githubBranch" type="text" placeholder="Github Branch" class="form-control" ng-model="config.githubBranch">
-                            </div>
-                        </div>
+                    <div name="'Github Branch'" key="'githubBranch'" form-element>
+                        <input type="text" class="form-control" ng-model="config.githubBranch">
                     </div>
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="videosPath">Video Daten</label>
-                            <div class="col-md-4">
-                                <input id="videosPath" name="videosPath" type="text" placeholder="Video Daten" class="form-control" ng-model="config.videosPath">
-                            </div>
-                        </div>
+                    <div name="'Video Daten'" key="'videosPath'" form-element>
+                        <input type="text" class="form-control" ng-model="config.videosPath">
                     </div>
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="livePath">Live Daten</label>
-                            <div class="col-md-4">
-                                <input id="livePath" name="livePath" type="text" placeholder="Live Daten" class="form-control" ng-model="config.livePath">
-                            </div>
-                        </div>
+                    <div name="'Live Daten'" key="'livePath'" form-element>
+                        <input type="text" class="form-control" ng-model="config.livePath">
                     </div>
-                    <div class="form-horizontal">
-                        <div class="form-group">
-                            <div class="col-md-4 col-md-offset-4 text-right">
-                                <button class="btn btn-primary" ng-click="reset()">
-                                    <i class="fa fa-undo"></i> Zurücksetzten
-                                </button>
-                            </div>
-                        </div>
+                    <div form-element>
+                        <button class="btn btn-primary" ng-click="reset()">
+                            <i class="fa fa-undo"></i> Zurücksetzten
+                        </button>
                     </div>
                 </div>
             </div>

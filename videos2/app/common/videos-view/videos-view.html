@@ -1,19 +1,19 @@
 <div>
     <div class="card-content">
         <div class="card-content-header">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="videos-display">
+            <table width="100%">
+                <tr>
+                    <td>
                         Zeige {{table.params.total()}} von {{videos.length}} Videos
                         <span ng-if="table.params.total() !== videos.length">({{videos.length - table.params.total()}} Videos ausgeblendet)</span>
-                    </div>
-                </div>
-                <div class="col-md-6 text-right">
-                    <button type="button" class="btn btn-default" ng-click="table.optionsHidden=!table.optionsHidden">
-                        <i class="fa fa-sliders"></i> Optionen
-                    </button>
-                </div>
-            </div>
+                    </td>
+                    <td class="text-right">
+                        <button type="button" class="btn btn-default" ng-click="table.optionsHidden=!table.optionsHidden">
+                            <i class="fa fa-sliders"></i> Optionen
+                        </button>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div class="card-content-body" ng-model="table.optionsHidden" bs-collapse bs-collapse-target>
             <div videos-options="table.options" videos-table="table.params"></div>

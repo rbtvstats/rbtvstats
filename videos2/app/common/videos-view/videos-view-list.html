@@ -13,10 +13,10 @@
                         {{getDuration(video)}}
                     </td>
                     <td width="100" title="'Veröffentlichung'" sortable="'published'">
-                        {{video.published * 1000 | date:'dd.MM.yyyy'}}
+                        {{video.published * 1000 | amDateFormat:'l'}}
                     </td>
                     <td width="100" title="'Ausstrahlung'" sortable="'aired'">
-                        {{video.aired && (video.aired * 1000 | date:'dd.MM.yyyy')}}
+                        {{video.aired && (video.aired * 1000 | amDateFormat:'l')}}
                     </td>
                     <td width="80" title="'Aufrufe'" sortable="'stats.viewCount'">
                         {{video.stats.viewCount}}

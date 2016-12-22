@@ -4,7 +4,7 @@
             <button class="btn btn-default" type="button" data-title="Schließen" ng-click="close()" bs-tooltip>
                 <i class="fa fa-fw fa-close"></i>
             </button>
-            <button class="btn btn-default" type="button" data-title="Auto" ng-click="autoAll(video)" bs-tooltip>
+            <button class="btn btn-default" type="button" data-title="Auto" ng-click="extractAll(video)" bs-tooltip>
                 <i class="fa fa-fw fa-magic"></i>
             </button>
             <button class="btn btn-default" type="button" data-title="Ansicht: Formular" ng-click="tabs.selected='form'" ng-class="{'active': tabs.selected === 'form'}" bs-tooltip>
@@ -39,12 +39,12 @@
                                         <span>Auswählen..</span>
                                     </ui-select-match>
                                     <ui-select-choices repeat="show in (shows | filter: $select.search)">
-                                        <img class="badge-round badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                                        <img class="image-badge image-badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                                         <span ng-bind="show.name"></span>
                                     </ui-select-choices>
                                 </ui-select>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" ng-click="autoShows(video)">
+                                    <button class="btn btn-default" type="button" ng-click="extractShows(video)">
                                         <i class="fa fa-magic"></i>
                                     </button>
                                 </span>
@@ -55,7 +55,7 @@
                         <div class="col-md-12">
                             <div class="button-list">
                                 <button type="button" class="btn btn-default" data-title="{{show.name || show.id}}" ng-click="removeShow(video, show)" ng-repeat="show in (video.shows | videosResolve:'shows' | orderBy)" bs-tooltip>
-                                    <img class="badge-round badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                                    <img class="image-badge image-badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                                     <span ng-bind="show.name"></span>
                                 </button>
                             </div>
@@ -71,13 +71,13 @@
                                         <span>Auswählen..</span>
                                     </ui-select-match>
                                     <ui-select-choices repeat="host in (hosts | filter: $select.search)">
-                                        <img class="badge-round badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                                        <img class="image-badge image-badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                                         <span>{{host.firstname}} {{host.lastname}}</span>
                                         <span ng-if="host.nickname">({{host.nickname}})</span>
                                     </ui-select-choices>
                                 </ui-select>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" ng-click="autoHosts(video)">
+                                    <button class="btn btn-default" type="button" ng-click="extractHosts(video)">
                                         <i class="fa fa-magic"></i>
                                     </button>
                                 </span>
@@ -88,7 +88,7 @@
                         <div class="col-md-12">
                             <div class="button-list">
                                 <button type="button" class="btn btn-default" data-title="{{host.firstname}} {{host.lastname}}" ng-click="removeHost(video, host)" ng-repeat="host in (video.hosts | videosResolve:'hosts' | orderBy)" bs-tooltip>
-                                    <img class="badge-round badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                                    <img class="image-badge image-badge-md" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                                     <span>{{host.firstname}} {{host.lastname}}</span>
                                 </button>
                             </div>
@@ -104,12 +104,12 @@
                                         <span>Auswählen..</span>
                                     </ui-select-match>
                                     <ui-select-choices repeat="series in (series | filter: $select.search)">
-                                        <img class="badge-round badge-md" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
+                                        <img class="image-badge image-badge-md" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                                         <span ng-bind="series.name"></span>
                                     </ui-select-choices>
                                 </ui-select>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" ng-click="autoSeries(video)">
+                                    <button class="btn btn-default" type="button" ng-click="extractSeries(video)">
                                         <i class="fa fa-magic"></i>
                                     </button>
                                 </span>
@@ -120,7 +120,7 @@
                         <div class="col-md-12">
                             <div class="button-list">
                                 <button type="button" class="btn btn-default" data-title="{{series.name || series.id}}" ng-click="removeSeries(video, series)" ng-repeat="series in (video.series | videosResolve:'series' | orderBy)" bs-tooltip>
-                                    <img class="badge-round badge-md" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
+                                    <img class="image-badge image-badge-md" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                                     <span ng-bind="series.name"></span>
                                 </button>
                             </div>

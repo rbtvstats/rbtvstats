@@ -19,51 +19,52 @@
                 <div class="card-content-header">
                     Moderator
                 </div>
-                <div class="card-content-body">
-                    <div class="form-horizontal">
-                        <!-- id -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="id">Primärschlüssel<span class="key-name">id</span></label>
-                            <div class="col-md-8">
-                                <div class="input-group" ng-init="lockedId=true">
-                                    <input id="id" name="id" type="text" class="form-control" ng-model="host.id" ng-disabled="lockedId">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" ng-click="lockedId=!lockedId">
-                                            <i class="fa fa-fw" ng-class="{'fa-lock': lockedId, 'fa-unlock-alt': !lockedId}"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </div>
+                <div class="card-content-body" form>
+                    <!-- id -->
+                    <div name="'Primärschlüssel'" key="'id'" form-element>
+                        <div class="input-group" ng-init="lockedId=true">
+                            <input type="text" class="form-control" ng-model="host.id" ng-disabled="lockedId">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="lockedId=!lockedId">
+                                    <i class="fa fa-fw" ng-class="{'fa-lock': lockedId, 'fa-unlock-alt': !lockedId}"></i>
+                                </button>
+                            </span>
                         </div>
-                        <!-- firstname -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="firstname">Vorname<span class="key-name">firstname</span></label>
-                            <div class="col-md-8">
-                                <input id="firstname" name="firstname" type="text" class="form-control" ng-model="host.firstname">
+                    </div>
+                    <!-- firstname -->
+                    <div name="'Vorname'" key="'firstname'" form-element>
+                        <input type="text" class="form-control" ng-model="host.firstname">
+                    </div>
+                    <!-- lastname -->
+                    <div name="'Nachname'" key="'lastname'" form-element>
+                        <input type="text" class="form-control" ng-model="host.lastname">
+                    </div>
+                    <!-- nickname -->
+                    <div name="'Spitzname'" key="'nickname'" form-element>
+                        <input type="text" class="form-control" ng-model="host.nickname">
+                    </div>
+                    <!-- description -->
+                    <div name="'Beschreibung'" key="'description'" form-element>
+                        <textarea type="text" rows="5" class="form-control" ng-model="host.description"></textarea>
+                    </div>
+                    <!-- links -->
+                    <div name="'Links'" key="'links'" form-element>
+                        <div class="vertical-list">
+                            <div class="input-group" ng-repeat="link in host.links track by $index">
+                                <input type="text" class="form-control" ng-model="host.links[$index]">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="host.links.splice($index, 1)">
+                                        <i class="fa fa-fw fa-times"></i>
+                                    </button>
+                                </span>
                             </div>
+                            <button class="btn btn-default" type="button" ng-click="host.links.push('')">
+                                <i class="fa fa-fw fa-plus"></i>
+                            </button>
                         </div>
-                        <!-- lastname -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="lastname">Nachname<span class="key-name">lastname</span></label>
-                            <div class="col-md-8">
-                                <input id="lastname" name="lastname" type="text" class="form-control" ng-model="host.lastname">
-                            </div>
-                        </div>
-                        <!-- nickname -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="nickname">Spitzname<span class="key-name">nickname</span></label>
-                            <div class="col-md-8">
-                                <input id="nickname" name="nickname" type="text" class="form-control" ng-model="host.nickname">
-                            </div>
-                        </div>
-                        <!-- description -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="description">Beschreibung<span class="key-name">description</span></label>
-                            <div class="col-md-8">
-                                <textarea id="description" name="description" type="text" rows="5" class="form-control" ng-model="host.description"></textarea>
-                            </div>
-                        </div>
-                        <!-- image -->
+                    </div>
+                    <!-- image -->
+                    <div name="'Bild'" key="'image'" form-element>
                         <div img-input="host.image"></div>
                     </div>
                 </div>

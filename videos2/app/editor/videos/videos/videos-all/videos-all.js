@@ -2,7 +2,7 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.videos.videos.all', {
         url: '/',
         templateUrl: 'app/editor/videos/videos/videos-all/videos-all.html',
-        controller: function($scope, $filter, $q, Notification, StateSrv, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+        controller: function($scope, $filter, $q, Notification, StateSrv, VideosExtractorSrv, VideosSrv, ChannelsSrv, ShowsSrv, HostsSrv, SeriesSrv) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['videos-data'];
 
@@ -42,7 +42,7 @@ angular.module('app.editor').config(function($stateProvider) {
                     $scope.updateState.info = 'Lade Videos für Kanal \'' + channel.title + '\'';
 
                     //update videos of channel
-                    return VideosSrv.updateVideos(channel, until, progress)
+                    return VideosExtractorSrv.updateVideos(channel, until, progress)
                         .then(function() {
                             //continue?
                             if (channels.length > 0) {
@@ -81,7 +81,7 @@ angular.module('app.editor').config(function($stateProvider) {
                     $scope.updateState.latest = video;
                 }
 
-                VideosSrv.updateVideoDetails(videos, progress)
+                VideosExtractorSrv.updateVideoDetails(videos, progress)
                     .then(function() {
 
                     })

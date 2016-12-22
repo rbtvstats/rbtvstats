@@ -2,17 +2,17 @@ angular.module('app.common').service('StateSrv', function($rootScope, $parse, $s
     var storage = {};
     var service = {};
 
-    function saveState(container, scope, models) {
+    function saveStateLocal(container, scope, models) {
         storage[container] = storage[container] || {};
 
         _.each(models, function(model, path) {
             storage[container][path] = model(scope);
         });
 
-        service.save();
+        service.saveLocal();
     }
 
-    function loadState(container, scope, models) {
+    function loadStateLocal(container, scope, models) {
         _.each(models, function(model, path) {
             var value = storage[container][path];
             if (!angular.isUndefined(value)) {
@@ -28,7 +28,7 @@ angular.module('app.common').service('StateSrv', function($rootScope, $parse, $s
             });
     };
 
-    service.save = _.debounce(function() {
+    service.saveLocal = _.debounce(function() {
         console.log('save state');
 
         localforage.setItem('state', storage);
@@ -48,12 +48,12 @@ angular.module('app.common').service('StateSrv', function($rootScope, $parse, $s
                 if (!init) {
                     init = true;
                     if (container in storage) {
-                        loadState(container, scope, models);
+                        loadStateLocal(container, scope, models);
                     } else {
-                        saveState(container, scope, models);
+                        saveStateLocal(container, scope, models);
                     }
                 } else {
-                    saveState(container, scope, models);
+                    saveStateLocal(container, scope, models);
                 }
             }, true);
         });

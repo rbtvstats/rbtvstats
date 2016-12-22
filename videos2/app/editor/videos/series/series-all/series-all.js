@@ -39,6 +39,9 @@ angular.module('app.editor').config(function($stateProvider) {
                         template: 'app/editor/videos/series/series-all/series-all-card.html'
                     }]
                 };
+                $scope.exec = {
+                    code: 'console.log(series);'
+                };
 
                 StateSrv.watch($scope, ['exec']);
             };

@@ -40,6 +40,25 @@ angular.module('app.viewer').config(function($stateProvider) {
                 };
             };
 
+            var domainIcons = {
+                'rocketbeans.tv': 'icon icon-bohne',
+                'bohnenwiki.de': 'icon icon-bohne',
+                'twitter.com': 'fa fa-colored fa-twitter',
+                'reddit.com': 'fa fa-colored fa-reddit',
+                'twitch.tv': 'fa fa-colored fa-twitch',
+                'youtube.com': 'fa fa-colored fa-youtube'
+            };
+
+            $scope.getDomainIcon = function(link) {
+                var domain = url('domain', link);
+                var icon = domainIcons[domain];
+                if (!icon) {
+                    icon = 'fa fa-colored fa-external-link';
+                }
+
+                return icon;
+            };
+
             $scope.one = function(host) {
                 $state.transitionTo('viewer.videos.hosts.one', { hostId: host.id });
             };

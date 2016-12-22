@@ -19,37 +19,28 @@
                 <div class="card-content-header">
                     Serie
                 </div>
-                <div class="card-content-body">
-                    <div class="form-horizontal">
-                        <!-- id -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="id">Primärschlüssel<span class="key-name">id</span></label>
-                            <div class="col-md-8">
-                                <div class="input-group" ng-init="lockedId=true">
-                                    <input id="id" name="id" type="text" class="form-control" ng-model="series.id" ng-disabled="lockedId">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" ng-click="lockedId=!lockedId">
-                                            <i class="fa fa-fw" ng-class="{'fa-lock': lockedId, 'fa-unlock-alt': !lockedId}"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </div>
+                <div class="card-content-body" form>
+                    <!-- id -->
+                    <div name="'Primärschlüssel'" key="'id'" form-element>
+                        <div class="input-group" ng-init="lockedId=true">
+                            <input type="text" class="form-control" ng-model="series.id" ng-disabled="lockedId">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="lockedId=!lockedId">
+                                    <i class="fa fa-fw" ng-class="{'fa-lock': lockedId, 'fa-unlock-alt': !lockedId}"></i>
+                                </button>
+                            </span>
                         </div>
-                        <!-- name -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="name">Name<span class="key-name">name</span></label>
-                            <div class="col-md-8">
-                                <input id="name" name="name" type="text" class="form-control" ng-model="series.name">
-                            </div>
-                        </div>
-                        <!-- description -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="description">Beschreibung<span class="key-name">description</span></label>
-                            <div class="col-md-8">
-                                <textarea id="description" name="description" type="text" rows="5" class="form-control" ng-model="series.description"></textarea>
-                            </div>
-                        </div>
-                        <!-- image -->
+                    </div>
+                    <!-- name -->
+                    <div name="'Name'" key="'name'" form-element>
+                        <input type="text" class="form-control" ng-model="series.name">
+                    </div>
+                    <!-- description -->
+                    <div name="'Beschreibung'" key="'description'" form-element>
+                        <textarea type="text" rows="5" class="form-control" ng-model="series.description"></textarea>
+                    </div>
+                    <!-- image -->
+                    <div name="'Bild'" key="'image'" form-element>
                         <div img-input="series.image"></div>
                     </div>
                 </div>

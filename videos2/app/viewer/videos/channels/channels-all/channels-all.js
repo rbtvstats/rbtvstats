@@ -44,7 +44,6 @@ angular.module('app.viewer').config(function($stateProvider) {
                 $scope.charts.push($scope.chartVideosCount());
                 $scope.charts.push($scope.chartDurationTotal());
                 $scope.charts.push($scope.chartViewsTotal());
-                $scope.charts.push($scope.chartViewsMean());
                 $scope.charts.push($scope.chartViewsDistribution());
             };
 
@@ -72,7 +71,7 @@ angular.module('app.viewer').config(function($stateProvider) {
                     },
                     title: {
                         enable: true,
-                        text: 'Video Anzahl pro Kanal'
+                        text: 'Gesamte Video Anzahl pro Kanal'
                     }
                 };
 
@@ -226,66 +225,6 @@ angular.module('app.viewer').config(function($stateProvider) {
                 };
             };
 
-            $scope.chartViewsMean = function() {
-                var options = {
-                    chart: {
-                        type: 'multiBarChart',
-                        xAxis: {
-                            axisLabel: 'Datum'
-                        },
-                        yAxis: {
-                            axisLabel: 'Durchschnittliche Video Aufrufe (Tausend)',
-                            tickFormat: function(d) {
-                                return d3.format('.2f')(d / 1000) + 'T';
-                            }
-                        }
-                    },
-                    dateGroup: {
-                        enable: true,
-                        selected: 'month'
-                    },
-                    dateRange: {
-                        enable: true
-                    },
-                    title: {
-                        enable: true,
-                        text: 'Durchschnittliche Video Aufrufe pro Kanal'
-                    }
-                };
-
-                function update() {
-                    var filter = {
-                        published: options.dateRange.selected
-                    };
-
-                    var videos = VideosSrv.filter($scope.videos, filter);
-                    var videosByDate = VideosSrv.groupByDate(videos, 'channel', options.dateGroup.selected);
-
-                    return _.map(videosByDate, function(data) {
-                        var values = _.map(data.videos, function(data) {
-                            var viewsMean = Math.round(_.meanBy(data.videos, function(video) {
-                                return video.stats.viewCount;
-                            })) || 0;
-
-                            return { x: data.date, y: viewsMean };
-                        });
-
-                        var channel = ChannelsSrv.findById(data.target);
-
-                        return {
-                            key: channel.title,
-                            columns: { x: 'date', y: 'viewsMean' },
-                            values: values
-                        };
-                    });
-                }
-
-                return {
-                    update: update,
-                    options: options
-                };
-            };
-
             $scope.chartViewsDistribution = function() {
                 var options = {
                     chart: {
@@ -297,7 +236,10 @@ angular.module('app.viewer').config(function($stateProvider) {
                             }
                         },
                         yAxis: {
-                            axisLabel: 'Anzahl Videos'
+                            axisLabel: 'Anzahl Videos',
+                            tickFormat: function(d) {
+                                return d3.format('d')(d);
+                            }
                         }
                     },
                     dateRange: {

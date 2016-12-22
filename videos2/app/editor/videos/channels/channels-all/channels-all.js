@@ -39,6 +39,9 @@ angular.module('app.editor').config(function($stateProvider) {
                         template: 'app/editor/videos/channels/channels-all/channels-all-card.html'
                     }]
                 };
+                $scope.exec = {
+                    code: 'console.log(channel);'
+                };
 
                 StateSrv.watch($scope, ['exec']);
             };

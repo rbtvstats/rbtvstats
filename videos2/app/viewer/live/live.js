@@ -2,12 +2,13 @@ angular.module('app.viewer').config(function($stateProvider) {
     $stateProvider.state('viewer.live', {
         url: '/live/',
         templateUrl: 'app/viewer/live/live.html',
-        controller: function($scope, LiveDataSrv) {
+        controller: function($scope, LiveDataSrv, $httpParamSerializer) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['live-metadata'];
 
             $scope.init = function() {
                 $scope.live = LiveDataSrv.all();
+                $scope.liveStats = null;
 
                 $scope.chart = $scope.chartVideosCount();
             };
@@ -19,11 +20,11 @@ angular.module('app.viewer').config(function($stateProvider) {
                 });
                 latest = moment.unix(latest.end);
 
-                var dateFormat = '%x';
                 var options = {
                     chart: {
                         type: 'stackedAreaChart',
                         interpolate: 'linear',
+                        showLegend: false,
                         xAxis: {
                             axisLabel: 'Datum',
                             tickFormatAutoDate: true
@@ -35,6 +36,9 @@ angular.module('app.viewer').config(function($stateProvider) {
                             headerFormatter: function(d) {
                                 return d3.time.format('%a %e. %b %Y %H:%M')(new Date(d * 1000));
                             }
+                        },
+                        margin: {
+                            top: 20
                         }
                     },
                     dateRange: {
@@ -79,9 +83,39 @@ angular.module('app.viewer').config(function($stateProvider) {
                     }
                 };
 
+                function updateStats(data) {
+                    var stats = {};
+
+                    stats.count = data.length
+                    stats.start = data[0];
+                    stats.end = data[data.length - 1];
+                    stats.mean = Math.round(d3.mean(data, function(d) {
+                        return d.viewers;
+                    }));
+
+                    data = _.orderBy(data, function(d) {
+                        return d.viewers;
+                    });
+
+                    stats.min = data[0];
+                    stats.max = data[data.length - 1];
+                    stats.q1 = Math.round(d3.quantile(data, 0.25, function(d) {
+                        return d.viewers;
+                    }));
+                    stats.q2 = Math.round(d3.quantile(data, 0.5, function(d) {
+                        return d.viewers;
+                    }));
+                    stats.q3 = Math.round(d3.quantile(data, 0.75, function(d) {
+                        return d.viewers;
+                    }));
+
+                    return stats;
+                }
+
                 function update() {
                     var start = options.dateRange.selected.start;
                     var end = options.dateRange.selected.end;
+                    $scope.liveStats = null;
 
                     return LiveDataSrv.loadRemote(start, end)
                         .then(function() {
@@ -100,6 +134,8 @@ angular.module('app.viewer').config(function($stateProvider) {
                                 var d = data[i];
                                 values.push({ x: d.time, y: d.viewers });
                             }
+
+                            $scope.liveStats = updateStats(data);
 
                             return {
                                 key: 'Live Zuschauer',

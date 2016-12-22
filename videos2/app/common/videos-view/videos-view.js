@@ -6,7 +6,7 @@ angular.module('app.common').directive('videosView', function($timeout) {
             mode: '=videosMode'
         },
         templateUrl: 'app/common/videos-view/videos-view.html',
-        controller: function($scope, NgTableParams, StateSrv, VideosSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+        controller: function($scope, NgTableParams, StateSrv, VideosExtractorSrv, VideosSrv) {
             $scope.init = function() {
                 //import from parent scope
                 $scope.imagePlaceholders = $scope.$parent.imagePlaceholders;
@@ -40,14 +40,11 @@ angular.module('app.common').directive('videosView', function($timeout) {
 
                 $scope.$on('video.changed', function(video) {
                     $scope.clearVideosCache();
+                    VideosSrv.save();
                 });
 
                 StateSrv.watch($scope, ['table.options']);
             };
-
-            function escapeRegExp(str) {
-                return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-            }
 
             $scope.getRatingPercent = function(video) {
                 if (video && video.stats) {
@@ -102,6 +99,31 @@ angular.module('app.common').directive('videosView', function($timeout) {
                 }
             };
 
+            $scope.videoChanged = function(video) {
+                $scope.$broadcast('video.changed', video);
+            };
+
+            $scope.extractAll = function(video) {
+                VideosExtractorSrv.extractShows(video);
+                VideosExtractorSrv.extractHosts(video);
+                VideosExtractorSrv.extractSeries(video);
+            };
+
+            $scope.extractShows = function(video) {
+                VideosExtractorSrv.extractShows(video);
+                VideosSrv.save();
+            };
+
+            $scope.extractHosts = function(video) {
+                VideosExtractorSrv.extractHosts(video);
+                VideosSrv.save();
+            };
+
+            $scope.extractSeries = function(video) {
+                VideosExtractorSrv.extractSeries(video);
+                VideosSrv.save();
+            };
+
             $scope.copy = function(video) {
                 $scope.clipboard = video;
             };
@@ -111,108 +133,42 @@ angular.module('app.common').directive('videosView', function($timeout) {
                     angular.copy($scope.clipboard.shows, video.shows);
                     angular.copy($scope.clipboard.hosts, video.hosts);
                     angular.copy($scope.clipboard.series, video.series);
-                    VideosSrv.save();
+                    $scope.videoChanged(video);
                 }
-            };
-
-            $scope.autoAll = function(video) {
-                $scope.autoHosts(video);
-                $scope.autoShows(video);
-                $scope.autoSeries(video);
-            };
-
-            $scope.autoShows = function(video) {
-                var allShows = ShowsSrv.all();
-                var shows = [];
-                var title = video.title;
-                title = title.replace('+', 'Plus'); //FIX
-
-                for (var i = 0; i < allShows.length; i++) {
-                    var show = allShows[i];
-                    var name = show.name.replace('+', 'Plus'); //FIX
-                    var re = new RegExp('\\b' + escapeRegExp(name) + '\\b', 'i');
-                    if (title.match(re)) {
-                        shows.push(show);
-                    }
-                }
-
-                $scope.addShow(video, shows);
-            };
-
-            $scope.autoHosts = function(video) {
-                var allHosts = HostsSrv.all();
-                var hosts = [];
-                var title = video.title;
-
-                for (var i = 0; i < allHosts.length; i++) {
-                    var host = allHosts[i];
-                    var re = new RegExp('\\b' + escapeRegExp(host.firstname) + '\\b', 'i');
-                    if (title.match(re)) {
-                        hosts.push(host);
-                    }
-                }
-
-                $scope.addHost(video, hosts);
-            };
-
-            $scope.autoSeries = function(video) {
-                var allSeries = SeriesSrv.all();
-                var series = [];
-                var title = video.title;
-
-                for (var i = 0; i < allSeries.length; i++) {
-                    var series_ = allSeries[i];
-                    var re = new RegExp('\\b' + escapeRegExp(series_.name) + '\\b', 'i');
-                    if (title.match(re)) {
-                        series.push(series_);
-                    }
-                }
-
-                $scope.addSeries(video, series);
-            };
-
-            $scope.videoChanged = function(video) {
-                $scope.$broadcast('video.changed', video);
             };
 
             $scope.delete = function(video) {
                 VideosSrv.delete({ id: video.id });
-                VideosSrv.save();
+                $scope.videoChanged(video);
             };
 
             $scope.addShow = function(video, shows) {
                 VideosSrv.addShow(video, shows);
-                VideosSrv.save();
                 $scope.videoChanged(video);
             };
 
             $scope.removeShow = function(video, shows) {
                 VideosSrv.removeShow(video, shows);
-                VideosSrv.save();
                 $scope.videoChanged(video);
             };
 
             $scope.addHost = function(video, hosts) {
                 VideosSrv.addHost(video, hosts);
-                VideosSrv.save();
                 $scope.videoChanged(video);
             };
 
             $scope.removeHost = function(video, hosts) {
                 VideosSrv.removeHost(video, hosts);
-                VideosSrv.save();
                 $scope.videoChanged(video);
             };
 
             $scope.addSeries = function(video, series) {
                 VideosSrv.addSeries(video, series);
-                VideosSrv.save();
                 $scope.videoChanged(video);
             };
 
             $scope.removeSeries = function(video, series) {
                 VideosSrv.removeSeries(video, series);
-                VideosSrv.save();
                 $scope.videoChanged(video);
             };
 

@@ -1,12 +1,25 @@
 <div class="container-fluid animate-main-content" init>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="card-content">
                 <div class="card-content-header">
                     Kanal
                 </div>
                 <div class="card-content-body">
-                    <pre>{{channel | json}}</pre>
+                    <div class="header">
+                        <img img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}"> {{channel.title}}
+                    </div>
+                    <div>{{channel.description}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card-content">
+                <div class="card-content-header">
+                    Statistiken
+                </div>
+                <div class="card-content-body">
+                    test
                 </div>
             </div>
         </div>

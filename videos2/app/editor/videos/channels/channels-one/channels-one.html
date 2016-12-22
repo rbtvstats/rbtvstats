@@ -19,72 +19,54 @@
                 <div class="card-content-header">
                     Kanal
                 </div>
-                <div class="card-content-body">
-                    <div class="form-horizontal">
-                        <!-- id -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="id">Primärschlüssel<span class="key-name">id</span></label>
-                            <div class="col-md-8">
-                                <div class="input-group" ng-init="lockedId=true">
-                                    <input id="id" name="id" type="text" class="form-control" ng-model="channel.id" ng-disabled="lockedId">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" ng-click="lockedId=!lockedId">
-                                            <i class="fa fa-fw" ng-class="{'fa-lock': lockedId, 'fa-unlock-alt': !lockedId}"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </div>
+                <div class="card-content-body" form>
+                    <!-- id -->
+                    <div name="'Primärschlüssel'" key="'id'" form-element>
+                        <div class="input-group" ng-init="lockedId=true">
+                            <input type="text" class="form-control" ng-model="channel.id" ng-disabled="lockedId">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="lockedId=!lockedId">
+                                    <i class="fa fa-fw" ng-class="{'fa-lock': lockedId, 'fa-unlock-alt': !lockedId}"></i>
+                                </button>
+                            </span>
                         </div>
-                        <!-- username -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="username">Benutzername<span class="key-name">username</span></label>
-                            <div class="col-md-8">
-                                <div class="input-group" ng-init="lockedId=true">
-                                    <input id="username" name="username" type="text" class="form-control" ng-model="channel.username">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" ng-click="updateMetadata(channel, {username: channel.username})">
-                                            <i class="fa fa-fw fa-refresh" ng-class="{ 'fa-spin': loadingMetadata }"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </div>
+                    </div>
+                    <!-- username -->
+                    <div name="'Benutzername'" key="'username'" form-element>
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="channel.username">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="updateMetadata(channel, {username: channel.username})">
+                                    <i class="fa fa-fw fa-refresh" ng-class="{ 'fa-spin': loadingMetadata }"></i>
+                                </button>
+                            </span>
                         </div>
-                        <!-- channelId -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="channelId">Kanal ID<span class="key-name">channelId</span></label>
-                            <div class="col-md-8">
-                                <div class="input-group" ng-init="lockedId=true">
-                                    <input id="channelId" name="channelId" type="text" class="form-control" ng-model="channel.channelId">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" ng-click="updateMetadata(channel, {id: channel.channelId})">
-                                            <i class="fa fa-fw fa-refresh" ng-class="{ 'fa-spin': loadingMetadata }"></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            </div>
+                    </div>
+                    <!-- channelId -->
+                    <div name="'Kanal ID'" key="'channelId'" form-element>
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="channel.channelId">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="updateMetadata(channel, {id: channel.channelId})">
+                                    <i class="fa fa-fw fa-refresh" ng-class="{ 'fa-spin': loadingMetadata }"></i>
+                                </button>
+                            </span>
                         </div>
-                        <!-- playlistId -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="playlistId">Video Playlist ID<span class="key-name">playlistId</span></label>
-                            <div class="col-md-8">
-                                <input id="playlistId" name="playlistId" type="text" class="form-control" ng-model="channel.playlistId">
-                            </div>
-                        </div>
-                        <!-- title -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="title">Titel<span class="key-name">title</span></label>
-                            <div class="col-md-8">
-                                <input id="title" name="title" type="text" class="form-control" ng-model="channel.title">
-                            </div>
-                        </div>
-                        <!-- description -->
-                        <div class="form-group">
-                            <label class="col-md-4 control-label" for="description">Beschreibung<span class="key-name">description</span></label>
-                            <div class="col-md-8">
-                                <textarea id="description" name="description" type="text" rows="5" class="form-control" ng-model="channel.description"></textarea>
-                            </div>
-                        </div>
-                        <!-- image -->
+                    </div>
+                    <!-- playlistId -->
+                    <div name="'Video Playlist ID'" key="'playlistId'" form-element>
+                        <input type="text" class="form-control" ng-model="channel.playlistId">
+                    </div>
+                    <!-- title -->
+                    <div name="'Titel'" key="'title'" form-element>
+                        <input type="text" class="form-control" ng-model="channel.title">
+                    </div>
+                    <!-- description -->
+                    <div name="'Beschreibung'" key="'description'" form-element>
+                        <textarea type="text" rows="5" class="form-control" ng-model="channel.description"></textarea>
+                    </div>
+                    <!-- image -->
+                    <div name="'Bild'" key="'image'" form-element>
                         <div img-input="channel.image"></div>
                     </div>
                 </div>

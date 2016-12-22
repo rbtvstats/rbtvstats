@@ -10,21 +10,24 @@
                         <div class="card-image-header card-image-header-xs">
                             <div class="image">
                                 <a ng-href="#/videos/hosts/{{host.id}}">
-                                    <img img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                                    <img class="image-badge image-badge-lg" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                                 </a>
                             </div>
                             <div class="title">
                                 <a ng-href="#/videos/hosts/{{host.id}}">{{host.firstname}} {{host.lastname}}</a>
                             </div>
-                        </div>
-                        <div class="card-image-body card-image-body-xs">
-                            <div class="description">
-                                {{host.description}}
+                            <div class="subtitle" ng-if="host.nickname">
+                                {{host.nickname}}
+                            </div>
+                            <div class="content">
+                                <a class="icon-link" ng-href="{{link}}" target="_blank" ng-repeat="link in host.links">
+                                    <i class="fa-lg" ng-class="getDomainIcon(link)"></i>
+                                </a>
                             </div>
                         </div>
                         <div class="card-image-footer text-right">
                             <a ng-href="#/videos/hosts/{{host.id}}" class="btn btn-default" role="button">
-                                Details
+                                <i class="fa fa-bar-chart"></i> Statistiken
                             </a>
                         </div>
                     </div>

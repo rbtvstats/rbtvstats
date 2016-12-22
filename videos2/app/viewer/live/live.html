@@ -4,20 +4,43 @@
             <div options="chart.options" update="chart.update" chart></div>
         </div>
     </div>
-    <div class="row">
+    <div class="row" ng-if="liveStats">
         <div class="col-md-12">
             <div class="card-content">
                 <div class="card-content-header">
                     Statistiken
                 </div>
-                <div class="card-content-body">
-                    <div class="form-horizontal form-stats">
-                        <div class="form-group">
-                            <label class="col-md-3">Text Input</label>
-                            <div class="col-md-9">
-                                stats
-                            </div>
-                        </div>
+                <div class="card-content-body form-stats" form>
+                    <div name="'Anzahl Datenpunkte'" form-element>
+                        {{liveStats.count}}
+                    </div>
+                    <div name="'Ältester Datenpunkt'" form-element>
+                        <div><i class="fa fa-calendar"></i> {{liveStats.start.time * 1000 | amDateFormat:'LLLL'}}</div>
+                        <div><i class="fa fa-eye"></i> {{liveStats.start.viewers}}</div>
+                    </div>
+                    <div name="'Neuster Datenpunkt'" form-element>
+                        <div><i class="fa fa-calendar"></i> {{liveStats.end.time * 1000 | amDateFormat:'LLLL'}}</div>
+                        <div><i class="fa fa-eye"></i> {{liveStats.end.viewers}}</div>
+                    </div>
+                    <div name="'Minimum'" form-element>
+                        <div><i class="fa fa-calendar"></i> {{liveStats.min.time * 1000 | amDateFormat:'LLLL'}}</div>
+                        <div><i class="fa fa-eye"></i> {{liveStats.min.viewers}}</div>
+                    </div>
+                    <div name="'Maximum'" form-element>
+                        <div><i class="fa fa-calendar"></i> {{liveStats.max.time * 1000 | amDateFormat:'LLLL'}}</div>
+                        <div><i class="fa fa-eye"></i> {{liveStats.max.viewers}}</div>
+                    </div>
+                    <div name="'Durchschnitt'" form-element>
+                        <i class="fa fa-eye"></i> {{liveStats.mean}}
+                    </div>
+                    <div name="'Quartil 25%'" form-element>
+                        <i class="fa fa-eye"></i> {{liveStats.q1}}
+                    </div>
+                    <div name="'Quartil 50% (Median)'" form-element>
+                        <i class="fa fa-eye"></i> {{liveStats.q2}}
+                    </div>
+                    <div name="'Quartil 75%'" form-element>
+                        <i class="fa fa-eye"></i> {{liveStats.q3}}
                     </div>
                 </div>
             </div>

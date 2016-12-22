@@ -39,6 +39,9 @@ angular.module('app.editor').config(function($stateProvider) {
                         template: 'app/editor/videos/hosts/hosts-all/hosts-all-card.html'
                     }]
                 };
+                $scope.exec = {
+                    code: 'console.log(host);'
+                };
 
                 StateSrv.watch($scope, ['exec']);
             };

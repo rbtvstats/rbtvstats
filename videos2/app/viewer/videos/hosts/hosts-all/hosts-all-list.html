@@ -15,10 +15,10 @@
                     <td width="150" title="'Spitzname'" sortable="'nickname'">
                         {{host.nickname}}
                     </td>
-                    <td title="'Beschreibung'" sortable="'description'">
-                        <div class="limit-height">
-                            {{host.description}}
-                        </div>
+                    <td title="'Links'">
+                        <a class="icon-link" ng-href="{{link}}" target="_blank" ng-click="$event.stopPropagation()" ng-repeat="link in host.links">
+                            <i class="fa-lg" ng-class="getDomainIcon(link)"></i>
+                        </a>
                     </td>
                 </tr>
             </table>

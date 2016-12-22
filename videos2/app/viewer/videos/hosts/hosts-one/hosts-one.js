@@ -83,7 +83,10 @@ angular.module('app.viewer').config(function($stateProvider) {
                             }
                         },
                         yAxis: {
-                            axisLabel: 'Anzahl Videos'
+                            axisLabel: 'Anzahl Videos',
+                            tickFormat: function(d) {
+                                return d3.format('d')(d);
+                            }
                         }
                     },
                     dateRange: {
