@@ -1,13 +1,13 @@
 .json-editor {
-    background-color: #ffffff;
+    background-color: @color-white;
     .box-shadow-level(1);
     width: 100%;
     .jsoneditor {
         max-height: 800px;
-        border: 1px solid #e7e7e7;
+        border: 0;
         .menu {
-            background-color: #ffffff;
-            border-bottom: 1px solid #d7d7d7;
+            background-color: @color-white;
+            border-bottom: 1px solid @color-white-border;
             height: 35px;
             padding-left: 5px;
             .search {
@@ -17,7 +17,7 @@
                     padding: 5px;
                 }
                 button {
-                    border: 0;
+                    border: 0 !important;
                     background-color: transparent;
                     .box-shadow(0 0 0) !important;
                     margin-top: 2px;
@@ -25,12 +25,40 @@
             }
             .search .frame,
             button {
-                background-color: white;
-                border: 1px solid #e7e7e7;
+                background-color: @color-white;
+                border: 1px solid @color-white-border;
             }
         }
         .outer {
+            button {
+                transition: none !important;
+                border: 0 !important;
+            }
             min-width: 500px;
+        }
+    }
+}
+
+.jsoneditor-contextmenu {
+    > ul {
+        > li {
+            > .separator {
+                padding-top: 0;
+                margin-top: 0;
+            }
+            button {
+                border: 0 !important;
+                .box-shadow(0 0 0) !important;
+                &:nth-child(2) {
+                    width: 30px;
+                }
+            }
+            > ul {
+                .box-shadow(0 0 0) !important;
+                left: 0 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
         }
     }
 }

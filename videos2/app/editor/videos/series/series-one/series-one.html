@@ -33,15 +33,58 @@
                     </div>
                     <!-- name -->
                     <div name="'Name'" key="'name'" form-element>
-                        <input type="text" class="form-control" ng-model="series.name">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="series.name">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="fetchGameMetadata(series, series.name)">
+                                    <i class="fa fa-fw fa-gamepad"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div ng-if="gameMetadataOptions" form-element>
+                        <div ng-repeat="metadata in gameMetadataOptions">
+                            <a href="javascript:void(0);" ng-click="setGameMetadata(series, metadata)">
+                                {{metadata.name}}
+                            </a>
+                        </div>
+                    </div>
+                    <!-- show -->
+                    <div name="'Format'" key="'show'" form-element>
+                        <ui-select class="ui-select-lg" ng-model="series.show">
+                            <ui-select-match placeholder="Kanäle..">
+                                <img class="image-badge image-badge-md" img-src="{{$select.selected.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}" ng-if="$select.selected.image">
+                                <span ng-bind="$select.selected.name"></span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="show.id as show in (shows | filter: $select.search | orderBy)">
+                                <img class="image-badge image-badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                                <span ng-bind="show.name"></span>
+                            </ui-select-choices>
+                        </ui-select>
                     </div>
                     <!-- description -->
                     <div name="'Beschreibung'" key="'description'" form-element>
                         <textarea type="text" rows="5" class="form-control" ng-model="series.description"></textarea>
                     </div>
+                    <!-- links -->
+                    <div name="'Links'" key="'links'" form-element>
+                        <div class="vertical-list">
+                            <div class="input-group" ng-repeat="link in series.links track by $index">
+                                <input type="text" class="form-control" ng-model="series.links[$index]">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="series.links.splice($index, 1)">
+                                        <i class="fa fa-fw fa-times"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <button class="btn btn-default" type="button" ng-click="series.links.push('')">
+                                <i class="fa fa-fw fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
                     <!-- image -->
                     <div name="'Bild'" key="'image'" form-element>
-                        <div img-input="series.image"></div>
+                        <div download="series.id" img-input="series.image"></div>
                     </div>
                 </div>
             </div>

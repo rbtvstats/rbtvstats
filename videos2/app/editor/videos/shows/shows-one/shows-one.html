@@ -46,9 +46,25 @@
                     <div name="'Beschreibung'" key="'description'" form-element>
                         <textarea type="text" rows="5" class="form-control" ng-model="show.description"></textarea>
                     </div>
+                    <!-- links -->
+                    <div name="'Links'" key="'links'" form-element>
+                        <div class="vertical-list">
+                            <div class="input-group" ng-repeat="link in show.links track by $index">
+                                <input type="text" class="form-control" ng-model="show.links[$index]">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="show.links.splice($index, 1)">
+                                        <i class="fa fa-fw fa-times"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <button class="btn btn-default" type="button" ng-click="show.links.push('')">
+                                <i class="fa fa-fw fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
                     <!-- image -->
                     <div name="'Bild'" key="'image'" form-element>
-                        <div img-input="show.image"></div>
+                        <div download="show.id" img-input="show.image"></div>
                     </div>
                 </div>
             </div>

@@ -10,7 +10,7 @@
                         {{(video.channel | videosResolve:'channels').title}}
                     </td>
                     <td width="100" title="'Laufzeit'" sortable="'duration'">
-                        {{getDuration(video)}}
+                        {{video.duration | duration}}
                     </td>
                     <td width="100" title="'Veröffentlichung'" sortable="'published'">
                         {{video.published * 1000 | amDateFormat:'l'}}

@@ -2,7 +2,7 @@
     <div class="card-content-body">
         <div class="table-container">
             <table class="table table-hover list" ng-table="table.params">
-                <tr class="middle link" ng-repeat="host in $data" ng-click="one(host)">
+                <tr class="middle link" ng-repeat="host in $data" ng-click="toHost(host)">
                     <td width="1">
                         <img img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                     </td>

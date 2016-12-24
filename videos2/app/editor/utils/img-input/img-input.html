@@ -1,7 +1,7 @@
 <table class="img-input">
     <tr>
         <td class="left">
-            <img ng-src="{{image}}">
+            <a href="javascript:void(0);" ng-click="save(image)"><img ng-src="{{image}}"></a>
             <canvas id="imageCanvas" width="100" height="100" class="hide"></canvas>
         </td>
         <td class="right">
@@ -14,10 +14,10 @@
                 </span>
             </div>
             <div class="input-group">
-                <label class="btn btn-default btn-file">
+                <button class="btn btn-default btn-file">
                     <i class="fa fa-folder-o"></i> Öffnen..
                     <input type="file" name="test" onchange="angular.element(this).scope().changedImageSelection(this.files[0])">
-                </label>
+                </button>
             </div>
         </td>
     </tr>

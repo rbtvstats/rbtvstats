@@ -46,14 +46,14 @@ angular.module('app.editor').config(function($stateProvider) {
                 StateSrv.watch($scope, ['exec']);
             };
 
-            $scope.one = function(series) {
+            $scope.toSeries = function(series) {
                 $state.transitionTo('editor.videos.series.one', { seriesId: series.id });
             };
 
             $scope.add = function() {
                 var series = SeriesSrv.create();
                 SeriesSrv.save();
-                $scope.one(series);
+                $scope.toSeries(series);
             };
 
             $scope.delete = function(series) {

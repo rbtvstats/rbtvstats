@@ -26,8 +26,8 @@
                                             <span class="badge-remove" ng-click="removeHost(video, host); $event.preventDefault();">
                                                 <i class="fa fa-times"></i>
                                             </span>
-                                        </span>
-                                    </a>
+                                </span>
+                                </a>
                                 </span>
                             </div>
                             <!-- shows -->
@@ -40,7 +40,7 @@
                                                 <i class="fa fa-times"></i>
                                             </div>
                                         </span>
-                                    </a>
+                                </a>
                                 </span>
                             </div>
                             <!-- series -->
@@ -53,12 +53,12 @@
                                                 <i class="fa fa-times"></i>
                                             </div>
                                         </span>
-                                    </a>
+                                </a>
                                 </span>
                             </div>
                             <!-- duration -->
                             <div class="duration">
-                                {{getDuration(video)}}
+                                {{video.duration | duration}}
                             </div>
                             <!-- rating -->
                             <div class="rating" data-title="{{getRatingPercent(video)}}%" bs-tooltip>

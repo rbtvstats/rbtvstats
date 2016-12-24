@@ -16,7 +16,6 @@
         position: relative;
         > .chart-overlay {
             font-size: 1.6em;
-            color: #333333;
             > * {
                 position: absolute;
                 .transition(200ms ease-in-out opacity);
@@ -30,7 +29,7 @@
             }
             > .chart-loading {}
             > .chart-error {
-                color: #d9534f;
+                color: @color-danger;
             }
             > .chart-empty {}
         }
@@ -71,7 +70,7 @@
     background-color: rgba(0, 0, 0, 0.80);
     .border-radius(2px);
     .box-shadow-level(2);
-    color: #ffffff;
+    color: @color-text-inverse;
     padding: 0;
 }
 

@@ -2,7 +2,7 @@ angular.module('app.viewer').config(function($stateProvider) {
     $stateProvider.state('viewer.videos.channels.one', {
         url: '/:channelId',
         templateUrl: 'app/viewer/videos/channels/channels-one/channels-one.html',
-        controller: function($scope, $state, $stateParams, VideosSrv, ChannelsSrv) {
+        controller: function($scope, $state, $stateParams, ChartTemplatesSrv, VideosSrv, ChannelsSrv) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['videos-data'];
 
@@ -12,126 +12,37 @@ angular.module('app.viewer').config(function($stateProvider) {
                 $scope.videos = VideosSrv.filter(VideosSrv.all(), { channels: { filter: [$scope.channelId] }, online: true });
 
                 $scope.charts = [];
-                $scope.charts.push($scope.chartViewsMean());
-                $scope.charts.push($scope.chartViewsDistribution());
+                $scope.charts.push(ChartTemplatesSrv.videosViewsMeanByDate($scope.videos, $scope.channel.title));
+                $scope.charts.push(ChartTemplatesSrv.videosViewsDistribution($scope.videos, $scope.channel.title));
+
+                $scope.updateStats();
             };
 
-            $scope.chartViewsMean = function() {
-                var options = {
-                    chart: {
-                        type: 'multiBarChart',
-                        xAxis: {
-                            axisLabel: 'Datum'
-                        },
-                        yAxis: {
-                            axisLabel: 'Durchschnittliche Video Aufrufe (Tausend)',
-                            tickFormat: function(d) {
-                                return d3.format('.2f')(d / 1000) + 'T';
-                            }
-                        }
-                    },
-                    dateGroup: {
-                        enable: true,
-                        selected: 'month'
-                    },
-                    dateRange: {
-                        enable: true
-                    },
-                    title: {
-                        enable: true,
-                        text: 'Durchschnittliche Video Aufrufe'
-                    }
-                };
+            $scope.updateStats = function() {
+                $scope.stats = {};
 
-                function update() {
-                    var filter = {
-                        published: options.dateRange.selected
-                    };
+                //count
+                $scope.stats.videosCountTotal = $scope.videos.length
 
-                    var videos = VideosSrv.filter($scope.videos, filter);
-                    var videosByDate = VideosSrv.groupByDate(videos, 'channel', options.dateGroup.selected);
+                //count mean
+                var publishedFirst = _.minBy($scope.videos, function(video) {
+                    return video.published;
+                });
+                var publishedLast = _.maxBy($scope.videos, function(video) {
+                    return video.published;
+                });
 
-                    return _.map(videosByDate, function(data) {
-                        var values = _.map(data.videos, function(data) {
-                            var viewsMean = Math.round(_.meanBy(data.videos, function(video) {
-                                return video.stats.viewCount;
-                            })) || 0;
+                $scope.stats.videosCountMean = _.round($scope.stats.videosCountTotal / ((publishedLast.published - publishedFirst.published) / (60 * 60 * 24)), 2);
 
-                            return { x: data.date, y: viewsMean };
-                        });
+                //views mean
+                $scope.stats.videosViewsMean = _.round(_.meanBy($scope.videos, function(video) {
+                    return video.stats.viewCount;
+                }));
 
-                        var channel = ChannelsSrv.findById(data.target);
-
-                        return {
-                            key: channel.title,
-                            columns: { x: 'date', y: 'viewsMean' },
-                            values: values
-                        };
-                    });
-                }
-
-                return {
-                    update: update,
-                    options: options
-                };
-            };
-
-            $scope.chartViewsDistribution = function() {
-                var options = {
-                    chart: {
-                        type: 'multiBarChart',
-                        xAxis: {
-                            axisLabel: 'Video Aufrufe (Tausend)',
-                            tickFormat: function(d) {
-                                return d3.format('d')(d / 1000) + 'T';
-                            }
-                        },
-                        yAxis: {
-                            axisLabel: 'Anzahl Videos',
-                            tickFormat: function(d) {
-                                return d3.format('d')(d);
-                            }
-                        }
-                    },
-                    dateRange: {
-                        enable: true
-                    },
-                    title: {
-                        enable: true,
-                        text: 'Verteilung der Video Aufrufe'
-                    }
-                };
-
-                function update() {
-                    var filter = {
-                        published: options.dateRange.selected
-                    };
-
-                    var bucketSize = 2000;
-                    var videos = VideosSrv.filter($scope.videos, filter);
-                    var distribution = VideosSrv.groupByBuckets(videos, 'channel', function(video) {
-                        return video.stats.viewCount;
-                    }, bucketSize);
-
-                    return _.map(distribution, function(data) {
-                        var values = _.map(data.videos, function(data) {
-                            return { x: data.bucket, y: data.videos.length };
-                        });
-
-                        var channel = ChannelsSrv.findById(data.target);
-
-                        return {
-                            key: channel.title,
-                            columns: { x: 'bucket', y: 'count' },
-                            values: values
-                        };
-                    });
-                }
-
-                return {
-                    update: update,
-                    options: options
-                };
+                //duration mean
+                $scope.stats.videosDurationMean = _.round(_.meanBy($scope.videos, function(video) {
+                    return video.duration;
+                }));
             };
         }
     });

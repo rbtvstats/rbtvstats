@@ -36,8 +36,8 @@
                         <div class="input-group">
                             <input type="text" class="form-control" ng-model="channel.username">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="updateMetadata(channel, {username: channel.username})">
-                                    <i class="fa fa-fw fa-refresh" ng-class="{ 'fa-spin': loadingMetadata }"></i>
+                                <button class="btn btn-default" type="button" ng-click="fetchMetadata(channel, {username: channel.username})">
+                                    <i class="fa fa-fw fa-refresh"></i>
                                 </button>
                             </span>
                         </div>
@@ -47,8 +47,8 @@
                         <div class="input-group">
                             <input type="text" class="form-control" ng-model="channel.channelId">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="updateMetadata(channel, {id: channel.channelId})">
-                                    <i class="fa fa-fw fa-refresh" ng-class="{ 'fa-spin': loadingMetadata }"></i>
+                                <button class="btn btn-default" type="button" ng-click="fetchMetadata(channel, {id: channel.channelId})">
+                                    <i class="fa fa-fw fa-refresh"></i>
                                 </button>
                             </span>
                         </div>
@@ -67,7 +67,7 @@
                     </div>
                     <!-- image -->
                     <div name="'Bild'" key="'image'" form-element>
-                        <div img-input="channel.image"></div>
+                        <div download="channel.id" img-input="channel.image"></div>
                     </div>
                 </div>
             </div>

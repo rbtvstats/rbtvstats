@@ -40,7 +40,7 @@ angular.module('app.viewer').config(function($stateProvider) {
                 };
             };
 
-            $scope.one = function(series) {
+            $scope.toSeries = function(series) {
                 $state.transitionTo('viewer.videos.series.one', { seriesId: series.id });
             };
 

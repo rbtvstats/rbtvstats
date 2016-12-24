@@ -171,6 +171,25 @@ angular.module('app').run(function($rootScope, amMoment, Notification, $parse) {
         return options;
     };
 
+    var domainIcons = {
+        'rocketbeans.tv': 'c-icon c-icon-bohne',
+        'bohnenwiki.de': 'c-icon c-icon-bohne',
+        'twitter.com': 'fa fa-colored fa-twitter',
+        'reddit.com': 'fa fa-colored fa-reddit',
+        'twitch.tv': 'fa fa-colored fa-twitch',
+        'youtube.com': 'fa fa-colored fa-youtube'
+    };
+
+    $rootScope.getDomainIcon = function(link) {
+        var domain = url('domain', link);
+        var icon = domainIcons[domain];
+        if (!icon) {
+            icon = 'fa fa-colored fa-external-link';
+        }
+
+        return icon;
+    };
+
     $rootScope.safeApply = function(fn) {
         var phase = $rootScope.$$phase;
         if (phase === '$apply' || phase === '$digest') {

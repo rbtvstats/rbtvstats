@@ -184,7 +184,7 @@
     .transition(200ms ease-in-out all);
     &:hover {
         .box-shadow-level(2);
-        .transform(translateY(-2px));
+        .transform(translateY(-3px));
     }
 }
 
@@ -193,15 +193,9 @@
 
 .timepicker,
 .datepicker {
-    padding: 5px;
     &.ng-enter {
         .animation(expandYSmall 200ms);
         .transform-origin(top);
-    }
-    button {
-        border: 0 !important;
-        .box-shadow(0 0 0) !important;
-        .border-radius(0) !important;
     }
 }
 

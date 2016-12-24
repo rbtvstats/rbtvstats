@@ -2,6 +2,7 @@ angular.module('app.editor').directive('imgInput', function() {
     return {
         restrict: 'A',
         scope: {
+            download: '=',
             image: '=imgInput'
         },
         templateUrl: 'app/editor/utils/img-input/img-input.html',
@@ -83,6 +84,28 @@ angular.module('app.editor').directive('imgInput', function() {
                     .catch(function(err) {
                         //TODO
                     });
+            };
+
+            $scope.save = function(image) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', image);
+                xhr.responseType = 'blob';
+                xhr.onload = function(e) {
+                    var blob = this.response;
+                    var extensions = {
+                        'image/jpeg': '.jpg',
+                        'image/png': '.png'
+                    }
+                    var extension = extensions[blob.type] || '';
+
+                    var filename = 'image' + extension;
+                    if ($scope.download) {
+                        filename = $scope.download + extension;
+                    }
+
+                    saveAs(blob, filename);
+                };
+                xhr.send();
             };
         }
     };

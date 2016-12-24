@@ -2,7 +2,7 @@
     <div class="card-content-body">
         <div class="table-container">
             <table class="table table-hover list" ng-table="table.params">
-                <tr class="middle link" ng-repeat="show in $data" ng-click="one(show)">
+                <tr class="middle link" ng-repeat="show in $data" ng-click="toShow(show)">
                     <td width="1">
                         <img img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                     </td>

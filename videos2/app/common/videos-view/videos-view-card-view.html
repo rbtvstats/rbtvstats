@@ -41,7 +41,7 @@
                             </div>
                             <!-- duration -->
                             <div class="duration">
-                                {{getDuration(video)}}
+                                {{video.duration | duration}}
                             </div>
                             <!-- rating -->
                             <div class="rating" data-title="{{getRatingPercent(video)}}%" bs-tooltip>

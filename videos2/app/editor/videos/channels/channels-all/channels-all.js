@@ -46,14 +46,14 @@ angular.module('app.editor').config(function($stateProvider) {
                 StateSrv.watch($scope, ['exec']);
             };
 
-            $scope.one = function(channel) {
+            $scope.toChannel = function(channel) {
                 $state.go('editor.videos.channels.one', { channelId: channel.id });
             };
 
             $scope.add = function() {
                 var channel = ChannelsSrv.create();
                 ChannelsSrv.save();
-                $scope.one(channel);
+                $scope.toChannel(channel);
             };
 
             $scope.delete = function(channel) {

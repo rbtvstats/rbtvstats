@@ -2,7 +2,8 @@ angular.module('app.common').directive('tablePagination', function(ngTableEvents
     return {
         restrict: 'A',
         scope: {
-            tableParams: '=tablePagination'
+            tableParams: '=tablePagination',
+            align: '='
         },
         templateUrl: 'app/common/table-pagination/table-pagination.html',
         controller: function($scope) {
@@ -29,16 +30,18 @@ angular.module('app.common').directive('tablePagination', function(ngTableEvents
             };
 
             $scope.syncPagination = function() {
-                var prevTotal = $scope.pagination.total;
+                if (angular.isObject($scope.tableParams)) {
+                    var prevTotal = $scope.pagination.total;
+                    
+                    $scope.pagination.current = $scope.tableParams.page();
+                    $scope.pagination.count = $scope.tableParams.count();
+                    $scope.pagination.total = Math.ceil($scope.tableParams.total() / $scope.pagination.count);
+                    $scope.pagination.first = $scope.pagination.current <= 1;
+                    $scope.pagination.last = $scope.pagination.current >= $scope.pagination.total;
 
-                $scope.pagination.current = $scope.tableParams.page();
-                $scope.pagination.count = $scope.tableParams.count();
-                $scope.pagination.total = Math.ceil($scope.tableParams.total() / $scope.pagination.count);
-                $scope.pagination.first = $scope.pagination.current <= 1;
-                $scope.pagination.last = $scope.pagination.current >= $scope.pagination.total;
-
-                if ($scope.pagination.total !== prevTotal) {
-                    $scope.pagination.options = _.range(1, $scope.pagination.total + 1);
+                    if ($scope.pagination.total !== prevTotal) {
+                        $scope.pagination.options = _.range(1, $scope.pagination.total + 1);
+                    }
                 }
             };
 

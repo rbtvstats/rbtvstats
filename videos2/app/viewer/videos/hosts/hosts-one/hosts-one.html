@@ -1,12 +1,83 @@
 <div class="container-fluid animate-main-content" init>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6 col-md-offset-6">
             <div class="card-content">
                 <div class="card-content-header">
                     Moderator
                 </div>
-                <div class="card-content-body">
-                    <pre>{{host | json}}</pre>
+                <div class="card-content-body overview-one">
+                    <img class="image-badge image-badge-lg" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                    <div class="title">
+                        <a ng-href="#/videos/hosts/{{host.id}}">{{host.firstname}} {{host.lastname}}</a>
+                    </div>
+                    <div class="subtitle" ng-if="host.nickname">
+                        {{host.nickname}}
+                    </div>
+                    <div class="content">{{host.description}}</div>
+                    <div class="links">
+                        <a class="icon-link" ng-href="{{link}}" target="_blank" ng-repeat="link in host.links">
+                            <i class="fa-lg" ng-class="getDomainIcon(link)"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-content">
+                <div class="card-content-header">
+                    Statistiken
+                </div>
+                <div class="card-content-body form-stats" form>
+                    <div name="'Gesamte Anzahl Videos'" form-element>
+                        {{stats.videosCountTotal | number}} Videos
+                    </div>
+                    <div name="'Durchschnittliche Anzahl Videos'" form-element>
+                        {{stats.videosCountMean | number}} pro Tag
+                    </div>
+                    <div name="'Durchschnittliche Video Aufrufe'" form-element>
+                        {{stats.videosViewsMean | number}} Aufrufe
+                    </div>
+                    <div name="'Anzahl Videos ohne Co-Moderatoren'" form-element>
+                        {{stats.videosCohostsNone | number}} Videos
+                    </div>
+                    <div name="'Anzahl Videos mit Co-Moderatoren'" form-element>
+                        <div class="table-container">
+                            <table class="table table-hover list" ng-table="stats.videosCohostsTable">
+                                <tr class="middle link" ng-repeat="data in $data" ng-click="toHost(data.host)">
+                                    <td width="130" title="'Anzahl Videos'" sortable="'count'">
+                                        {{data.count | number}}
+                                    </td>
+                                    <td title="'Vorname'" sortable="'host.firstname'">
+                                        {{data.host.firstname}}
+                                    </td>
+                                    <td title="'Nachname'" sortable="'host.lastname'">
+                                        {{data.host.lastname}}
+                                    </td>
+                                    <td title="'Spitzname'" sortable="'host.nickname'">
+                                        {{data.host.nickname}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div align="'right'" table-pagination="stats.videosCohostsTable"></div>
+                    </div>
+                    <div name="'Formate'" form-element>
+                        <div class="table-container">
+                            <table class="table table-hover list" ng-table="stats.videosShowsTable">
+                                <tr class="middle link" ng-repeat="data in $data" ng-click="toShow(data.show)">
+                                    <td width="130" title="'Anzahl Videos'" sortable="'count'">
+                                        {{data.count | number}}
+                                    </td>
+                                    <td title="'Name'" sortable="'show.name'">
+                                        {{data.show.name}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div align="'right'" table-pagination="stats.videosShowsTable"></div>
+                    </div>
                 </div>
             </div>
         </div>

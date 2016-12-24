@@ -120,7 +120,7 @@
                         <ui-select-match placeholder="Formate..">
                             <span class="text-muted">Formate..</span>
                         </ui-select-match>
-                        <ui-select-choices group-by="listGroupShows" repeat="show in (shows | filter: $select.search | orderBy)">
+                        <ui-select-choices repeat="show in (shows | filter: $select.search | orderBy)">
                             <img class="image-badge image-badge-md" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
                             <span ng-bind="show.name"></span>
                         </ui-select-choices>

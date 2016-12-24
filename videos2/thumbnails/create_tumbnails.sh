@@ -6,7 +6,7 @@ while IFS= read -r i ; do
     s=${i##*/}
     name=${s%.*}
     dir=$(dirname "$i")
-    outFilepath="_out/$dir/$name.jpg"
+    outFilepath="../img/$dir/$name.jpg"
     outDir=$(dirname "${outFilepath}")
     mkdir -p "$outDir"
     /usr/bin/convert -thumbnail 80 "$i" "$outFilepath"

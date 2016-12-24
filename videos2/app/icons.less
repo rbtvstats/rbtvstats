@@ -1,6 +1,6 @@
 /* icons */
 
-.icon {
+.c-icon {
     display: inline-block;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -12,31 +12,31 @@
     &:after {
         content: '\00a0';
     }
-    &.icon-bohne {
+    &.c-icon-bohne {
         background-image: url('/img/icons/bohne.png');
     }
-    &.icon-circle-notch {
+    &.c-icon-circle-notch {
         border: solid 3px transparent;
-        border-top-color: #333333;
-        border-left-color: #333333;
+        border-top-color: @color-text;
+        border-left-color: @color-text;
         border-radius: 50%;
     }
-    &.icon-2x {
+    &.c-icon-2x {
         width: 2em;
         height: 2em;
         line-height: 2em;
     }
-    &.icon-3x {
+    &.c-icon-3x {
         width: 3em;
         height: 3em;
         line-height: 2em;
     }
-    &.icon-spin {
+    &.c-icon-spin {
         .animation(loading-bar-spinner 700ms linear infinite);
     }
-    &.icon-inverse {
-        border-top-color: #fbfbfb;
-        border-left-color: #fbfbfb;
+    &.c-icon-inverse {
+        border-top-color: @color-text-inverse;
+        border-left-color: @color-text-inverse;
     }
 }
 
@@ -46,7 +46,7 @@
     padding: 8px;
     &:hover {
         .transition(200ms ease-in-out all);
-        background-color: #e6e6e6;
+        background-color: @color-white-dark;
     }
     &:last-child {
         margin-right: inherit;

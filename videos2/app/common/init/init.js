@@ -1,4 +1,4 @@
-angular.module('app.common').factory('InitSrv', function($q, $timeout, Notification) {
+angular.module('app.common').factory('InitSrv', function($q, $timeout) {
     var service = {};
     var dependencies = [];
 
@@ -73,7 +73,7 @@ angular.module('app.common').factory('InitSrv', function($q, $timeout, Notificat
     return service;
 });
 
-angular.module('app.common').directive('init', function($animate, InitSrv) {
+angular.module('app.common').directive('init', function($animate, InitSrv, Notification) {
     return {
         restrict: 'A',
         transclude: 'element',

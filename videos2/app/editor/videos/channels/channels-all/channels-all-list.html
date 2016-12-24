@@ -2,7 +2,7 @@
     <div class="card-content-body">
         <div class="table-container">
             <table class="table table-hover list" ng-table="table.params">
-                <tr class="middle link" ng-repeat="channel in $data" ng-click="one(channel)">
+                <tr class="middle link" ng-repeat="channel in $data" ng-click="toChannel(channel)">
                     <td width="1">
                         <img img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
                     </td>

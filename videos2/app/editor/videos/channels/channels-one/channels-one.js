@@ -22,8 +22,7 @@ angular.module('app.editor').config(function($stateProvider) {
                 $state.transitionTo('editor.videos.channels.all');
             };
 
-            $scope.updateMetadata = function(channel, target) {
-                $scope.loadingMetadata = true;
+            $scope.fetchMetadata = function(channel, target) {
                 YoutubeApiSrv.channels(target)
                     .then(function(data) {
                         if (data.items.length === 1) {
@@ -44,9 +43,6 @@ angular.module('app.editor').config(function($stateProvider) {
                             errPath: 'data.error.message',
                             delay: null
                         }));
-                    })
-                    .finally(function() {
-                        $scope.loadingMetadata = false;
                     });
             };
         }

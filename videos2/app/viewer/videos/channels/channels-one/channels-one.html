@@ -1,25 +1,42 @@
 <div class="container-fluid animate-main-content" init>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 col-md-offset-6">
             <div class="card-content">
                 <div class="card-content-header">
                     Kanal
                 </div>
-                <div class="card-content-body">
-                    <div class="header">
-                        <img img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}"> {{channel.title}}
+                <div class="card-content-body overview-one">
+                    <img class="image-badge image-badge-lg" img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
+                    <div class="title">{{channel.title}}</div>
+                    <div class="content">{{channel.description}}</div>
+                    <div class="links">
+                        <a ng-href="https://www.youtube.com/channel/{{channel.channelId}}" target="_blank">
+                            <i class="fa fa-youtube-play"></i> Zum Youtube Kanal
+                        </a>
                     </div>
-                    <div>{{channel.description}}</div>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="card-content">
                 <div class="card-content-header">
                     Statistiken
                 </div>
-                <div class="card-content-body">
-                    test
+                <div class="card-content-body form-stats" form>
+                    <div name="'Gesamte Anzahl Videos'" form-element>
+                        {{stats.videosCountTotal | number}} Videos
+                    </div>
+                    <div name="'Durchschnittliche Anzahl Videos'" form-element>
+                        {{stats.videosCountMean | number}} pro Tag
+                    </div>
+                    <div name="'Durchschnittliche Video Aufrufe'" form-element>
+                        {{stats.videosViewsMean | number}} Aufrufe
+                    </div>
+                    <div name="'Durchschnittliche Video Laufzeit'" form-element>
+                        {{stats.videosDurationMean | duration}}
+                    </div>
                 </div>
             </div>
         </div>

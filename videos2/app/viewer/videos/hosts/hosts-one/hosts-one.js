@@ -2,7 +2,7 @@ angular.module('app.viewer').config(function($stateProvider) {
     $stateProvider.state('viewer.videos.hosts.one', {
         url: '/:hostId',
         templateUrl: 'app/viewer/videos/hosts/hosts-one/hosts-one.html',
-        controller: function($scope, $stateParams, VideosSrv, HostsSrv) {
+        controller: function($scope, $state, $stateParams, ChartTemplatesSrv, NgTableParams, VideosSrv, HostsSrv, ShowsSrv) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['videos-data'];
 
@@ -12,118 +12,98 @@ angular.module('app.viewer').config(function($stateProvider) {
                 $scope.videos = VideosSrv.filter(VideosSrv.all(), { hosts: { filter: [$scope.hostId] }, online: true });
 
                 $scope.charts = [];
-                $scope.charts.push($scope.chartViewsMean());
-                $scope.charts.push($scope.chartViewsDistribution());
+                $scope.charts.push(ChartTemplatesSrv.videosCountByDate($scope.videos, $scope.host.firstname));
+                $scope.charts.push(ChartTemplatesSrv.videosDurationByDate($scope.videos, $scope.host.firstname));
+                $scope.charts.push(ChartTemplatesSrv.videosViewsMeanByDate($scope.videos, $scope.host.firstname));
+                $scope.charts.push(ChartTemplatesSrv.videosViewsDistribution($scope.videos, $scope.host.firstname));
+
+                $scope.updateStats();
             };
 
-            $scope.chartViewsMean = function() {
-                var options = {
-                    chart: {
-                        type: 'multiBarChart',
-                        xAxis: {
-                            axisLabel: 'Datum'
-                        },
-                        yAxis: {
-                            axisLabel: 'Durchschnittliche Video Aufrufe (Tausend)',
-                            tickFormat: function(d) {
-                                return d3.format('.2f')(d / 1000) + 'T';
-                            }
-                        }
-                    },
-                    dateGroup: {
-                        enable: true,
-                        selected: 'month'
-                    },
-                    dateRange: {
-                        enable: true
-                    },
-                    title: {
-                        enable: true,
-                        text: 'Durchschnittliche Video Aufrufe'
-                    }
-                };
-
-                function update() {
-                    var filter = {
-                        published: options.dateRange.selected
-                    };
-
-                    var videos = VideosSrv.filter($scope.videos, filter);
-                    var videosByDate = VideosSrv.groupByDate(videos, null, options.dateGroup.selected);
-
-                    var values = _.map(videosByDate, function(data) {
-                        var viewsMean = Math.round(_.meanBy(data.videos, function(video) {
-                            return video.stats.viewCount;
-                        })) || 0;
-
-                        return { x: data.date, y: viewsMean };
-                    });
-
-                    return {
-                        key: $scope.host.firstname,
-                        columns: { x: 'date', y: 'viewsMean' },
-                        values: values
-                    };
-                }
-
-                return {
-                    update: update,
-                    options: options
-                };
+            $scope.toHost = function(host) {
+                $state.transitionTo('viewer.videos.hosts.one', { hostId: host.id });
             };
 
-            $scope.chartViewsDistribution = function() {
-                var options = {
-                    chart: {
-                        type: 'multiBarChart',
-                        xAxis: {
-                            axisLabel: 'Video Aufrufe (Tausend)',
-                            tickFormat: function(d) {
-                                return d3.format('d')(d / 1000) + 'T';
-                            }
-                        },
-                        yAxis: {
-                            axisLabel: 'Anzahl Videos',
-                            tickFormat: function(d) {
-                                return d3.format('d')(d);
-                            }
-                        }
-                    },
-                    dateRange: {
-                        enable: true
-                    },
-                    title: {
-                        enable: true,
-                        text: 'Verteilung der Video Aufrufe'
-                    }
-                };
+            $scope.toShow = function(show) {
+                $state.transitionTo('viewer.videos.shows.one', { showId: show.id });
+            };
 
-                function update() {
-                    var filter = {
-                        published: options.dateRange.selected
-                    };
+            $scope.updateStats = function() {
+                $scope.stats = {};
 
-                    var bucketSize = 2000;
-                    var videos = VideosSrv.filter($scope.videos, filter);
-                    var distribution = VideosSrv.groupByBuckets(videos, null, function(video) {
-                        return video.stats.viewCount;
-                    }, bucketSize);
+                //count
+                $scope.stats.videosCountTotal = $scope.videos.length
 
-                    var values = _.map(distribution, function(data) {
-                        return { x: data.bucket, y: data.videos.length };
-                    });
+                //count mean
+                var publishedFirst = _.minBy($scope.videos, function(video) {
+                    return video.published;
+                });
+                var publishedLast = _.maxBy($scope.videos, function(video) {
+                    return video.published;
+                });
 
-                    return {
-                        key: $scope.host.firstname,
-                        columns: { x: 'bucket', y: 'count' },
-                        values: values
-                    };
-                }
+                $scope.stats.videosCountMean = _.round($scope.stats.videosCountTotal / ((publishedLast.published - publishedFirst.published) / (60 * 60 * 24)), 2);
 
-                return {
-                    update: update,
-                    options: options
-                };
+                //views mean
+                $scope.stats.videosViewsMean = _.round(_.meanBy($scope.videos, function(video) {
+                    return video.stats.viewCount;
+                }));
+
+                //no Co-hosts
+                $scope.stats.videosCohostsNone = _.filter($scope.videos, function(video) {
+                    return video.hosts.length === 1;
+                }).length;
+
+                //Co-hosts
+                $scope.stats.videosCohosts = _($scope.videos)
+                    .map(function(video) {
+                        return video.hosts;
+                    })
+                    .flatten()
+                    .filter(function(hostId) {
+                        return hostId !== $scope.host.id;
+                    })
+                    .countBy(function(hostId) {
+                        return hostId;
+                    })
+                    .map(function(count, hostId) {
+                        return {
+                            host: HostsSrv.findById(hostId),
+                            count: count
+                        };
+                    })
+                    .value();
+
+                $scope.stats.videosCohostsTable = new NgTableParams({
+                    count: 5,
+                    sorting: { count: "desc" }
+                }, {
+                    dataset: $scope.stats.videosCohosts
+                });
+
+                //shows
+                $scope.stats.videosShows = _($scope.videos)
+                    .map(function(video) {
+                        return video.shows;
+                    })
+                    .flatten()
+                    .countBy(function(showId) {
+                        return showId;
+                    })
+                    .map(function(count, showId) {
+                        return {
+                            show: ShowsSrv.findById(showId),
+                            count: count
+                        };
+                    })
+                    .value();
+
+                $scope.stats.videosShowsTable = new NgTableParams({
+                    count: 5,
+                    sorting: { count: "desc" }
+                }, {
+                    dataset: $scope.stats.videosShows
+                });
             };
         }
     });

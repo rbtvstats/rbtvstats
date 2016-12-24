@@ -46,14 +46,14 @@ angular.module('app.editor').config(function($stateProvider) {
                 StateSrv.watch($scope, ['exec']);
             };
 
-            $scope.one = function(host) {
+            $scope.toHost = function(host) {
                 $state.transitionTo('editor.videos.hosts.one', { hostId: host.id });
             };
 
             $scope.add = function() {
                 var host = HostsSrv.create();
                 HostsSrv.save();
-                $scope.one(host);
+                $scope.toHost(host);
             };
 
             $scope.delete = function(host) {

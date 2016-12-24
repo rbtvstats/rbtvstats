@@ -2,7 +2,7 @@ angular.module('app.viewer').config(function($stateProvider) {
     $stateProvider.state('viewer.videos.shows.one', {
         url: '/:showId',
         templateUrl: 'app/viewer/videos/shows/shows-one/shows-one.html',
-        controller: function($scope, $stateParams, VideosSrv, ShowsSrv) {
+        controller: function($scope, $state, $stateParams, NgTableParams, ChartTemplatesSrv, VideosSrv, ShowsSrv, HostsSrv) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['videos-data'];
 
@@ -12,118 +12,50 @@ angular.module('app.viewer').config(function($stateProvider) {
                 $scope.videos = VideosSrv.filter(VideosSrv.all(), { shows: { filter: [$scope.showId] }, online: true });
 
                 $scope.charts = [];
-                $scope.charts.push($scope.chartViewsMean());
-                $scope.charts.push($scope.chartViewsDistribution());
+                $scope.charts.push(ChartTemplatesSrv.videosViewsMeanByDate($scope.videos, $scope.show.name));
+                $scope.charts.push(ChartTemplatesSrv.videosViewsDistribution($scope.videos, $scope.show.name));
+
+                $scope.updateStats();
             };
 
-            $scope.chartViewsMean = function() {
-                var options = {
-                    chart: {
-                        type: 'multiBarChart',
-                        xAxis: {
-                            axisLabel: 'Datum'
-                        },
-                        yAxis: {
-                            axisLabel: 'Durchschnittliche Video Aufrufe (Tausend)',
-                            tickFormat: function(d) {
-                                return d3.format('.2f')(d / 1000) + 'T';
-                            }
-                        }
-                    },
-                    dateGroup: {
-                        enable: true,
-                        selected: 'month'
-                    },
-                    dateRange: {
-                        enable: true
-                    },
-                    title: {
-                        enable: true,
-                        text: 'Durchschnittliche Video Aufrufe'
-                    }
-                };
-
-                function update() {
-                    var filter = {
-                        published: options.dateRange.selected
-                    };
-
-                    var videos = VideosSrv.filter($scope.videos, filter);
-                    var videosByDate = VideosSrv.groupByDate(videos, null, options.dateGroup.selected);
-
-                    var values = _.map(videosByDate, function(data) {
-                        var viewsMean = Math.round(_.meanBy(data.videos, function(video) {
-                            return video.stats.viewCount;
-                        })) || 0;
-
-                        return { x: data.date, y: viewsMean };
-                    });
-
-                    return {
-                        key: $scope.show.name,
-                        columns: { x: 'date', y: 'viewsMean' },
-                        values: values
-                    };
-                }
-
-                return {
-                    update: update,
-                    options: options
-                };
+            $scope.toHost = function(host) {
+                $state.transitionTo('viewer.videos.hosts.one', { hostId: host.id });
             };
 
-            $scope.chartViewsDistribution = function() {
-                var options = {
-                    chart: {
-                        type: 'multiBarChart',
-                        xAxis: {
-                            axisLabel: 'Video Aufrufe (Tausend)',
-                            tickFormat: function(d) {
-                                return d3.format('d')(d / 1000) + 'T';
-                            }
-                        },
-                        yAxis: {
-                            axisLabel: 'Anzahl Videos',
-                            tickFormat: function(d) {
-                                return d3.format('d')(d);
-                            }
-                        }
-                    },
-                    dateRange: {
-                        enable: true
-                    },
-                    title: {
-                        enable: true,
-                        text: 'Verteilung der Video Aufrufe'
-                    }
-                };
+            $scope.updateStats = function() {
+                $scope.stats = {};
 
-                function update() {
-                    var filter = {
-                        published: options.dateRange.selected
-                    };
+                //count
+                $scope.stats.videosCountTotal = $scope.videos.length
 
-                    var bucketSize = 2000;
-                    var videos = VideosSrv.filter($scope.videos, filter);
-                    var distribution = VideosSrv.groupByBuckets(videos, null, function(video) {
-                        return video.stats.viewCount;
-                    }, bucketSize);
+                //mean views
+                $scope.stats.videosViewsMean = _.round(_.meanBy($scope.videos, function(video) {
+                    return video.stats.viewCount;
+                }));
 
-                    var values = _.map(distribution, function(data) {
-                        return { x: data.bucket, y: data.videos.length };
-                    });
+                //hosts
+                $scope.stats.videosHosts = _($scope.videos)
+                    .map(function(video) {
+                        return video.hosts;
+                    })
+                    .flatten()
+                    .countBy(function(hostId) {
+                        return hostId;
+                    })
+                    .map(function(count, hostId) {
+                        return {
+                            host: HostsSrv.findById(hostId),
+                            count: count
+                        };
+                    })
+                    .value();
 
-                    return {
-                        key: $scope.show.name,
-                        columns: { x: 'bucket', y: 'count' },
-                        values: values
-                    };
-                }
-
-                return {
-                    update: update,
-                    options: options
-                };
+                $scope.stats.videosHostsTable = new NgTableParams({
+                    count: 5,
+                    sorting: { count: "desc" }
+                }, {
+                    dataset: $scope.stats.videosHosts
+                });
             };
         }
     });

@@ -40,7 +40,7 @@ angular.module('app.viewer').config(function($stateProvider) {
                 };
             };
 
-            $scope.one = function(show) {
+            $scope.toShow = function(show) {
                 $state.transitionTo('viewer.videos.shows.one', { showId: show.id });
             };
 

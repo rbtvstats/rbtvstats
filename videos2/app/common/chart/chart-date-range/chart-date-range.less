@@ -29,14 +29,12 @@
                         }
                         > .dates {
                             text-align: left;
-                            color: #333333;
                             width: 50%;
                             padding-left: 10px;
                             font-weight: normal;
                             label {
                                 display: block;
-                                border-bottom: 1px solid #cccccc;
-                                font-size: 16px;
+                                border-bottom: 1px solid @color-white-border;
                                 margin-bottom: 6px;
                                 margin-top: 4px;
                             }
@@ -56,6 +54,9 @@
                     .box-shadow(0 0 0) !important;
                     padding: 0;
                     margin: 0;
+                    button {
+                        border: 0 !important;
+                    }
                 }
                 > .datepicker {
                     height: 265px;

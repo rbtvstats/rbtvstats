@@ -1,10 +1,7 @@
 /* navigation */
 
-@navbar-color-bg: #3d4a57;
-@navbar-color-font: #fbfbfb;
-@navbar-color-active: #465563;
 .navbar-custom {
-    background-color: @navbar-color-bg;
+    background-color: @color-primary;
     border: 0;
     .box-shadow-level(2);
     .border-radius(0);
@@ -16,19 +13,20 @@
     > div {
         max-width: 1400px;
         > .navbar-header {
+            > .navbar-toggle {
+                background-color: darken(@color-primary, 5%) !important;
+                border: 1px solid darken(@color-primary, 12%) !important;
+            }
             > .navbar-brand {
-                color: @navbar-color-font !important;
+                color: @color-text-inverse !important;
             }
         }
         > .navbar-collapse {
             border: 0;
-            .navbar-text {
-                color: #ffffff;
-            }
             > .navbar-nav {
                 .dropdown {
                     > a {
-                        background-color: @navbar-color-bg;
+                        background-color: @color-primary;
                     }
                     @media (max-width: 767px) {
                         &.info {
@@ -45,8 +43,7 @@
                     &.info {
                         > ul {
                             > li {
-                                color: #fbfbfb;
-                                font-weight: normal;
+                                color: @color-text-inverse;
                                 padding: 10px 15px;
                                 > .no-data {
                                     text-align: center;
@@ -54,24 +51,24 @@
                                     padding: 15px;
                                 }
                                 > .error {
-                                    font-weight: bold;
-                                    color: #d9534f;
+                                    font-weight: @font-weight-bold;
+                                    color: @color-danger;
                                 }
                                 > div:nth-child(1) {
-                                    font-weight: bold;
+                                    font-weight: @font-weight-bold;
                                 }
                             }
                         }
                     }
                     .dropdown-menu {
-                        background-color: @navbar-color-bg;
-                        border: 0;
+                        background-color: @color-primary;
+                        border: 0 !important;
                         padding: 0;
                         > li {
-                            border-top: 1px solid #465563;
+                            border-top: 1px solid darken(@color-primary, 5%);
                             &.active {
                                 > a {
-                                    background-color: @navbar-color-active !important;
+                                    background-color: @color-primary !important;
                                 }
                             }
                             a {
@@ -84,21 +81,23 @@
                 li {
                     > a {
                         border-bottom: 2px solid transparent;
-                        color: @navbar-color-font !important;
+                        color: @color-text-inverse !important;
                     }
                     &:hover,
-                    > a:hover {
+                    &:focus,
+                    > a:hover,
+                    > a:focus {
                         .transition(200ms ease-in-out all);
-                        background-color: @navbar-color-active !important;
+                        background-color: @color-primary-light !important;
                     }
                 }
                 > .active {
                     > a {
-                        background-color: @navbar-color-active !important;
-                        border-bottom: 2px solid #d9534f;
+                        background-color: @color-primary-light !important;
+                        border-bottom: 2px solid @color-accent;
                     }
                     > a:hover {
-                        background-color: @navbar-color-active !important;
+                        background-color: @color-primary-light !important;
                     }
                 }
             }

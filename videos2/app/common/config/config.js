@@ -6,6 +6,7 @@ angular.module('app.common').service('ConfigSrv', function() {
         return angular.copy({
             youtubeApiKey: '',
             githubApiOAuthToken: '',
+            igdbApiKey: '',
             githubBaseUrl: 'https://raw.githubusercontent.com',
             githubRepository: 'rbtvstats/rbtvdata',
             githubBranch: 'master',

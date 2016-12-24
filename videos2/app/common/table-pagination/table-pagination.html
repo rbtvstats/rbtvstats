@@ -1,4 +1,7 @@
-<div class="table-pagination form-inline" ng-show="pagination.total > 1">
+<div class="table-pagination form-inline" ng-class="{'text-right': align === 'right'}" ng-show="pagination.total > 1">
+    <span class="text" ng-if="align === 'right'">
+        Seite {{pagination.current}} von {{pagination.total}}
+    </span>
     <div class="input-group">
         <span class="input-group-btn">
             <button class="btn btn-default" ng-click="prev()" ng-disabled="pagination.first">
@@ -19,7 +22,7 @@
             </button>
         </span>
     </div>
-    <span class="text">
+    <span class="text" ng-if="!align || align === 'left'">
         Seite {{pagination.current}} von {{pagination.total}}
     </span>
 </div>
