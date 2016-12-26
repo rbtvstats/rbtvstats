@@ -1,28 +1,38 @@
 <div class="table-pagination form-inline" ng-class="{'text-right': align === 'right'}" ng-show="pagination.total > 1">
-    <span class="text" ng-if="align === 'right'">
-        Seite {{pagination.current}} von {{pagination.total}}
-    </span>
-    <div class="input-group">
-        <span class="input-group-btn">
-            <button class="btn btn-default" ng-click="prev()" ng-disabled="pagination.first">
-                <i class="fa fa-chevron-left"></i>
-            </button>
-        </span>
-        <ui-select ng-model="pagination.current" skip-focusser="true" on-select="page(pagination.current)">
-            <ui-select-match>
-                <span ng-bind="$select.selected"></span>
-            </ui-select-match>
-            <ui-select-choices repeat="page in pagination.options | filter: $select.search">
-                <span ng-bind="page"></span>
-            </ui-select-choices>
-        </ui-select>
-        <span class="input-group-btn">
-            <button class="btn btn-default" ng-click="next()" ng-disabled="pagination.last">
-                <i class="fa fa-chevron-right"></i>
-            </button>
-        </span>
-    </div>
-    <span class="text" ng-if="!align || align === 'left'">
-        Seite {{pagination.current}} von {{pagination.total}}
-    </span>
+    <table width="100%">
+        <tr>
+            <td ng-if="align === 'right'">
+                <span class="text">
+                    Seite {{pagination.current}} von {{pagination.total}}
+                </span>
+            </td>
+            <td width="1">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" ng-click="prev()" ng-disabled="pagination.first">
+                            <i class="fa fa-chevron-left"></i>
+                        </button>
+                    </span>
+                    <ui-select ng-model="pagination.current" skip-focusser="true" on-select="page(pagination.current)">
+                        <ui-select-match>
+                            <span ng-bind="$select.selected"></span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="page in pagination.options | filter: $select.search">
+                            <span ng-bind="page"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" ng-click="next()" ng-disabled="pagination.last">
+                            <i class="fa fa-chevron-right"></i>
+                        </button>
+                    </span>
+                </div>
+            </td>
+            <td ng-if="!align || align === 'left'">
+                <span class="text">
+                    Seite {{pagination.current}} von {{pagination.total}}
+                </span>
+            </td>
+        </tr>
+    </table>
 </div>

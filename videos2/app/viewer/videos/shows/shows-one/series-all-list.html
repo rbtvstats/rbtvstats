@@ -2,7 +2,7 @@
     <div class="card-content-body">
         <div class="table-container">
             <table class="table table-hover list" ng-table="table.params">
-                <tr class="middle link" ng-repeat="series in $data" ng-click="toSeries(series)">
+                <tr class="middle link" ui-sref="viewer.videos.shows.one({showId: show.id, seriesId: series.id})" ng-repeat="series in $data">
                     <td width="1">
                         <img img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                     </td>
@@ -17,6 +17,5 @@
                 </tr>
             </table>
         </div>
-        <div table-pagination="table.params"></div>
     </div>
 </div>

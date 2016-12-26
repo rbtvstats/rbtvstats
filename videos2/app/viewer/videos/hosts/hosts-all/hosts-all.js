@@ -39,14 +39,6 @@ angular.module('app.viewer').config(function($stateProvider) {
                     }]
                 };
             };
-
-            $scope.toHost = function(host) {
-                $state.transitionTo('viewer.videos.hosts.one', { hostId: host.id });
-            };
-
-            $scope.update = function() {
-                $scope.table.params.reload();
-            };
         }
     });
 });

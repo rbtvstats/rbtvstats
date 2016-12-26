@@ -1,23 +1,26 @@
 <div class="container-fluid animate-main-content" init>
     <div class="row">
-        <div class="col-md-6 col-md-offset-6">
+        <div class="col-md-6">
             <div class="card-content">
-                <div class="card-content-header">
-                    Moderator
-                </div>
                 <div class="card-content-body overview-one">
-                    <img class="image-badge image-badge-lg" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                    <a ui-sref="viewer.videos.hosts.one({hostId: host.id})">
+                        <img class="image-badge image-badge-lg" img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
+                    </a>
                     <div class="title">
-                        <a ng-href="#/videos/hosts/{{host.id}}">{{host.firstname}} {{host.lastname}}</a>
+                        <a ui-sref="viewer.videos.hosts.one({hostId: host.id})">{{host.firstname}} {{host.lastname}}</a>
                     </div>
                     <div class="subtitle" ng-if="host.nickname">
                         {{host.nickname}}
                     </div>
-                    <div class="content">{{host.description}}</div>
-                    <div class="links">
-                        <a class="icon-link" ng-href="{{link}}" target="_blank" ng-repeat="link in host.links">
-                            <i class="fa-lg" ng-class="getDomainIcon(link)"></i>
-                        </a>
+                    <div class="content" ng-if="host.description">
+                        <span ng-bind-html="host.description"></span>
+                    </div>
+                    <div class="links" ng-if="host.links.length > 0">
+                        <div ng-repeat="link in host.links">
+                            <a ng-href="{{link}}" target="_blank">
+                                <i class="fa-lg" ng-class="getDomainIcon(link)"></i>{{getDomain(link)}}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -45,7 +48,7 @@
                     <div name="'Anzahl Videos mit Co-Moderatoren'" form-element>
                         <div class="table-container">
                             <table class="table table-hover list" ng-table="stats.videosCohostsTable">
-                                <tr class="middle link" ng-repeat="data in $data" ng-click="toHost(data.host)">
+                                <tr class="middle link" ui-sref="viewer.videos.hosts.one({hostId: data.host.id})" ng-repeat="data in $data">
                                     <td width="130" title="'Anzahl Videos'" sortable="'count'">
                                         {{data.count | number}}
                                     </td>
@@ -66,7 +69,7 @@
                     <div name="'Formate'" form-element>
                         <div class="table-container">
                             <table class="table table-hover list" ng-table="stats.videosShowsTable">
-                                <tr class="middle link" ng-repeat="data in $data" ng-click="toShow(data.show)">
+                                <tr class="middle link" ui-sref="viewer.videos.shows.one({showId: data.show.id})" ng-repeat="data in $data">
                                     <td width="130" title="'Anzahl Videos'" sortable="'count'">
                                         {{data.count | number}}
                                     </td>

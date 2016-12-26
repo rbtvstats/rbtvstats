@@ -2,16 +2,19 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-6">
             <div class="card-content">
-                <div class="card-content-header">
-                    Kanal
-                </div>
                 <div class="card-content-body overview-one">
-                    <img class="image-badge image-badge-lg" img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
-                    <div class="title">{{channel.title}}</div>
-                    <div class="content">{{channel.description}}</div>
+                    <a ui-sref="viewer.videos.channels.one({channelId: channel.id})">
+                        <img class="image-badge image-badge-lg" img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
+                    </a>
+                    <div class="title">
+                        <a ui-sref="viewer.videos.channels.one({channelId: channel.id})">{{channel.title}}</a>
+                    </div>
+                    <div class="content">
+                        <span ng-bind-html="channel.description"></span>
+                    </div>
                     <div class="links">
                         <a ng-href="https://www.youtube.com/channel/{{channel.channelId}}" target="_blank">
-                            <i class="fa fa-youtube-play"></i> Zum Youtube Kanal
+                            <i class="fa fa-youtube-play"></i>youtube.com
                         </a>
                     </div>
                 </div>

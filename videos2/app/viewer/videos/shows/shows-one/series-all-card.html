@@ -9,21 +9,26 @@
                     <div class="card-image">
                         <div class="card-image-header card-image-header-xs">
                             <div class="image">
-                                <a ui-sref="editor.videos.series.one({seriesId: series.id})">
+                                <a ui-sref="viewer.videos.shows.one({showId: show.id, seriesId: series.id})">
                                     <img class="image-badge image-badge-lg" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                                 </a>
                             </div>
                             <div class="scroll-container" swipe-propagation="false" perfect-scrollbar>
                                 <div class="title">
-                                    <a ui-sref="editor.videos.series.one({seriesId: series.id})">{{series.name || '(Kein Name)'}}</a>
+                                    <a ui-sref="viewer.videos.shows.one({showId: show.id, seriesId: series.id})">{{series.name || '(Kein Name)'}}</a>
                                 </div>
                                 <div class="content">
                                     {{series.description}}
                                 </div>
+                                <div class="links">
+                                    <a class="icon-link" ng-href="{{link}}" target="_blank" data-title="{{getDomain(link)}}" ng-repeat="link in series.links" bs-tooltip>
+                                        <i class="fa-lg" ng-class="getDomainIcon(link)"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                         <div class="card-image-footer text-right">
-                            <a ui-sref="editor.videos.series.one({seriesId: series.id})">
+                            <a ui-sref="viewer.videos.shows.one({showId: show.id, seriesId: series.id})">
                                 <i class="fa fa-lg fa-chevron-right"></i>
                             </a>
                         </div>

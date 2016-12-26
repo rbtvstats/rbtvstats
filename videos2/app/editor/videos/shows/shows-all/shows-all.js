@@ -10,8 +10,7 @@ angular.module('app.editor').config(function($stateProvider) {
                 $scope.shows = ShowsSrv.all();
                 $scope.table = {
                     header: {
-                        title: 'Formate',
-                        add: $scope.add
+                        title: 'Formate'
                     },
                     params: new NgTableParams({}, {
                         dataset: $scope.shows
@@ -46,20 +45,10 @@ angular.module('app.editor').config(function($stateProvider) {
                 StateSrv.watch($scope, ['exec']);
             };
 
-            $scope.toShow = function(show) {
-                $state.transitionTo('editor.videos.shows.one', { showId: show.id });
-            };
-
             $scope.add = function() {
                 var show = ShowsSrv.create();
                 ShowsSrv.save();
-                $scope.toShow(show);
-            };
-
-            $scope.delete = function(show) {
-                ShowsSrv.delete({ id: show.id });
-                ShowsSrv.save();
-                $scope.update();
+                $state.transitionTo('editor.videos.shows.one', { showId: show.id });
             };
 
             $scope.run = function(exec) {
@@ -69,10 +58,6 @@ angular.module('app.editor').config(function($stateProvider) {
                 code += '});';
 
                 eval(code);
-            };
-
-            $scope.update = function() {
-                $scope.table.params.reload();
             };
         }
     });

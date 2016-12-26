@@ -2,6 +2,9 @@ angular.module('app.common').directive('tableView', function() {
     return {
         restrict: 'A',
         replace: true,
+        scope: {
+            table: '=tableView'
+        },
         templateUrl: 'app/common/table-view/table-view.html',
         controller: function($scope, StateSrv) {
             $scope.init = function() {

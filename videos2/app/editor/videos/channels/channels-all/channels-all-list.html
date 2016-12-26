@@ -2,7 +2,7 @@
     <div class="card-content-body">
         <div class="table-container">
             <table class="table table-hover list" ng-table="table.params">
-                <tr class="middle link" ng-repeat="channel in $data" ng-click="toChannel(channel)">
+                <tr class="middle link" ui-sref="editor.videos.channels.one({channelId: channel.id})" ng-repeat="channel in $data">
                     <td width="1">
                         <img img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
                     </td>
@@ -23,14 +23,8 @@
                             {{channel.description}}
                         </div>
                     </td>
-                    <td width="1">
-                        <button class="btn btn-danger" type="button" data-title="Löschen" ng-click="delete(channel)" bs-tooltip>
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </td>
                 </tr>
             </table>
         </div>
-        <div table-pagination="table.params"></div>
     </div>
 </div>

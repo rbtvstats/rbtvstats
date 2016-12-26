@@ -10,8 +10,7 @@ angular.module('app.editor').config(function($stateProvider) {
                 $scope.channels = ChannelsSrv.all();
                 $scope.table = {
                     header: {
-                        title: 'Kanäle',
-                        add: $scope.add
+                        title: 'Kanäle'
                     },
                     params: new NgTableParams({}, {
                         dataset: $scope.channels
@@ -46,20 +45,10 @@ angular.module('app.editor').config(function($stateProvider) {
                 StateSrv.watch($scope, ['exec']);
             };
 
-            $scope.toChannel = function(channel) {
-                $state.go('editor.videos.channels.one', { channelId: channel.id });
-            };
-
             $scope.add = function() {
                 var channel = ChannelsSrv.create();
                 ChannelsSrv.save();
-                $scope.toChannel(channel);
-            };
-
-            $scope.delete = function(channel) {
-                ChannelsSrv.delete({ id: channel.id });
-                ChannelsSrv.save();
-                $scope.update();
+                $state.transitionTo('editor.videos.channels.one', { channelId: channel.id });
             };
 
             $scope.run = function(exec) {
@@ -69,10 +58,6 @@ angular.module('app.editor').config(function($stateProvider) {
                 code += '});';
 
                 eval(code);
-            };
-
-            $scope.update = function() {
-                $scope.table.params.reload();
             };
         }
     });

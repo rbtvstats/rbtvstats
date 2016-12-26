@@ -20,14 +20,6 @@ angular.module('app.viewer').config(function($stateProvider) {
                 $scope.updateStats();
             };
 
-            $scope.toHost = function(host) {
-                $state.transitionTo('viewer.videos.hosts.one', { hostId: host.id });
-            };
-
-            $scope.toShow = function(show) {
-                $state.transitionTo('viewer.videos.shows.one', { showId: show.id });
-            };
-
             $scope.updateStats = function() {
                 $scope.stats = {};
 

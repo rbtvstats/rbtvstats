@@ -2,12 +2,14 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.videos.channels.one', {
         url: '/:channelId',
         templateUrl: 'app/editor/videos/channels/channels-one/channels-one.html',
-        controller: function($scope, $state, $stateParams, Notification, YoutubeApiSrv, ChannelsSrv) {
+        controller: function($scope, $state, $stateParams, Notification, YoutubeApiSrv, VideosSrv, ChannelsSrv) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['videos-data'];
 
             $scope.init = function() {
-                $scope.channel = ChannelsSrv.findById($stateParams.channelId);
+                $scope.channelId = $stateParams.channelId;
+                $scope.channel = ChannelsSrv.findById($scope.channelId);
+                $scope.videos = VideosSrv.filter(VideosSrv.all(), { channels: { filter: [$scope.channelId] } });
 
                 $scope.$watch('channel', function(newVal, oldVal) {
                     $scope.valid = ChannelsSrv.isValid($scope.channel);

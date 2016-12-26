@@ -173,15 +173,28 @@ angular.module('app').run(function($rootScope, amMoment, Notification, $parse) {
 
     var domainIcons = {
         'rocketbeans.tv': 'c-icon c-icon-bohne',
+        'forum.rocketbeans.tv': 'c-icon c-icon-bohne',
         'bohnenwiki.de': 'c-icon c-icon-bohne',
         'twitter.com': 'fa fa-colored fa-twitter',
         'reddit.com': 'fa fa-colored fa-reddit',
         'twitch.tv': 'fa fa-colored fa-twitch',
-        'youtube.com': 'fa fa-colored fa-youtube'
+        'youtube.com': 'fa fa-colored fa-youtube-play',
+        'igdb.com': 'fa fa-colored fa-gamepad'
+    };
+
+    $rootScope.getDomain = function(link) {
+        var domain = url('domain', link);
+        var subdomain = url('sub', link);
+
+        if (subdomain) {
+            domain = subdomain + '.' + domain;
+        }
+
+        return domain;
     };
 
     $rootScope.getDomainIcon = function(link) {
-        var domain = url('domain', link);
+        var domain = $rootScope.getDomain(link);
         var icon = domainIcons[domain];
         if (!icon) {
             icon = 'fa fa-colored fa-external-link';

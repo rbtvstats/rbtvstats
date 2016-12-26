@@ -10,8 +10,7 @@ angular.module('app.editor').config(function($stateProvider) {
                 $scope.series = SeriesSrv.all();
                 $scope.table = {
                     header: {
-                        title: 'Serien',
-                        add: $scope.add
+                        title: 'Serien'
                     },
                     params: new NgTableParams({}, {
                         dataset: $scope.series
@@ -46,20 +45,10 @@ angular.module('app.editor').config(function($stateProvider) {
                 StateSrv.watch($scope, ['exec']);
             };
 
-            $scope.toSeries = function(series) {
-                $state.transitionTo('editor.videos.series.one', { seriesId: series.id });
-            };
-
             $scope.add = function() {
                 var series = SeriesSrv.create();
                 SeriesSrv.save();
-                $scope.toSeries(series);
-            };
-
-            $scope.delete = function(series) {
-                SeriesSrv.delete({ id: series.id });
-                SeriesSrv.save();
-                $scope.update();
+                $state.transitionTo('editor.videos.series.one', { seriesId: series.id });
             };
 
             $scope.run = function(exec) {
@@ -69,10 +58,6 @@ angular.module('app.editor').config(function($stateProvider) {
                 code += '});';
 
                 eval(code);
-            };
-
-            $scope.update = function() {
-                $scope.table.params.reload();
             };
         }
     });

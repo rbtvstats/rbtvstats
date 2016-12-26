@@ -10,8 +10,7 @@ angular.module('app.editor').config(function($stateProvider) {
                 $scope.hosts = HostsSrv.all();
                 $scope.table = {
                     header: {
-                        title: 'Moderatoren',
-                        add: $scope.add
+                        title: 'Moderatoren'
                     },
                     params: new NgTableParams({}, {
                         dataset: $scope.hosts
@@ -46,20 +45,10 @@ angular.module('app.editor').config(function($stateProvider) {
                 StateSrv.watch($scope, ['exec']);
             };
 
-            $scope.toHost = function(host) {
-                $state.transitionTo('editor.videos.hosts.one', { hostId: host.id });
-            };
-
             $scope.add = function() {
                 var host = HostsSrv.create();
                 HostsSrv.save();
-                $scope.toHost(host);
-            };
-
-            $scope.delete = function(host) {
-                HostsSrv.delete({ id: host.id });
-                HostsSrv.save();
-                $scope.update();
+                $state.transitionTo('editor.videos.hosts.one', { hostId: host.id });
             };
 
             $scope.run = function(exec) {
@@ -69,10 +58,6 @@ angular.module('app.editor').config(function($stateProvider) {
                 code += '});';
 
                 eval(code);
-            };
-
-            $scope.update = function() {
-                $scope.table.params.reload();
             };
         }
     });

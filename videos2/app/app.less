@@ -139,7 +139,7 @@ body {
 /* overview one */
 
 .overview-one {
-    > img {
+    > a {
         float: right;
         width: 80px;
         height: 80px;
@@ -160,9 +160,15 @@ body {
         text-align: justify;
     }
     > .links {
-        font-size: 18px;
-        text-align: center;
         margin-top: 10px;
+        a {
+            display: inline-block;
+            font-size: 18px;
+            margin-bottom: 5px;
+            > i {
+                margin-right: 5px;
+            }
+        }
     }
 }
 

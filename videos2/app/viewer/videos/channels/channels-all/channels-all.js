@@ -50,14 +50,6 @@ angular.module('app.viewer').config(function($stateProvider) {
                 $scope.charts.push(ChartTemplatesSrv.videosViewsTotalByDate($scope.videos, key, 'channel'));
                 $scope.charts.push(ChartTemplatesSrv.videosViewsDistribution($scope.videos, key, 'channel'));
             };
-
-            $scope.toChannel = function(channel) {
-                $state.go('viewer.videos.channels.one', { channelId: channel.id });
-            };
-
-            $scope.update = function() {
-                $scope.table.params.reload();
-            };
         }
     });
 });

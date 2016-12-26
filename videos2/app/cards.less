@@ -1,3 +1,10 @@
+/* transparent card */
+
+.card-transparent {
+    margin-bottom: 10px;
+}
+
+
 /* content card */
 
 .card-content {
@@ -36,7 +43,6 @@
         &.card-image-header-xs {
             width: 100%;
             height: 100px;
-            overflow: hidden;
             > .image {
                 float: left;
                 height: 100px;
@@ -45,18 +51,22 @@
                 line-height: 80px;
                 padding: 8px;
             }
-            > .title {
-                font-size: 20px;
-                margin-top: 5px;
+            > .scroll-container {
+                height: 100%;
+                position: relative;
+                overflow: hidden;
             }
-            > .subtitle {
+            .title {
+                font-size: 20px;
+            }
+            .subtitle {
                 font-size: 16px;
                 color: lighten(@color-text, 30%);
             }
-            > .content {
-                line-height: 1.5em;
-                font-size: 1em;
+            .content {
+                white-space: pre-line;
             }
+            .links {}
         }
         &.card-image-header-lg {
             background: repeating-linear-gradient(-45deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.95) 10px, rgba(0, 0, 0, 0.94) 10px, rgba(0, 0, 0, 0.94) 20px);

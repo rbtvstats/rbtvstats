@@ -35,16 +35,16 @@
                     <div name="'Name'" key="'name'" form-element>
                         <input type="text" class="form-control" ng-model="show.name">
                     </div>
+                    <!-- description -->
+                    <div name="'Beschreibung'" key="'description'" form-element>
+                        <textarea type="text" rows="5" class="form-control" ng-model="show.description"></textarea>
+                    </div>
                     <!-- event -->
                     <div name="'Event'" key="'event'" form-element>
                         <div class="checkbox checkbox-primary">
                             <input type="checkbox" value="asc" ng-model="show.event">
                             <label for="event"></label>
                         </div>
-                    </div>
-                    <!-- description -->
-                    <div name="'Beschreibung'" key="'description'" form-element>
-                        <textarea type="text" rows="5" class="form-control" ng-model="show.description"></textarea>
                     </div>
                     <!-- links -->
                     <div name="'Links'" key="'links'" form-element>
@@ -73,4 +73,5 @@
             <div json-editor="show"></div>
         </div>
     </div>
+    <div videos-view="videos" videos-mode="'edit'"></div>
 </div>

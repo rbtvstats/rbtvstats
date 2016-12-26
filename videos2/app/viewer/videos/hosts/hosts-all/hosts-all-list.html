@@ -2,7 +2,7 @@
     <div class="card-content-body">
         <div class="table-container">
             <table class="table table-hover list" ng-table="table.params">
-                <tr class="middle link" ng-repeat="host in $data" ng-click="toHost(host)">
+                <tr class="middle link" ui-sref="viewer.videos.hosts.one({hostId: host.id})" ng-repeat="host in $data">
                     <td width="1">
                         <img img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">
                     </td>
@@ -16,13 +16,12 @@
                         {{host.nickname}}
                     </td>
                     <td title="'Links'">
-                        <a class="icon-link" ng-href="{{link}}" target="_blank" ng-click="$event.stopPropagation()" ng-repeat="link in host.links">
+                        <a class="icon-link" ng-href="{{link}}" target="_blank" data-title="{{getDomain(link)}}" ng-click="$event.stopPropagation()" ng-click="$event.stopPropagation()" ng-repeat="link in host.links" bs-tooltip>
                             <i class="fa-lg" ng-class="getDomainIcon(link)"></i>
                         </a>
                     </td>
                 </tr>
             </table>
         </div>
-        <div table-pagination="table.params"></div>
     </div>
 </div>

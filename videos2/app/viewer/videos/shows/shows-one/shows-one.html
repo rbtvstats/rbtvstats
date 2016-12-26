@@ -1,23 +1,51 @@
 <div class="container-fluid animate-main-content" init>
     <div class="row">
-        <div class="col-md-6 col-md-offset-6">
+        <div class="col-md-6">
             <div class="card-content">
-                <div class="card-content-header">
-                    Format
-                </div>
                 <div class="card-content-body overview-one">
-                    <img class="image-badge image-badge-lg" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                    <a ui-sref="viewer.videos.shows.one({showId: show.id, seriesId: null})">
+                        <img class="image-badge image-badge-lg" img-src="{{show.image}}" img-fallback="{{imagePlaceholders.show}}" img-loading="{{imagePlaceholders.show}}">
+                    </a>
                     <div class="title">
-                        <a ng-href="#/videos/shows/{{show.id}}">{{show.name}}</a>
+                        <a ui-sref="viewer.videos.shows.one({showId: show.id, seriesId: null})">{{show.name}}</a>
                     </div>
-                    <div class="content">{{show.description}}</div>
+                    <div class="content">
+                        <span ng-bind-html="show.description"></span>
+                    </div>
                     <div class="links">
-                        link
+                        <div ng-repeat="link in show.links">
+                            <a ng-href="{{link}}" target="_blank">
+                                <i class="fa-lg" ng-class="getDomainIcon(link)"></i>{{getDomain(link)}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card-content" ng-if="seriesId">
+                <div class="card-content-body overview-one">
+                    <a ui-sref="viewer.videos.shows.one({showId: show.id, seriesId: series.id})">
+                        <img class="image-badge image-badge-lg" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
+                    </a>
+                    <div class="title">
+                        <a ui-sref="viewer.videos.shows.one({showId: show.id, seriesId: series.id})">{{series.name}}</a>
+                    </div>
+                    <div class="content">
+                        <span ng-bind-html="series.description"></span>
+                    </div>
+                    <div class="links">
+                        <div ng-repeat="link in series.links">
+                            <a ng-href="{{link}}" target="_blank">
+                                <i class="fa-lg" ng-class="getDomainIcon(link)"></i>{{getDomain(link)}}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <div table-view="tableSeries" ng-if="!seriesId"></div>
     <div class="row">
         <div class="col-md-12">
             <div class="card-content">
@@ -34,7 +62,7 @@
                     <div name="'Anzahl Videos mit Moderatoren'" form-element>
                         <div class="table-container">
                             <table class="table table-hover list" ng-table="stats.videosHostsTable">
-                                <tr class="middle link" ng-repeat="data in $data" ng-click="toHost(data.host)">
+                                <tr class="middle link" ui-sref="viewer.videos.hosts.one({hostId: data.host.id})" ng-repeat="data in $data">
                                     <td width="130" title="'Anzahl Videos'" sortable="'count'">
                                         {{data.count | number}}
                                     </td>

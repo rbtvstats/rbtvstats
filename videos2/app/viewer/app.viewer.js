@@ -7,7 +7,8 @@ angular.module('app.viewer', [
     'ui.select',
     'angularMoment',
     'ngTable',
-    'nvd3'
+    'nvd3',
+    'perfect_scrollbar'
 ]);
 
 angular.module('app.viewer').config(function($stateProvider, $urlRouterProvider) {
@@ -38,7 +39,7 @@ angular.module('app.viewer').config(function($stateProvider, $urlRouterProvider)
             });
             InitSrv.register({
                 id: 'videos-data',
-                execute: VideosDataSrv.loadRemote,
+                execute: VideosDataSrv.loadLocal,
                 dependencies: ['videos-metadata']
             });
         }
