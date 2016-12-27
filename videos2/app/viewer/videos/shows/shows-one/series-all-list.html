@@ -1,7 +1,7 @@
 <div class="card-content">
     <div class="card-content-body">
         <div class="table-container">
-            <table class="table table-hover list" ng-table="table.params">
+            <table class="table table-hover list" ng-table="seriesTable">
                 <tr class="middle link" ui-sref="viewer.videos.shows.one({showId: show.id, seriesId: series.id})" ng-repeat="series in $data">
                     <td width="1">
                         <img img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
@@ -10,9 +10,7 @@
                         {{series.name}}
                     </td>
                     <td title="'Beschreibung'" sortable="'description'">
-                        <div class="limit-height">
-                            {{series.description}}
-                        </div>
+                        <div class="limit-height" ng-bind-html="series.description"></div>
                     </td>
                 </tr>
             </table>

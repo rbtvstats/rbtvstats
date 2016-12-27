@@ -48,7 +48,8 @@ angular.module('app.common').directive('videosOptions', function($timeout, $pars
                 $scope.defaultOptions = {
                     display: {
                         view: 'card',
-                        count: 25
+                        count: 25,
+                        page: 1
                     },
                     order: {
                         column: 'published',
@@ -97,98 +98,65 @@ angular.module('app.common').directive('videosOptions', function($timeout, $pars
                     }
                 };
 
-                $scope.aired = {
-                    start: {},
-                    end: {}
-                };
-
-                //sync: table.options -> table.params
-                $scope.$watchCollection('table.options.order', function(newVal, oldVal) {
-                    $scope.table.params.sorting($scope.table.options.order.column, $scope.table.options.order.type);
-                });
-
-                $scope.$watch('table.options.display.count', function(newVal, oldVal) {
-                    $scope.table.params.count($scope.table.options.display.count);
-                });
-
-                //sync: table.params -> table.options
-                $scope.$watch('table.params.sorting()', function(newVal, oldVal) {
-                    var sorting = $scope.table.params.sorting();
-                    for (var column in sorting) {
-                        $scope.table.options.order.column = column;
-                        $scope.table.options.order.type = sorting[column];
-                        break;
-                    }
-                });
-
-                $scope.$watch('table.params.count()', function(newVal, oldVal) {
-                    $scope.table.options.display.count = $scope.table.params.count();
-                });
-
-                //clear videos cache on change
-                $scope.$watch('table.options.filter', function(newVal, oldVal) {
-                    $scope.clearVideosCache();
-                }, true);
-
-                if (angular.equals({}, $scope.table.options)) {
+                if (!angular.isObject($scope.tableOptions) || angular.equals({}, $scope.tableOptions)) {
                     $scope.resetOptions();
                 }
             };
 
             $scope.addFilterChannel = function(channel) {
-                if ($scope.table.options.filter.channels.filter.indexOf(channel) === -1) {
-                    $scope.table.options.filter.channels.filter.push(channel);
+                if ($scope.tableOptions.filter.channels.filter.indexOf(channel) === -1) {
+                    $scope.tableOptions.filter.channels.filter.push(channel);
                 }
             };
 
             $scope.removeFilterChannel = function(channel) {
-                var index = $scope.table.options.filter.channels.filter.indexOf(channel);
+                var index = $scope.tableOptions.filter.channels.filter.indexOf(channel);
                 if (index > -1) {
-                    $scope.table.options.filter.channels.filter.splice(index, 1);
+                    $scope.tableOptions.filter.channels.filter.splice(index, 1);
                 }
             };
 
             $scope.addFilterShow = function(show) {
-                if ($scope.table.options.filter.shows.filter.indexOf(show) === -1) {
-                    $scope.table.options.filter.shows.filter.push(show);
+                if ($scope.tableOptions.filter.shows.filter.indexOf(show) === -1) {
+                    $scope.tableOptions.filter.shows.filter.push(show);
                 }
             };
 
             $scope.removeFilterShow = function(show) {
-                var index = $scope.table.options.filter.shows.filter.indexOf(show);
+                var index = $scope.tableOptions.filter.shows.filter.indexOf(show);
                 if (index > -1) {
-                    $scope.table.options.filter.shows.filter.splice(index, 1);
+                    $scope.tableOptions.filter.shows.filter.splice(index, 1);
                 }
             };
 
             $scope.addFilterHost = function(host) {
-                if ($scope.table.options.filter.hosts.filter.indexOf(host) === -1) {
-                    $scope.table.options.filter.hosts.filter.push(host);
+                if ($scope.tableOptions.filter.hosts.filter.indexOf(host) === -1) {
+                    $scope.tableOptions.filter.hosts.filter.push(host);
                 }
             };
 
             $scope.removeFilterHost = function(host) {
-                var index = $scope.table.options.filter.hosts.filter.indexOf(host);
+                var index = $scope.tableOptions.filter.hosts.filter.indexOf(host);
                 if (index > -1) {
-                    $scope.table.options.filter.hosts.filter.splice(index, 1);
+                    $scope.tableOptions.filter.hosts.filter.splice(index, 1);
                 }
             };
 
             $scope.addFilterSeries = function(series) {
-                if ($scope.table.options.filter.series.filter.indexOf(series) === -1) {
-                    $scope.table.options.filter.series.filter.push(series);
+                if ($scope.tableOptions.filter.series.filter.indexOf(series) === -1) {
+                    $scope.tableOptions.filter.series.filter.push(series);
                 }
             };
 
             $scope.removeFilterSeries = function(series) {
-                var index = $scope.table.options.filter.series.filter.indexOf(series);
+                var index = $scope.tableOptions.filter.series.filter.indexOf(series);
                 if (index > -1) {
-                    $scope.table.options.filter.series.filter.splice(index, 1);
+                    $scope.tableOptions.filter.series.filter.splice(index, 1);
                 }
             };
 
             $scope.resetOptions = function() {
-                angular.copy($scope.defaultOptions, $scope.table.options);
+                angular.copy($scope.defaultOptions, $scope.tableOptions);
             };
 
             $scope.applyFilter = function() {

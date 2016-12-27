@@ -2,7 +2,7 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.videos.series.one', {
         url: '/:seriesId',
         templateUrl: 'app/editor/videos/series/series-one/series-one.html',
-        controller: function($scope, $state, $stateParams, Notification, IgdbApiSrv, VideosSrv, ShowsSrv, SeriesSrv) {
+        controller: function($scope, $state, $stateParams, Notification, StateSrv, IgdbApiSrv, VideosSrv, ShowsSrv, SeriesSrv) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['videos-data'];
 
@@ -10,13 +10,18 @@ angular.module('app.editor').config(function($stateProvider) {
                 $scope.seriesId = $stateParams.seriesId;
                 $scope.series = SeriesSrv.findById($scope.seriesId);
                 $scope.shows = ShowsSrv.all();
+
+                //videos
                 $scope.videos = VideosSrv.filter(VideosSrv.all(), { series: { filter: [$scope.seriesId] } });
+                $scope.videosOptions = {};
 
                 $scope.$watch('series', function(newVal, oldVal) {
                     $scope.valid = SeriesSrv.isValid($scope.series);
 
                     SeriesSrv.save();
                 }, true);
+
+                StateSrv.watch($scope, ['videosOptions']);
             };
 
             $scope.delete = function(series) {

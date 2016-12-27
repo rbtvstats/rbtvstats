@@ -1,10 +1,10 @@
 <div class="form-inline">
     <div class="form-group">
-        <div align="'right'" table-pagination="table.params"></div>
+        <div align="'right'" table-pagination="tableParams"></div>
     </div>
     <div class="form-group">
         <div class="input-group">
-            <ui-select ng-model="table.options.display.count" skip-focusser="true" search-enabled="false">
+            <ui-select ng-model="tableOptions.display.count" skip-focusser="true" search-enabled="false">
                 <ui-select-match>
                     <span ng-bind="$select.selected"></span>
                 </ui-select-match>
@@ -12,8 +12,8 @@
                     <span ng-bind="count"></span>
                 </ui-select-choices>
             </ui-select>
-            <span class="input-group-btn" ng-model="table.options.display.view" bs-radio-group>
-                <label class="btn btn-default" data-title="{{view.name}}" ng-repeat="view in table.views" bs-tooltip>
+            <span class="input-group-btn" ng-model="tableOptions.display.view" bs-radio-group>
+                <label class="btn btn-default" data-title="{{view.name}}" ng-repeat="view in views" bs-tooltip>
                     <input type="radio" class="btn btn-default" value="{{view.id}}">
                     <i class="fa {{view.icon}}"></i>
                 </label>
@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="form-group has-feedback">
-        <input type="text" class="form-control" placeholder="Suche" ng-model="table.options.filter">
+        <input type="text" class="form-control" placeholder="Suche" ng-model="tableOptions.filter">
         <i class="fa fa-search form-control-feedback"></i>
     </div>
 </div>

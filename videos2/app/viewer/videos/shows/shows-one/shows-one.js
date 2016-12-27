@@ -2,7 +2,7 @@ angular.module('app.viewer').config(function($stateProvider) {
     $stateProvider.state('viewer.videos.shows.one', {
         url: '/:showId/:seriesId',
         templateUrl: 'app/viewer/videos/shows/shows-one/shows-one.html',
-        controller: function($scope, $filter, $state, $stateParams, NgTableParams, ChartTemplatesSrv, VideosSrv, ShowsSrv, HostsSrv, SeriesSrv) {
+        controller: function($scope, $filter, $state, $stateParams, NgTableParams, StateSrv, ChartTemplatesSrv, VideosSrv, ShowsSrv, HostsSrv, SeriesSrv) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['videos-data'];
 
@@ -11,55 +11,74 @@ angular.module('app.viewer').config(function($stateProvider) {
                 $scope.seriesId = $stateParams.seriesId;
                 $scope.show = ShowsSrv.findById($scope.showId);
                 $scope.series = SeriesSrv.findById($scope.seriesId);
-                $scope.showSeries = SeriesSrv.find({ show: $scope.showId });
-                var seriesFilter = $scope.seriesId && [$scope.seriesId];
-                $scope.videos = VideosSrv.filter(VideosSrv.all(), { shows: { filter: [$scope.showId] }, series: { filter: seriesFilter }, online: true });
 
-                $scope.tableSeries = {
-                    header: {
-                        title: 'Serien'
+                //series
+                $scope.showSeries = SeriesSrv.find({ show: $scope.showId });
+                $scope.seriesOptions = {
+                    display: {
+                        view: 'card',
+                        count: 10
                     },
-                    params: new NgTableParams({}, {
-                        dataset: $scope.showSeries
-                    }),
-                    options: {
-                        display: {
-                            view: 'list',
-                            count: 10
-                        },
-                        order: {
-                            column: 'name',
-                            type: 'asc'
-                        },
-                        filter: ''
+                    order: {
+                        column: 'name',
+                        type: 'asc'
                     },
-                    views: [{
-                        id: 'list',
-                        name: 'Liste',
-                        icon: 'fa-th-list',
-                        template: 'app/viewer/videos/shows/shows-one/series-all-list.html'
-                    }, {
-                        id: 'card',
-                        name: 'Kacheln',
-                        icon: 'fa-th-large',
-                        template: 'app/viewer/videos/shows/shows-one/series-all-card.html'
-                    }]
+                    filter: ''
                 };
 
+                //videos
+                var seriesFilter = $scope.seriesId && [$scope.seriesId];
+                $scope.videos = VideosSrv.filter(VideosSrv.all(), { shows: { filter: [$scope.showId] }, series: { filter: seriesFilter }, online: true });
+                $scope.videosOptions = {};
+
                 $scope.charts = [];
+                $scope.charts.push(ChartTemplatesSrv.videosCountByDate($scope.videos, $scope.show.name));
+                $scope.charts.push(ChartTemplatesSrv.videosDurationByDate($scope.videos, $scope.show.name));
+                $scope.charts.push(ChartTemplatesSrv.videosViewsTotalByDate($scope.videos, $scope.show.name));
                 $scope.charts.push(ChartTemplatesSrv.videosViewsMeanByDate($scope.videos, $scope.show.name));
                 $scope.charts.push(ChartTemplatesSrv.videosViewsDistribution($scope.videos, $scope.show.name));
 
                 $scope.updateStats();
+
+                StateSrv.watch($scope, ['seriesOptions', 'videosOptions']);
             };
 
             $scope.updateStats = function() {
                 $scope.stats = {};
 
-                //count
+                var publishedFirst = _.minBy($scope.videos, function(video) {
+                    return video.published;
+                });
+                var publishedLast = _.maxBy($scope.videos, function(video) {
+                    return video.published;
+                });
+
+                publishedFirst = moment.unix(publishedFirst.published);
+                publishedLast = moment.unix(publishedLast.published);
+                var days = publishedLast.diff(publishedFirst, 'days') || 1;
+
+                //count total
                 $scope.stats.videosCountTotal = $scope.videos.length
 
-                //mean views
+                //count mean
+                $scope.stats.videosCountMean = _.round($scope.stats.videosCountTotal / days, 2);
+
+                //duration total
+                $scope.stats.videosDurationTotal = _.sumBy($scope.videos, function(video) {
+                    return video.duration;
+                });
+
+                //duration mean
+                $scope.stats.videosDurationMean = _.round(_.meanBy($scope.videos, function(video) {
+                    return video.duration;
+                }));
+
+                //views total
+                $scope.stats.videosViewsTotal = _.sumBy($scope.videos, function(video) {
+                    return video.stats.viewCount;
+                });
+
+                //views mean
                 $scope.stats.videosViewsMean = _.round(_.meanBy($scope.videos, function(video) {
                     return video.stats.viewCount;
                 }));

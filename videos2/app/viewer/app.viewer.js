@@ -39,7 +39,7 @@ angular.module('app.viewer').config(function($stateProvider, $urlRouterProvider)
             });
             InitSrv.register({
                 id: 'videos-data',
-                execute: VideosDataSrv.loadLocal,
+                execute: VideosDataSrv.loadRemote,
                 dependencies: ['videos-metadata']
             });
         }

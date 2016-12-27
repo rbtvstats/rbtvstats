@@ -4,24 +4,24 @@
             <table width="100%">
                 <tr>
                     <td>
-                        Zeige {{table.params.total()}} von {{videos.length}} Videos
-                        <span ng-if="table.params.total() !== videos.length">({{videos.length - table.params.total()}} Videos ausgeblendet)</span>
+                        Zeige {{tableParams.total()}} von {{videos.length}} Videos
+                        <span ng-if="tableParams.total() !== videos.length">({{videos.length - tableParams.total()}} Videos ausgeblendet)</span>
                     </td>
                     <td class="text-right">
-                        <button type="button" class="btn btn-default" ng-click="table.optionsHidden=!table.optionsHidden">
+                        <button type="button" class="btn btn-default" ng-click="optionsHidden=!optionsHidden">
                             <i class="fa fa-sliders"></i> Optionen
                         </button>
                     </td>
                 </tr>
             </table>
         </div>
-        <div class="card-content-body" ng-model="table.optionsHidden" bs-collapse bs-collapse-target>
-            <div videos-options="table.options" videos-table="table.params"></div>
+        <div class="card-content-body" ng-model="optionsHidden" bs-collapse bs-collapse-target>
+            <div videos-options></div>
         </div>
     </div>
-    <div ng-if="!table.tableHidden">
-        <div ng-include="'app/common/videos-view/videos-view-list.html'" ng-if="table.options.display.view === 'list'"></div>
-        <div ng-if="table.options.display.view === 'card'">
+    <div ng-if="!tableHidden">
+        <div ng-include="'app/common/videos-view/videos-view-list.html'" ng-if="tableOptions.display.view === 'list'"></div>
+        <div ng-if="tableOptions.display.view === 'card'">
             <div>
                 <div ng-include="'app/common/videos-view/videos-view-card-edit.html'" ng-if="mode === 'edit'"></div>
                 <div ng-include="'app/common/videos-view/videos-view-card-view.html'" ng-if="mode === 'view'"></div>

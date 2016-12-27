@@ -1,5 +1,5 @@
 <div class="card-transparent">
-    <table class="table cards" ng-table="table.params">
+    <table class="table cards" ng-table="seriesTable">
         <tr ng-repeat="series in $data">
             <td class="hide"></td>
         </tr>
@@ -17,9 +17,7 @@
                                 <div class="title">
                                     <a ui-sref="viewer.videos.shows.one({showId: show.id, seriesId: series.id})">{{series.name || '(Kein Name)'}}</a>
                                 </div>
-                                <div class="content">
-                                    {{series.description}}
-                                </div>
+                                <div class="content" ng-bind-html="series.description"></div>
                                 <div class="links">
                                     <a class="icon-link" ng-href="{{link}}" target="_blank" data-title="{{getDomain(link)}}" ng-repeat="link in series.links" bs-tooltip>
                                         <i class="fa-lg" ng-class="getDomainIcon(link)"></i>

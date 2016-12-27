@@ -5,10 +5,10 @@
                 <div class="card-content-header">
                     <div class="row">
                         <div class="col-md-3 col-v-center">
-                            {{table.header.title}}
+                            {{title}}
                         </div><!--
                       --><div class="col-md-9 col-v-center text-right">
-                            <div table-view-options></div>
+                            <div table-options></div>
                         </div>
                     </div>
                 </div>
@@ -16,8 +16,6 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12" ng-show="table.params.total() > 0">
-            <div class="animate-table-view" ng-include="view.template" ng-repeat="view in table.views" ng-if="table.options.display.view === view.id"></div>
-        </div>
+        <div class="col-md-12 views" ng-show="tableParams.total() > 0"></div>
     </div>
 </div>

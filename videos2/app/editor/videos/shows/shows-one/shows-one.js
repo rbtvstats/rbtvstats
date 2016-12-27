@@ -2,7 +2,7 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.videos.shows.one', {
         url: '/:showId',
         templateUrl: 'app/editor/videos/shows/shows-one/shows-one.html',
-        controller: function($scope, $state, $stateParams, VideosSrv, ShowsSrv, SeriesSrv) {
+        controller: function($scope, $state, $stateParams, StateSrv, VideosSrv, ShowsSrv, SeriesSrv) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['videos-data'];
 
@@ -10,13 +10,18 @@ angular.module('app.editor').config(function($stateProvider) {
                 $scope.showId = $stateParams.showId;
                 $scope.show = ShowsSrv.findById($scope.showId);
                 $scope.series = SeriesSrv.all();
+
+                //videos
                 $scope.videos = VideosSrv.filter(VideosSrv.all(), { shows: { filter: [$scope.showId] } });
+                $scope.videosOptions = {};
 
                 $scope.$watch('show', function(newVal, oldVal) {
                     $scope.valid = ShowsSrv.isValid($scope.show);
 
                     ShowsSrv.save();
                 }, true);
+
+                StateSrv.watch($scope, ['videosOptions']);
             };
 
             $scope.delete = function(show) {

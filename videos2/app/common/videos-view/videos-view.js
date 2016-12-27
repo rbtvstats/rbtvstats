@@ -1,50 +1,98 @@
-angular.module('app.common').directive('videosView', function($timeout) {
+angular.module('app.common').directive('videosView', function() {
     return {
         restrict: 'A',
         scope: {
-            videos: '=videosView',
-            mode: '=videosMode'
+            tableParams: '=videosView',
+            tableOptions: '=videosViewOptions',
+            videos: '=videosViewData',
+            mode: '=videosViewMode',
         },
         templateUrl: 'app/common/videos-view/videos-view.html',
-        controller: function($scope, NgTableParams, StateSrv, VideosExtractorSrv, VideosSrv) {
+        controller: function($scope, $timeout, NgTableParams, VideosExtractorSrv, VideosSrv) {
             $scope.init = function() {
                 //import from parent scope
                 $scope.imagePlaceholders = $scope.$parent.imagePlaceholders;
 
-                //table
-                $scope.table = {
-                    params: new NgTableParams({
-                        filter: { $: 'a' }
-                    }, {
-                        dataset: $scope.videos,
-                        counts: [],
-                        filterOptions: {
-                            filterFn: function(videos) {
-                                if (!$scope.videosCache) {
-                                    $scope.videosCache = VideosSrv.filter(videos, $scope.table.options.filter);
-                                }
-
-                                return $scope.videosCache;
+                $scope.tableParams = new NgTableParams({
+                    filter: { $: 'a' }
+                }, {
+                    dataset: $scope.videos,
+                    filterOptions: {
+                        filterFn: function(videos) {
+                            if (!$scope.videosCache) {
+                                $scope.videosCache = VideosSrv.filter(videos, $scope.tableOptions.filter);
+                                $scope.verifyPageRange();
                             }
+
+                            return $scope.videosCache;
                         }
-                    }),
-                    options: {},
-                    tableHidden: true,
-                    optionsHidden: true
-                };
+                    }
+                });
+
+                $scope.tableHidden = true;
+                $scope.optionsHidden = true;
 
                 //defer visibility for smoother UI
                 $timeout(function() {
-                    $scope.table.tableHidden = false;
+                    $scope.tableHidden = false;
                 }, 100);
+
+                //sync: tableOptions -> tableParams
+                $scope.$watchCollection('tableOptions.order', function(newVal, oldVal) {
+                    $scope.tableParams.sorting($scope.tableOptions.order.column, $scope.tableOptions.order.type);
+                });
+
+                $scope.$watch('tableOptions.display.count', function(newVal, oldVal) {
+                    $scope.tableParams.count($scope.tableOptions.display.count);
+                });
+
+                $scope.$watch('tableOptions.display.page', function(newVal, oldVal) {
+                    $scope.tableParams.page($scope.tableOptions.display.page);
+                });
+
+                //sync: tableParams -> tableOptions
+                $scope.$watch('tableParams.sorting()', function(newVal, oldVal) {
+                    var sorting = $scope.tableParams.sorting();
+                    for (var column in sorting) {
+                        $scope.tableOptions.order.column = column;
+                        $scope.tableOptions.order.type = sorting[column];
+                        break;
+                    }
+                });
+
+                $scope.$watch('tableParams.count()', function(newVal, oldVal) {
+                    $scope.tableOptions.display.count = $scope.tableParams.count();
+                });
+
+                $scope.$watch('tableParams.page()', function(newVal, oldVal) {
+                    $scope.verifyPageRange();
+                    $scope.tableOptions.display.page = $scope.tableParams.page();
+                });
+
+                //clear videos cache on change
+                $scope.$watch('tableOptions.filter', function(newVal, oldVal) {
+                    $scope.clearVideosCache();
+                }, true);
 
                 $scope.$on('video.changed', function(video) {
                     $scope.clearVideosCache();
                     VideosSrv.save();
                 });
-
-                StateSrv.watch($scope, ['table.options']);
             };
+
+            $scope.verifyPageRange = function() {
+                if ($scope.videosCache) {
+                    var total = $scope.videosCache.length;
+                    var current = $scope.tableParams.page();
+                    var count = $scope.tableParams.count();
+                    var last = Math.ceil(total / count);
+                    if (current > last) {
+                        $scope.tableParams.page(last);
+                    } else if (current < 1) {
+                        $scope.tableParams.page(1);
+                    }
+                }
+            }
 
             $scope.getRatingPercent = function(video) {
                 if (video && video.stats) {
@@ -154,7 +202,7 @@ angular.module('app.common').directive('videosView', function($timeout) {
             };
 
             $scope.update = function() {
-                $scope.table.params.reload();
+                $scope.tableParams.reload();
             };
 
             $scope.init();

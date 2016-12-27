@@ -1,7 +1,7 @@
 <div class="card-content">
     <div class="card-content-body">
         <div class="table-container">
-            <table class="table table-hover list" ng-table="table.params">
+            <table class="table table-hover list" ng-table="channelsTable">
                 <tr class="middle link" ui-sref="editor.videos.channels.one({channelId: channel.id})" ng-repeat="channel in $data">
                     <td width="1">
                         <img img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
@@ -19,9 +19,7 @@
                         {{channel.playlistId}}
                     </td>
                     <td title="'Beschreibung'" sortable="'description'">
-                        <div class="limit-height">
-                            {{channel.description}}
-                        </div>
+                        <div class="limit-height" ng-bind-html="channel.description"></div>
                     </td>
                 </tr>
             </table>

@@ -9,7 +9,7 @@ angular.module('app.common').factory('ChartTemplatesSrv', function(VideosSrv) {
                     axisLabel: 'Datum'
                 },
                 yAxis: {
-                    axisLabel: 'Anzahl Videos'
+                    axisLabel: 'Video Anzahl'
                 }
             },
             dateGroup: {
@@ -21,7 +21,7 @@ angular.module('app.common').factory('ChartTemplatesSrv', function(VideosSrv) {
             },
             title: {
                 enable: true,
-                text: 'Video Anzahl'
+                text: 'Gesamte Video Anzahl'
             }
         };
 
@@ -258,7 +258,7 @@ angular.module('app.common').factory('ChartTemplatesSrv', function(VideosSrv) {
                     }
                 },
                 yAxis: {
-                    axisLabel: 'Anzahl Videos',
+                    axisLabel: 'Video Anzahl',
                     tickFormat: function(d) {
                         return d3.format('d')(d);
                     }

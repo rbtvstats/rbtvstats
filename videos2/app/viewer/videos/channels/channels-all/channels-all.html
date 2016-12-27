@@ -1,5 +1,9 @@
 <div class="container-fluid animate-main-content" init>
-    <div table-view="table"></div>
+    <div table-view-data="channels" table-view-options="channelsOptions" table-view="channelsTable">
+        <title>Kanäle</title>
+        <div id="list" name="Liste" icon="fa-th-list" template="app/viewer/videos/channels/channels-all/channels-all-list.html"></div>
+        <div id="card" name="Kacheln" icon="fa-th-large" template="app/viewer/videos/channels/channels-all/channels-all-card.html"></div>
+    </div>
     <div class="row" ng-repeat="chart in charts">
         <div class="col-lg-12">
             <div options="chart.options" update="chart.update" chart></div>

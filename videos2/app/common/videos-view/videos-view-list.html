@@ -1,7 +1,7 @@
 <div class="card-content">
     <div class="card-content-body">
         <div class="table-container">
-            <table class="table table-hover list" ng-table="table.params">
+            <table class="table table-hover list" ng-table="tableParams">
                 <tr class="middle link" ng-repeat="video in $data" ng-click="details(video)">
                     <td title="'Titel'" sortable="'title'">
                         <a ng-href="https://youtube.com/watch?v={{video.id}}" target="_blank">{{video.title}}</a>
@@ -32,4 +32,4 @@
         </div>
     </div>
 </div>
-<div table-pagination="table.params"></div>
+<div table-pagination="tableParams"></div>

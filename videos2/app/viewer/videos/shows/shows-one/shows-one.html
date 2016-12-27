@@ -9,9 +9,7 @@
                     <div class="title">
                         <a ui-sref="viewer.videos.shows.one({showId: show.id, seriesId: null})">{{show.name}}</a>
                     </div>
-                    <div class="content">
-                        <span ng-bind-html="show.description"></span>
-                    </div>
+                    <div class="content" ng-bind-html="show.description"></div>
                     <div class="links">
                         <div ng-repeat="link in show.links">
                             <a ng-href="{{link}}" target="_blank">
@@ -31,9 +29,7 @@
                     <div class="title">
                         <a ui-sref="viewer.videos.shows.one({showId: show.id, seriesId: series.id})">{{series.name}}</a>
                     </div>
-                    <div class="content">
-                        <span ng-bind-html="series.description"></span>
-                    </div>
+                    <div class="content" ng-bind-html="series.description"></div>
                     <div class="links">
                         <div ng-repeat="link in series.links">
                             <a ng-href="{{link}}" target="_blank">
@@ -45,7 +41,11 @@
             </div>
         </div>
     </div>
-    <div table-view="tableSeries" ng-if="!seriesId"></div>
+    <div ng-if="!seriesId && showSeries.length > 0" table-view-data="showSeries" table-view-options="seriesOptions" table-view="seriesTable">
+        <title>Serien</title>
+        <div id="list" name="Liste" icon="fa-th-list" template="app/viewer/videos/shows/shows-one/series-all-list.html"></div>
+        <div id="card" name="Kacheln" icon="fa-th-large" template="app/viewer/videos/shows/shows-one/series-all-card.html"></div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card-content">
@@ -53,17 +53,29 @@
                     Statistiken
                 </div>
                 <div class="card-content-body form-stats" form>
-                    <div name="'Gesamte Anzahl Videos'" form-element>
+                    <div name="'Gesamte Video Anzahl'" form-element>
                         {{stats.videosCountTotal | number}} Videos
                     </div>
-                    <div name="'Durchschnittliche Video Aufrufe'" form-element>
-                        {{stats.videosViewsMean | number}} Aufrufe
+                    <div name="'Durchschnittliche Video Anzahl'" form-element>
+                        {{stats.videosCountMean | number}} Videos pro Tag
                     </div>
-                    <div name="'Anzahl Videos mit Moderatoren'" form-element>
+                    <div name="'Gesamte Video Laufzeit'" form-element>
+                        {{stats.videosDurationTotal | duration}}
+                    </div>
+                    <div name="'Durchschnittliche Video Laufzeit'" form-element>
+                        {{stats.videosDurationMean | duration}}
+                    </div>
+                    <div name="'Gesamte Video Aufrufe'" form-element>
+                        {{stats.videosViewsTotal | number}} Aufrufe
+                    </div>
+                    <div name="'Durchschnittliche Video Aufrufe'" form-element>
+                        {{stats.videosViewsMean | number}} Aufrufe pro Video
+                    </div>
+                    <div name="'Video Anzahl mit Moderatoren'" form-element>
                         <div class="table-container">
                             <table class="table table-hover list" ng-table="stats.videosHostsTable">
                                 <tr class="middle link" ui-sref="viewer.videos.hosts.one({hostId: data.host.id})" ng-repeat="data in $data">
-                                    <td width="130" title="'Anzahl Videos'" sortable="'count'">
+                                    <td width="130" title="'Video Anzahl'" sortable="'count'">
                                         {{data.count | number}}
                                     </td>
                                     <td title="'Vorname'" sortable="'host.firstname'">
@@ -89,5 +101,5 @@
             <div options="chart.options" update="chart.update" chart></div>
         </div>
     </div>
-    <div videos-view="videos" videos-mode="'view'"></div>
+    <div videos-view-mode="'view'" videos-view-data="videos" videos-view-options="videosOptions" videos-view="videosTable"></div>
 </div>

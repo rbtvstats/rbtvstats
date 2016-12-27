@@ -1,5 +1,5 @@
 <div class="card-transparent">
-    <table class="table cards" ng-table="table.params">
+    <table class="table cards" ng-table="channelsTable">
         <tr ng-repeat="channel in $data">
             <td class="hide"></td>
         </tr>
@@ -17,9 +17,7 @@
                                 <div class="title">
                                     <a ui-sref="editor.videos.channels.one({channelId: channel.id})">{{channel.title || '(Kein Titel)'}}</a>
                                 </div>
-                                <div class="content">
-                                    {{channel.description}}
-                                </div>
+                                <div class="content" ng-bind-html="channel.description"></div>
                             </div>
                         </div>
                         <div class="card-image-footer text-right">

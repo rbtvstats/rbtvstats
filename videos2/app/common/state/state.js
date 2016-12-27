@@ -42,19 +42,15 @@ angular.module('app.common').service('StateSrv', function($rootScope, $parse, $s
             models[property] = $parse(property);
         });
 
+        if (container in storage) {
+            loadStateLocal(container, scope, models);
+        } else {
+            saveStateLocal(container, scope, models);
+        }
+
         _.each(properties, function(property) {
-            var init = false;
             scope.$watch(property, function(newVal, oldVal) {
-                if (!init) {
-                    init = true;
-                    if (container in storage) {
-                        loadStateLocal(container, scope, models);
-                    } else {
-                        saveStateLocal(container, scope, models);
-                    }
-                } else {
-                    saveStateLocal(container, scope, models);
-                }
+                saveStateLocal(container, scope, models);
             }, true);
         });
     };

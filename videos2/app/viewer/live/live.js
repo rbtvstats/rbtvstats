@@ -1,12 +1,15 @@
 angular.module('app.viewer').config(function($stateProvider) {
     $stateProvider.state('viewer.live', {
-        url: '/live/',
+        url: '/live/?from&to',
         templateUrl: 'app/viewer/live/live.html',
-        controller: function($scope, LiveDataSrv, $httpParamSerializer) {
+        reloadOnSearch: false,
+        controller: function($scope, $location, $stateParams, LiveDataSrv, $httpParamSerializer) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['live-metadata'];
 
             $scope.init = function() {
+                $scope.from = $stateParams.from && parseInt($stateParams.from);
+                $scope.to = $stateParams.to && parseInt($stateParams.to);
                 $scope.live = LiveDataSrv.all();
                 $scope.liveStats = null;
 
@@ -19,6 +22,17 @@ angular.module('app.viewer').config(function($stateProvider) {
                     return file.end;
                 });
                 latest = moment.unix(latest.end);
+
+                var from = moment(latest).subtract(24, 'h').unix();
+                var to = null;
+
+                if (angular.isDefined($scope.from)) {
+                    from = $scope.from;
+                }
+
+                if (angular.isDefined($scope.to)) {
+                    to = $scope.to;
+                }
 
                 var options = {
                     chart: {
@@ -44,8 +58,8 @@ angular.module('app.viewer').config(function($stateProvider) {
                     dateRange: {
                         enable: true,
                         selected: {
-                            start: moment(latest).subtract(24, 'h').unix(),
-                            end: null
+                            start: from,
+                            end: to
                         },
                         ranges: [{
                             name: 'Letzten 8 Stunden',
@@ -83,39 +97,15 @@ angular.module('app.viewer').config(function($stateProvider) {
                     }
                 };
 
-                function updateStats(data) {
-                    var stats = {};
-
-                    stats.count = data.length
-                    stats.start = data[0];
-                    stats.end = data[data.length - 1];
-                    stats.mean = Math.round(d3.mean(data, function(d) {
-                        return d.viewers;
-                    }));
-
-                    data = _.orderBy(data, function(d) {
-                        return d.viewers;
-                    });
-
-                    stats.min = data[0];
-                    stats.max = data[data.length - 1];
-                    stats.q1 = Math.round(d3.quantile(data, 0.25, function(d) {
-                        return d.viewers;
-                    }));
-                    stats.q2 = Math.round(d3.quantile(data, 0.5, function(d) {
-                        return d.viewers;
-                    }));
-                    stats.q3 = Math.round(d3.quantile(data, 0.75, function(d) {
-                        return d.viewers;
-                    }));
-
-                    return stats;
-                }
-
                 function update() {
                     var start = options.dateRange.selected.start;
                     var end = options.dateRange.selected.end;
                     $scope.liveStats = null;
+
+                    $location.search({
+                        from: start,
+                        to: end
+                    });
 
                     return LiveDataSrv.loadRemote(start, end)
                         .then(function() {
@@ -135,7 +125,7 @@ angular.module('app.viewer').config(function($stateProvider) {
                                 values.push({ x: d.time, y: d.viewers });
                             }
 
-                            $scope.liveStats = updateStats(data);
+                            $scope.liveStats = $scope.updateStats(data);
 
                             return {
                                 key: 'Live Zuschauer',
@@ -150,6 +140,35 @@ angular.module('app.viewer').config(function($stateProvider) {
                     options: options
                 };
             };
+
+            $scope.updateStats = function(data) {
+                var stats = {};
+
+                stats.count = data.length
+                stats.start = data[0];
+                stats.end = data[data.length - 1];
+                stats.mean = _.round(d3.mean(data, function(d) {
+                    return d.viewers;
+                }));
+
+                data = _.orderBy(data, function(d) {
+                    return d.viewers;
+                });
+
+                stats.min = data[0];
+                stats.max = data[data.length - 1];
+                stats.q1 = _.round(d3.quantile(data, 0.25, function(d) {
+                    return d.viewers;
+                }));
+                stats.q2 = _.round(d3.quantile(data, 0.5, function(d) {
+                    return d.viewers;
+                }));
+                stats.q3 = _.round(d3.quantile(data, 0.75, function(d) {
+                    return d.viewers;
+                }));
+
+                return stats;
+            }
         }
     });
 });

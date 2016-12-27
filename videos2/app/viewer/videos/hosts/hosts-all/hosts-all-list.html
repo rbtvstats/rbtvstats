@@ -1,7 +1,7 @@
 <div class="card-content">
     <div class="card-content-body">
         <div class="table-container">
-            <table class="table table-hover list" ng-table="table.params">
+            <table class="table table-hover list" ng-table="hostsTable">
                 <tr class="middle link" ui-sref="viewer.videos.hosts.one({hostId: host.id})" ng-repeat="host in $data">
                     <td width="1">
                         <img img-src="{{host.image}}" img-fallback="{{imagePlaceholders.host}}" img-loading="{{imagePlaceholders.host}}">

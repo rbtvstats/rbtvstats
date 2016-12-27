@@ -7,11 +7,14 @@ angular.module('app.editor').config(function($stateProvider) {
             $scope.initDependencies = ['videos-data'];
 
             $scope.init = function() {
-                $scope.videos = VideosSrv.all();
                 $scope.channels = ChannelsSrv.all();
                 $scope.shows = ShowsSrv.all();
                 $scope.hosts = HostsSrv.all();
                 $scope.series = SeriesSrv.all();
+
+                //videos
+                $scope.videos = VideosSrv.all();
+                $scope.videosOptions = {};
 
                 $scope.updateState = {
                     active: false,
@@ -24,7 +27,7 @@ angular.module('app.editor').config(function($stateProvider) {
 
                 $scope.updateUntil = moment(new Date(2015, 0, 15)).unix();
 
-                StateSrv.watch($scope, ['exec']);
+                StateSrv.watch($scope, ['videosOptions', 'exec']);
             };
 
             $scope.updateVideos = function(channels, untilCallback) {

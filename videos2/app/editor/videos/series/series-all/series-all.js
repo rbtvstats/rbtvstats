@@ -2,47 +2,28 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.videos.series.all', {
         url: '/',
         templateUrl: 'app/editor/videos/series/series-all/series-all.html',
-        controller: function($scope, $state, NgTableParams, StateSrv, SeriesSrv) {
+        controller: function($scope, $state, StateSrv, SeriesSrv) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['videos-data'];
 
             $scope.init = function() {
                 $scope.series = SeriesSrv.all();
-                $scope.table = {
-                    header: {
-                        title: 'Serien'
+                $scope.seriesOptions = {
+                    display: {
+                        view: 'list',
+                        count: 10
                     },
-                    params: new NgTableParams({}, {
-                        dataset: $scope.series
-                    }),
-                    options: {
-                        display: {
-                            view: 'list',
-                            count: 10
-                        },
-                        order: {
-                            column: 'name',
-                            type: 'asc'
-                        },
-                        filter: ''
+                    order: {
+                        column: 'name',
+                        type: 'asc'
                     },
-                    views: [{
-                        id: 'list',
-                        name: 'Liste',
-                        icon: 'fa-th-list',
-                        template: 'app/editor/videos/series/series-all/series-all-list.html'
-                    }, {
-                        id: 'card',
-                        name: 'Kacheln',
-                        icon: 'fa-th-large',
-                        template: 'app/editor/videos/series/series-all/series-all-card.html'
-                    }]
+                    filter: ''
                 };
                 $scope.exec = {
                     code: 'console.log(series);'
                 };
 
-                StateSrv.watch($scope, ['exec']);
+                StateSrv.watch($scope, ['seriesOptions', 'exec']);
             };
 
             $scope.add = function() {

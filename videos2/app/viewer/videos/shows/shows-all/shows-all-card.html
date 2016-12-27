@@ -1,5 +1,5 @@
 <div class="card-transparent">
-    <table class="table cards" ng-table="table.params">
+    <table class="table cards" ng-table="showsTable">
         <tr ng-repeat="show in $data">
             <td class="hide"></td>
         </tr>
@@ -17,9 +17,7 @@
                                 <div class="title">
                                     <a ui-sref="viewer.videos.shows.one({showId: show.id})">{{show.name || '(Kein Name)'}}</a>
                                 </div>
-                                <div class="content">
-                                    {{show.description}}
-                                </div>
+                                <div class="content" ng-bind-html="show.description"></div>
                             </div>
                         </div>
                         <div class="card-image-footer text-right">

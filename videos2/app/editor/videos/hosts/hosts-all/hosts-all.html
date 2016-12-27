@@ -1,5 +1,9 @@
 <div class="container-fluid animate-main-content" init>
-    <div table-view="table"></div>
+    <div table-view-data="hosts" table-view-options="hostsOptions" table-view="hostsTable">
+        <title>Moderatoren</title>
+        <div id="list" name="Liste" icon="fa-th-list" template="app/editor/videos/hosts/hosts-all/hosts-all-list.html"></div>
+        <div id="card" name="Kacheln" icon="fa-th-large" template="app/editor/videos/hosts/hosts-all/hosts-all-card.html"></div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="card-transparent text-right">

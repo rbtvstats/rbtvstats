@@ -2,47 +2,28 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.videos.hosts.all', {
         url: '/',
         templateUrl: 'app/editor/videos/hosts/hosts-all/hosts-all.html',
-        controller: function($scope, $state, NgTableParams, StateSrv, HostsSrv) {
+        controller: function($scope, $state, StateSrv, HostsSrv) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['videos-data'];
 
             $scope.init = function() {
                 $scope.hosts = HostsSrv.all();
-                $scope.table = {
-                    header: {
-                        title: 'Moderatoren'
+                $scope.hostsOptions = {
+                    display: {
+                        view: 'list',
+                        count: 10
                     },
-                    params: new NgTableParams({}, {
-                        dataset: $scope.hosts
-                    }),
-                    options: {
-                        display: {
-                            view: 'list',
-                            count: 10
-                        },
-                        order: {
-                            column: 'firstname',
-                            type: 'asc'
-                        },
-                        filter: ''
+                    order: {
+                        column: 'firstname',
+                        type: 'asc'
                     },
-                    views: [{
-                        id: 'list',
-                        name: 'Liste',
-                        icon: 'fa-th-list',
-                        template: 'app/editor/videos/hosts/hosts-all/hosts-all-list.html'
-                    }, {
-                        id: 'card',
-                        name: 'Kacheln',
-                        icon: 'fa-th-large',
-                        template: 'app/editor/videos/hosts/hosts-all/hosts-all-card.html'
-                    }]
+                    filter: ''
                 };
                 $scope.exec = {
                     code: 'console.log(host);'
                 };
 
-                StateSrv.watch($scope, ['exec']);
+                StateSrv.watch($scope, ['hostsOptions', 'exec']);
             };
 
             $scope.add = function() {

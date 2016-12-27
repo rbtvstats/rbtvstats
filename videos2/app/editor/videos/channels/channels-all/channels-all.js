@@ -2,47 +2,28 @@ angular.module('app.editor').config(function($stateProvider) {
     $stateProvider.state('editor.videos.channels.all', {
         url: '/',
         templateUrl: 'app/editor/videos/channels/channels-all/channels-all.html',
-        controller: function($scope, $state, NgTableParams, StateSrv, ChannelsSrv) {
+        controller: function($scope, $state, StateSrv, ChannelsSrv) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['videos-data'];
 
             $scope.init = function() {
                 $scope.channels = ChannelsSrv.all();
-                $scope.table = {
-                    header: {
-                        title: 'Kanäle'
+                $scope.channelsOptions = {
+                    display: {
+                        view: 'card',
+                        count: 10
                     },
-                    params: new NgTableParams({}, {
-                        dataset: $scope.channels
-                    }),
-                    options: {
-                        display: {
-                            view: 'list',
-                            count: 10
-                        },
-                        order: {
-                            column: 'title',
-                            type: 'asc'
-                        },
-                        filter: ''
+                    order: {
+                        column: 'title',
+                        type: 'asc'
                     },
-                    views: [{
-                        id: 'list',
-                        name: 'Liste',
-                        icon: 'fa-th-list',
-                        template: 'app/editor/videos/channels/channels-all/channels-all-list.html'
-                    }, {
-                        id: 'card',
-                        name: 'Kacheln',
-                        icon: 'fa-th-large',
-                        template: 'app/editor/videos/channels/channels-all/channels-all-card.html'
-                    }]
+                    filter: ''
                 };
                 $scope.exec = {
                     code: 'console.log(channel);'
                 };
 
-                StateSrv.watch($scope, ['exec']);
+                StateSrv.watch($scope, ['channelsOptions', 'exec']);
             };
 
             $scope.add = function() {
