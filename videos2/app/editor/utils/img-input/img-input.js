@@ -95,7 +95,7 @@ angular.module('app.editor').directive('imgInput', function() {
                     var extensions = {
                         'image/jpeg': '.jpg',
                         'image/png': '.png'
-                    }
+                    };
                     var extension = extensions[blob.type] || '';
 
                     var filename = 'image' + extension;

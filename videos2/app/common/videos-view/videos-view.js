@@ -92,7 +92,7 @@ angular.module('app.common').directive('videosView', function() {
                         $scope.tableParams.page(1);
                     }
                 }
-            }
+            };
 
             $scope.getRatingPercent = function(video) {
                 if (video && video.stats) {

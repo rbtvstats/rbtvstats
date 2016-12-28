@@ -2,7 +2,8 @@
 <html ng-app="rbtvStats">
 
 <head>
-    <title></title>
+    <title>Rocket Beans TV Statistiken</title>
+    <meta name="google-site-verification" content="JwhEcTKuK5lCpWF5DKfgO6WLjKKvjGirv6vUapzZJTY" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <link href="vendor.less" type="text/css" rel="stylesheet/less">
@@ -10,6 +11,18 @@
 </head>
 
 <body>
+    <!-- Google Analytics -->
+    <script>
+    ! function(A, n, g, u, l, a, r) {
+        A.GoogleAnalyticsObject = l, A[l] = A[l] || function() {
+                (A[l].q = A[l].q || []).push(arguments)
+            }, A[l].l = +new Date, a = n.createElement(g),
+            r = n.getElementsByTagName(g)[0], a.src = u, r.parentNode.insertBefore(a, r)
+    }(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-78347701-1');
+    ga('send', 'pageview');
+    </script>
     <!-- Livereload script for development only (stripped during dist build) -->
     <script src="http://localhost:35729/livereload.js" data-concat="false"></script>
     <!-- JS from Bower Components -->
@@ -139,6 +152,8 @@
     <script src="app/viewer/videos/hosts/hosts.js"></script>
     <script src="app/viewer/videos/hosts/hosts-all/hosts-all.js"></script>
     <script src="app/viewer/videos/hosts/hosts-one/hosts-one.js"></script>
+    <script src="app/common/report/report.js"></script>
+    <script src="app/data/backend/firebase-api/firebase-api.js"></script>
     <!-- Add New Component JS Above -->
     <div ui-view ng-cloak></div>
 </body>

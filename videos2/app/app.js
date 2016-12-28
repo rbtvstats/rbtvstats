@@ -28,7 +28,7 @@ function benchmark(func, run) { //TODO remove
     }
 }
 
-angular.module('app').config(function($urlRouterProvider, NotificationProvider, cfpLoadingBarProvider, $tooltipProvider, $timepickerProvider, $datepickerProvider) {
+angular.module('app').config(function($urlRouterProvider, NotificationProvider, cfpLoadingBarProvider, $tooltipProvider, $timepickerProvider, $datepickerProvider, $modalProvider) {
     $urlRouterProvider.rule(function($injector, $location) {
         var path = $location.url();
 
@@ -76,6 +76,10 @@ angular.module('app').config(function($urlRouterProvider, NotificationProvider, 
         dateType: 'unix',
         iconLeft: 'fa fa-fw fa-chevron-left',
         iconRight: 'fa fa-fw fa-chevron-right'
+    });
+
+    angular.extend($modalProvider.defaults, {
+        container: 'body'
     });
 });
 
@@ -135,8 +139,8 @@ angular.module('app').run(function($rootScope, amMoment, Notification, $parse) {
     };
 
     angular.isBoolean = function(v) {
-        return typeof(v) === 'boolean'
-    }
+        return typeof(v) === 'boolean';
+    };
 
     //extend notification service
     Notification.parseError = function(options) {

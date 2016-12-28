@@ -42,7 +42,7 @@ angular.module('app.viewer').config(function($stateProvider) {
                 var days = publishedLast.diff(publishedFirst, 'days') || 1;
 
                 //count total
-                $scope.stats.videosCountTotal = $scope.videos.length
+                $scope.stats.videosCountTotal = $scope.videos.length;
 
                 //count mean
                 $scope.stats.videosCountMean = _.round($scope.stats.videosCountTotal / days, 2);

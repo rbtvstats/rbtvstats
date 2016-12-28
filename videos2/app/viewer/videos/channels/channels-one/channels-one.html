@@ -1,6 +1,6 @@
 <div class="container-fluid animate-main-content" init>
     <div class="row">
-        <div class="col-md-6 col-md-offset-6">
+        <div class="col-md-6">
             <div class="card-content">
                 <div class="card-content-body overview-one">
                     <a ui-sref="viewer.videos.channels.one({channelId: channel.id})">
@@ -14,6 +14,9 @@
                         <a ng-href="https://www.youtube.com/channel/{{channel.channelId}}" target="_blank">
                             <i class="fa fa-youtube-play"></i>youtube.com
                         </a>
+                    </div>
+                    <div class="report">
+                        <a href="javascript:void(0);" report="channels" report-id="{{channel.id}}"><i class="fa fa-flag"></i></a>
                     </div>
                 </div>
             </div>

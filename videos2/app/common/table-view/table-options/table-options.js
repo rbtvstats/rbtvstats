@@ -20,7 +20,7 @@ angular.module('app.common').directive('tableOptions', function() {
                 if (!angular.isObject($scope.tableOptions) || angular.equals({}, $scope.tableOptions)) {
                     $scope.resetOptions();
                 }
-            }
+            };
 
             $scope.resetOptions = function() {
                 angular.copy($scope.defaultOptions, $scope.tableOptions);

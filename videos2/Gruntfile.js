@@ -212,12 +212,25 @@ module.exports = function (grunt) {
       during_watch: {
         browsers: ['PhantomJS']
       },
+    },
+    'gh-pages': {
+      options: {
+        base: 'dist',
+        repo: 'https://github.com/rbtvstats/rbtvstats.github.io.git',
+        branch: 'master',
+        user: {
+          name: 'rbtvstats'
+        },
+        message: 'update page'
+      },
+      src: ['**']
     }
   });
 
   grunt.registerTask('build',['jshint','clean:before','less','dom_munger','ngtemplates','cssmin','concat','ngAnnotate','uglify','copy','htmlmin','clean:after']);
   grunt.registerTask('serve', ['dom_munger:read','jshint','connect', 'watch']);
   grunt.registerTask('test',['dom_munger:read','karma:all_tests']);
+  grunt.registerTask('deploy', ['build','gh-pages']);
 
   grunt.event.on('watch', function(action, filepath) {
     //https://github.com/gruntjs/grunt-contrib-watch/issues/156

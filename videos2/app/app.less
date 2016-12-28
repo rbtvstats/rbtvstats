@@ -81,6 +81,20 @@ body {
 }
 
 
+/* modal */
+
+.modal-backdrop {
+    opacity: 0.5;
+}
+
+.modal {
+    .modal-content {
+        .border-radius(2px);
+        .box-shadow-level(3);
+    }
+}
+
+
 /* date/time picker animation */
 
 .timepicker,
@@ -88,9 +102,21 @@ body {
     padding: 5px;
     margin-top: -1px;
     button {
-        border: 0 !important;
+        border-color: transparent !important;
         .box-shadow(0 0 0) !important;
         .border-radius(0) !important;
+    }
+    .btn-default:not(.btn-primary) {
+        background-color: transparent !important;
+        &:hover {
+            background: darken(@color-white, 10%) !important;
+            color: lighten(@color-text, 10%) !important;
+        }
+    }
+    tbody {
+        button {
+            .btn-circle !important;
+        }
     }
 }
 
@@ -146,6 +172,9 @@ body {
         height: 80px;
         margin-left: 10px;
         margin-bottom: 10px;
+        > img {
+            .box-shadow-level(2);
+        }
     }
     > .title {
         font-size: 20px;
@@ -166,10 +195,18 @@ body {
             display: inline-block;
             font-size: 18px;
             margin-bottom: 5px;
+            &:last-child {
+                margin-bottom: 0;
+            }
             > i {
                 margin-right: 5px;
             }
         }
+    }
+    > .report {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
     }
 }
 

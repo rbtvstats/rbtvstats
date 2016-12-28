@@ -144,7 +144,7 @@ angular.module('app.viewer').config(function($stateProvider) {
             $scope.updateStats = function(data) {
                 var stats = {};
 
-                stats.count = data.length
+                stats.count = data.length;
                 stats.start = data[0];
                 stats.end = data[data.length - 1];
                 stats.mean = _.round(d3.mean(data, function(d) {
@@ -168,7 +168,7 @@ angular.module('app.viewer').config(function($stateProvider) {
                 }));
 
                 return stats;
-            }
+            };
         }
     });
 });

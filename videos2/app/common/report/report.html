@@ -1,0 +1,28 @@
+<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Fehler melden</h4>
+            </div>
+            <div class="modal-body" form>
+                <!-- reasons -->
+                <div name="'Grund'" form-element ng-if="model.reasons.length > 0">
+                    <div class="checkbox checkbox-primary" ng-repeat="reason in model.reasons track by reason.id">
+                        <input id="checkboxes-{{$index}}" type="checkbox" name="checkboxes" value="{{$index}}" class="styled" ng-model="reason.selected">
+                        <label for="checkboxes-{{$index}}">
+                            {{reason.title}}
+                        </label>
+                    </div>
+                </div>
+                <!-- description -->
+                <div name="'Beschreibung (optional)'" key="'youtubeApiKey'" form-element>
+                    <textarea rows="4" class="form-control" ng-model="model.description"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" ng-click="send();$hide();">Melden</button>
+                <button type="button" class="btn btn-default" ng-click="$hide()">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+</div>

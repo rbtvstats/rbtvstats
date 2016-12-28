@@ -1,11 +1,11 @@
 angular.module('app.viewer').controller('FooterCtrl', function($scope) {
     $scope.rbtvLinks = [{
-        title: 'Rocketbeans',
-        url: 'https://www.rocketbeans.tv/',
+        title: 'Rocket Beans TV',
+        url: 'https://rocketbeans.tv/',
         icon: 'fa-home'
     }, {
-        title: 'Youtube',
-        url: 'https://www.youtube.com/channel/UCQvTDmHza8erxZqDkjQ4bQQ',
+        title: 'Livestream',
+        url: 'https://gaming.youtube.com/rocketbeanstv/live',
         icon: 'fa-youtube-play'
     }];
 
