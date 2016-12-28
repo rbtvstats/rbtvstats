@@ -1,4 +1,4 @@
-# RBTV Youtube Statistiken
+# Rocket Beans TV Statistiken
 
 ## Development
 The following sofware components are needed to setup the development environment:
@@ -29,4 +29,4 @@ The project uses [grunt](http://gruntjs.com/) for performing repetitive tasks li
  - grunt **test**: Run the unit tests.
  - grunt **deploy**: Build project and deploy on server. The *dist* directory will be pushed to the github page repository.
 
-For further automation the [Yeoman](http://yeoman.io/) project is used. The project structure uses the [angular](https://github.com/yeoman/generator-angular) generator which has additional generators for adding new angular views, directives, filters and much more. Read the github page of the angular generator for further details.
+For further automation the [Yeoman](http://yeoman.io/) project is used. The project structure uses the [cg-angular](https://github.com/cgross/generator-cg-angular) generator which has additional generators for adding new angular views, directives, filters and much more. Read the github page of the angular generator for further details.
