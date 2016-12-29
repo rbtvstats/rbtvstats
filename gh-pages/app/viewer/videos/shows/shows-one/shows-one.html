@@ -81,16 +81,16 @@
                         <div class="table-container">
                             <table class="table table-hover list" ng-table="stats.videosHostsTable">
                                 <tr class="middle link" ui-sref="viewer.videos.hosts.one({hostId: data.host.id})" ng-repeat="data in $data">
-                                    <td width="130" title="'Video Anzahl'" sortable="'count'">
+                                    <td width="130" title="'Video Anzahl'" data-sortable="'count'">
                                         {{data.count | number}}
                                     </td>
-                                    <td title="'Vorname'" sortable="'host.firstname'">
+                                    <td title="'Vorname'" data-sortable="'host.firstname'">
                                         {{data.host.firstname}}
                                     </td>
-                                    <td title="'Nachname'" sortable="'host.lastname'">
+                                    <td title="'Nachname'" data-sortable="'host.lastname'">
                                         {{data.host.lastname}}
                                     </td>
-                                    <td title="'Spitzname'" sortable="'host.nickname'">
+                                    <td title="'Spitzname'" data-sortable="'host.nickname'">
                                         {{data.host.nickname}}
                                     </td>
                                 </tr>

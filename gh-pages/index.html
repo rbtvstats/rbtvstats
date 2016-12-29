@@ -12,7 +12,7 @@
 
 <body>
     <!-- Google Analytics -->
-    <script>
+    <script data-concat="false" data-remove="false">
     ! function(A, n, g, u, l, a, r) {
         A.GoogleAnalyticsObject = l, A[l] = A[l] || function() {
                 (A[l].q = A[l].q || []).push(arguments)
@@ -65,7 +65,7 @@
     <script src="bower_components/ng-jsoneditor/ng-jsoneditor.min.js"></script>
     <script src="bower_components/jszip/dist/jszip.js"></script>
     <script src="bower_components/angular-youtube-mb/dist/angular-youtube-embed.min.js"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://www.youtube.com/iframe_api" data-concat="false" data-remove="false"></script>
     <!-- Add New Bower Component JS Above -->
     <!-- Main App JS -->
     <script src="app.js"></script>
@@ -77,6 +77,7 @@
     <script src="app/common/config/config.js"></script>
     <script src="app/common/state/state.js"></script>
     <script src="app/common/img-src/img-src.js"></script>
+    <script src="app/common/report/report.js"></script>
     <script src="app/common/form/form-element/form-element.js"></script>
     <script src="app/common/form/form/form.js"></script>
     <script src="app/common/duration/duration.js"></script>
@@ -97,6 +98,7 @@
     <script src="app/data/backend/youtube-api/youtube-api.js"></script>
     <script src="app/data/backend/github-api/github-api.js"></script>
     <script src="app/data/backend/igdb-api/igdb-api.js"></script>
+    <script src="app/data/backend/firebase-api/firebase-api.js"></script>
     <!-- app.data.video -->
     <script src="app/data/videos/app.data.videos.js"></script>
     <script src="app/data/videos/controller/controller.js"></script>
@@ -152,8 +154,6 @@
     <script src="app/viewer/videos/hosts/hosts.js"></script>
     <script src="app/viewer/videos/hosts/hosts-all/hosts-all.js"></script>
     <script src="app/viewer/videos/hosts/hosts-one/hosts-one.js"></script>
-    <script src="app/common/report/report.js"></script>
-    <script src="app/data/backend/firebase-api/firebase-api.js"></script>
     <!-- Add New Component JS Above -->
     <div ui-view ng-cloak></div>
 </body>

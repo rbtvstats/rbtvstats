@@ -6,10 +6,10 @@
                     <td width="1">
                         <img img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                     </td>
-                    <td width="200" title="'Name'" sortable="'name'">
+                    <td width="200" title="'Name'" data-sortable="'name'">
                         {{series.name}}
                     </td>
-                    <td title="'Beschreibung'" sortable="'description'">
+                    <td title="'Beschreibung'" data-sortable="'description'">
                         <div class="limit-height" ng-bind-html="series.description"></div>
                     </td>
                 </tr>

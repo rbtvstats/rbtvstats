@@ -6,19 +6,19 @@
                     <td width="1">
                         <img img-src="{{channel.image}}" img-fallback="{{imagePlaceholders.channel}}" img-loading="{{imagePlaceholders.channel}}">
                     </td>
-                    <td width="200" title="'Titel'" sortable="'title'">
+                    <td width="200" title="'Titel'" data-sortable="'title'">
                         {{channel.title}}
                     </td>
-                    <td width="1" title="'Benutzername'" sortable="'username'">
+                    <td width="1" title="'Benutzername'" data-sortable="'username'">
                         {{channel.username}}
                     </td>
-                    <td width="1" title="'Kanal ID'" sortable="'channelId'">
+                    <td width="1" title="'Kanal ID'" data-sortable="'channelId'">
                         {{channel.channelId}}
                     </td>
-                    <td width="1" title="'Video Playlist ID'" sortable="'playlistId'">
+                    <td width="1" title="'Video Playlist ID'" data-sortable="'playlistId'">
                         {{channel.playlistId}}
                     </td>
-                    <td title="'Beschreibung'" sortable="'description'">
+                    <td title="'Beschreibung'" data-sortable="'description'">
                         <div class="limit-height" ng-bind-html="channel.description"></div>
                     </td>
                 </tr>

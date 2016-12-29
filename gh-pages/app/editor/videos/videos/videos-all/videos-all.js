@@ -22,7 +22,8 @@ angular.module('app.editor').config(function($stateProvider) {
                     latest: null
                 };
                 $scope.exec = {
-                    code: 'console.log(video);'
+                    code: 'console.log(video);',
+                    filtered: false
                 };
 
                 $scope.updateUntil = moment(new Date(2015, 0, 15)).unix();
@@ -160,8 +161,13 @@ angular.module('app.editor').config(function($stateProvider) {
             };
 
             $scope.run = function(exec) {
+                var videos = $scope.videos;
+                if (exec.filtered) {
+                    videos = VideosSrv.filter($scope.videos, $scope.videosOptions.filter);
+                }
+
                 var code = '';
-                code += '_.each($scope.videos, function(video) {';
+                code += '_.each(videos, function(video) {';
                 code += exec.code || '';
                 code += '});';
 

@@ -85,7 +85,7 @@ angular.module('app.common').directive('videosView', function() {
                     var total = $scope.videosCache.length;
                     var current = $scope.tableParams.page();
                     var count = $scope.tableParams.count();
-                    var last = Math.ceil(total / count);
+                    var last = Math.ceil(total / count) || 1;
                     if (current > last) {
                         $scope.tableParams.page(last);
                     } else if (current < 1) {

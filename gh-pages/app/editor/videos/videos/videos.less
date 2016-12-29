@@ -1,7 +1,13 @@
 .inline-wrap {
     > * {
         display: inline-block;
-        margin-bottom: 5px;
+        margin: 5px 2px;
+        &:first-child {
+            margin-left: 0;
+        }
+        &:last-child {
+            margin-right: 0;
+        }
     }
 }
 

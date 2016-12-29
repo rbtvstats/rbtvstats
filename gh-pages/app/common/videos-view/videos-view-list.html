@@ -3,28 +3,28 @@
         <div class="table-container">
             <table class="table table-hover list" ng-table="tableParams">
                 <tr class="middle link" ng-repeat="video in $data" ng-click="details(video)">
-                    <td title="'Titel'" sortable="'title'">
+                    <td title="'Titel'" data-sortable="'title'">
                         <a ng-href="https://youtube.com/watch?v={{video.id}}" target="_blank">{{video.title}}</a>
                     </td>
-                    <td width="140" title="'Kanal'" sortable="'channel'">
+                    <td width="140" title="'Kanal'" data-sortable="'channel'">
                         {{(video.channel | videosResolve:'channels').title}}
                     </td>
-                    <td width="100" title="'Laufzeit'" sortable="'duration'">
+                    <td width="100" title="'Laufzeit'" data-sortable="'duration'">
                         {{video.duration | duration}}
                     </td>
-                    <td width="100" title="'Veröffentlichung'" sortable="'published'">
+                    <td width="100" title="'Veröffentlichung'" data-sortable="'published'">
                         {{video.published * 1000 | amDateFormat:'l'}}
                     </td>
-                    <td width="100" title="'Ausstrahlung'" sortable="'aired'">
+                    <td width="100" title="'Ausstrahlung'" data-sortable="'aired'">
                         {{video.aired && (video.aired * 1000 | amDateFormat:'l')}}
                     </td>
-                    <td width="80" title="'Aufrufe'" sortable="'stats.viewCount'">
+                    <td width="80" title="'Aufrufe'" data-sortable="'stats.viewCount'">
                         {{video.stats.viewCount}}
                     </td>
-                    <td width="85" title="'P. Bew.'" sortable="'stats.likeCount'">
+                    <td width="85" title="'P. Bew.'" data-sortable="'stats.likeCount'">
                         {{video.stats.likeCount}}
                     </td>
-                    <td width="85" title="'N. Bew.'" sortable="'stats.dislikeCount'">
+                    <td width="85" title="'N. Bew.'" data-sortable="'stats.dislikeCount'">
                         {{video.stats.dislikeCount}}
                     </td>
                 </tr>
