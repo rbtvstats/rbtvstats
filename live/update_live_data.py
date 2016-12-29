@@ -8,7 +8,6 @@ import glob
 DATA_REPO_DIR = '/home/marcel/rbtv/rbtvdata/'
 LIVE_DATA_DIR = 'live/'
 LIVE_METADATA_FILEPATH = 'live/metadata.json'
-LIVE_METADATA_FILEPATH2 = 'live/metadata2.json'
 
 def updateMetadata():
     files = sorted(glob.glob(os.path.join(LIVE_DATA_DIR, '*.csv')))
@@ -32,18 +31,7 @@ def updateMetadata():
     #time
     currentTimestamp = int(time.time())
 
-    #metadata
-    metadata = {}
-    metadata['first'] = firstTimestamp
-    metadata['last'] = lastTimestamp
-    metadata['time'] = currentTimestamp
-
-    #save metadata
-    filepath = LIVE_METADATA_FILEPATH2
-    with open(filepath, 'w') as file:
-        json.dump(metadata, file, indent='\t')
-
-    #################################
+    #files
     metadataFiles = []
     totalSize = 0
     for filepath in files:
