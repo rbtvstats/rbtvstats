@@ -1,0 +1,155 @@
+<div class="container-fluid animate-main-content" init>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-content">
+                <div class="card-content-header">
+                    Daten
+                </div>
+                <div class="card-content-body">
+                    <div class="table-container">
+                        <table class="table table-hover list">
+                            <thead>
+                                <tr>
+                                    <td width="1">Validierung</td>
+                                    <td width="15%">ID</td>
+                                    <td width="15%">Name</td>
+                                    <td># Datensätze</td>
+                                    <td width="180"></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="middle" ng-class="{'danger': !dataValid[DataSrv.id]}" ng-repeat="DataSrv in dataServices">
+                                    <td>
+                                        <button class="btn btn-circle btn-default" ng-class="dataValid[DataSrv.id] ? 'btn-success' : 'btn-danger'">
+                                            <i class="fa fa-fw" ng-class="dataValid[DataSrv.id] ? 'fa-check' : 'fa-times'"></i>
+                                        </button>
+                                    </td>
+                                    <td>{{DataSrv.id}}</td>
+                                    <td>{{DataSrv.name}}</td>
+                                    <td>{{DataSrv.total()}}</td>
+                                    <td class="text-right">
+                                        <button class="btn btn-default" data-title="Export" ng-click="export(DataSrv)" bs-tooltip>
+                                            <i class="fa fa-level-up"></i>
+                                        </button>
+                                        <button class="btn btn-default btn-file" data-title="Import" bs-tooltip>
+                                            <i class="fa fa-level-down"></i>
+                                            <input type="file" onchange="angular.element(this).scope().import(angular.element(this).scope().DataSrv, this.files)" multiple>
+                                        </button>
+                                        <button class="btn btn-warning" data-title="An Schema anpassen" ng-click="forceData(DataSrv)" bs-tooltip>
+                                            <i class="fa fa-database"></i>
+                                        </button>
+                                        <button class="btn btn-danger" data-title="Leeren" ng-click="clearData(DataSrv)" bs-tooltip>
+                                            <i class="fa fa-eraser"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary" ng-click="exportAll()">
+                                    <i class="fa fa-level-up"></i> Alle Exportieren
+                                </button>
+                                <button class="btn btn-primary btn-file">
+                                    <i class="fa fa-level-down"></i> Alle Importieren
+                                    <input type="file" onchange="angular.element(this).scope().importAll(this.files[0])">
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-header">
+                    Server Synchronisation
+                </div>
+                <div class="card-content-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Server</label>
+                            <div class="col-md-4">
+                                <div>
+                                    {{remoteMetadata.hash}}
+                                    <span ng-if="!remoteMetadata">N/A</span>
+                                    <button class="btn btn-circle btn-xs btn-default" ng-click="updateRemoteMetadata()">
+                                        <i class="fa fa-fw fa-refresh"></i>
+                                    </button>
+                                </div>
+                                <div class="text-muted" ng-if="remoteMetadata">
+                                    {{remoteMetadata.update | amFromUnix | amDateFormat:'LLLL'}}
+                                    <span>(<span am-time-ago="remoteMetadata.update | amFromUnix"></span>)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Lokal</label>
+                            <div class="col-md-4">
+                                {{localDataHash || 'N/A'}}
+                                <button class="btn btn-circle btn-xs btn-default" data-title="Hash Vergleich" ng-class="localDataHash === remoteMetadata.hash ? 'btn-success' : 'btn-danger'" bs-tooltip>
+                                    <i class="fa fa-fw" ng-class="localDataHash === remoteMetadata.hash ? 'fa-check' : 'fa-times'"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-4 col-md-offset-4">
+                                <button class="btn btn-primary" ng-click="upload()" ng-disabled="syncState.activeUpload">
+                                    <i class="fa fa-fw" ng-class="syncState.activeUpload ? 'fa-spin fa-refresh' : 'fa-upload'"></i> Push
+                                </button>
+                                <button class="btn btn-primary" ng-click="download()" ng-disabled="syncState.activeDownload">
+                                    <i class="fa fa-fw" ng-class="syncState.activeDownload ? 'fa-spin fa-refresh' : 'fa-download'"></i> Pull
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-header">
+                    Backup
+                </div>
+                <div class="card-content-body">
+                    <div class="table-container">
+                        <table class="table table-hover list" ng-if="dataBackups.length">
+                            <thead>
+                                <tr>
+                                    <td width="350">Datum</td>
+                                    <td>Hash</td>
+                                    <td width="180"></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="middle" ng-repeat="dataBackup in dataBackups track by dataBackup.id">
+                                    <td>
+                                        {{dataBackup.time | amFromUnix | amDateFormat:'LLLL'}}
+                                        <div>(<span am-time-ago="dataBackup.time | amFromUnix"></span>)</div>
+                                    </td>
+                                    <td>{{dataBackup.hash}}</td>
+                                    <td class="text-right">
+                                        <button class="btn btn-default" data-title="Anwenden" ng-click="restoreBackup(dataBackup)" bs-tooltip>
+                                            <i class="fa fa-undo"></i>
+                                        </button>
+                                        <button class="btn btn-danger" data-title="Löschen" ng-click="deleteBackup(dataBackup)" bs-tooltip>
+                                            <i class="fa fa-times"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary" ng-click="createBackup()">
+                                    <i class="fa fa-fw fa-plus"></i> Backup erstellen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
