@@ -103,19 +103,21 @@ body {
     margin-top: -1px;
     button {
         border-color: transparent !important;
-        .box-shadow(0 0 0) !important;
-        .border-radius(0) !important;
+        .box-shadow(none) !important;
+        .border-radius(2px) !important;
     }
     .btn-default:not(.btn-primary) {
         background-color: transparent !important;
         &:hover {
             background: darken(@color-white, 10%) !important;
             color: lighten(@color-text, 10%) !important;
+            border-color: transparent !important;
         }
     }
     tbody {
         button {
             .btn-circle !important;
+            border-color: transparent !important;
         }
     }
 }
