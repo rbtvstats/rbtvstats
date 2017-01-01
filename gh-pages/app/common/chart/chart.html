@@ -18,16 +18,16 @@
             <div class="chart-loading" ng-show="loading">
                 <div class="c-icon c-icon-3x c-icon-circle-notch c-icon-spin"></div>
             </div>
-            <div class="chart-error" ng-show="!loading && error">
+            <div class="chart-error" ng-show="isError()">
                 Fehler bei der Darstellung
             </div>
-            <div class="chart-empty" ng-show="!loading && !error && !data[0].values.length">
+            <div class="chart-empty" ng-show="isEmpty()">
                 Keine Daten zum Darstellen
             </div>
         </div>
         <div class="chart-container">
             <div class="chart-container-scroll" style="min-width:{{options.chart.minWidth}}px; height:{{options.chart.height}}px">
-                <nvd3 options="options" data="data" config="config"></nvd3>
+                <nvd3 options="options" data="data" config="config" on-ready="onReady"></nvd3>
             </div>
         </div>
     </div>

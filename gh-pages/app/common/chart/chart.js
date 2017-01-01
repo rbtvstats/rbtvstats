@@ -177,8 +177,18 @@ angular.module('app.common').directive('chart', function($q, $timeout) {
                         type: 'pieChart',
                         labelType: 'percent',
                         labelsOutside: true,
+                        donutRatio: 0.4,
                         x: function(d) {
                             return d.key;
+                        },
+                        valueFormat: function(d) {
+                            return d;
+                        },
+                        margin: {
+                            top: 5,
+                            right: 5,
+                            bottom: 5,
+                            left: 5
                         }
                     }
                 }
@@ -190,7 +200,7 @@ angular.module('app.common').directive('chart', function($q, $timeout) {
 
                 $scope.config = {
                     deepWatchOptions: false,
-                    deepWatchDataDepth: 0
+                    deepWatchData: false
                 };
 
                 if (!angular.isObject($scope.options)) {
@@ -210,6 +220,26 @@ angular.module('app.common').directive('chart', function($q, $timeout) {
                 $scope.update();
             };
 
+            $scope.onReady = function(scope, element) {
+                $scope.api = scope.api;
+            };
+
+            $scope.isError = function() {
+                return !$scope.loading && $scope.error;
+            };
+
+            $scope.isEmpty = function() {
+                if (!$scope.loading && !$scope.error) {
+                    if ($scope.options.chart.type === 'pieChart') {
+                        return !(angular.isArray($scope.data) && $scope.data.length > 0);
+                    } else {
+                        return !(angular.isArray($scope.data) && $scope.data.length > 0 && $scope.data[0].values.length > 0);
+                    }
+                }
+
+                return false;
+            };
+
             $scope.updateData = $scope.update;
 
             $scope.update = _.debounce(function() {
@@ -223,10 +253,11 @@ angular.module('app.common').directive('chart', function($q, $timeout) {
                                 $scope.error = false;
                                 $scope.loading = false;
                                 if (angular.isArray(data)) {
-                                    $scope.data = data;
+                                    $scope.api.updateWithData(data);
                                 } else {
-                                    $scope.data = [data];
+                                    $scope.api.updateWithData([data]);
                                 }
+                                $scope.api.refresh();
                             })
                             .catch(function(err) {
                                 $scope.error = true;

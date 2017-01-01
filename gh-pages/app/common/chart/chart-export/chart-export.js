@@ -39,41 +39,16 @@ angular.module('app.common').directive('chartExport', function() {
                 };
             };
 
-            $scope.exportDataCSV = function() {
-                var args = _.map($scope.data, function(data) {
-                    return data.values;
-                });
+            $scope.getData = function() {
+                var rawData = $scope.data;
+                if ($scope.options.chart.type === 'pieChart') {
+                    rawData = [{
+                        key: '',
+                        values: $scope.data
+                    }];
+                }
 
-                //values
-                args.push(function() {
-                    var y = _.map(arguments, function(value) {
-                        return $scope.options.chart.y(value);
-                    });
-
-                    return _.concat([$scope.options.chart.x(arguments[0])], y);
-                });
-
-                var values = _.zipWith.apply(_, args);
-
-                //header
-                var header = _.map($scope.data, function(data) {
-                    return data.key;
-                });
-
-                //export
-                var data = _.concat([header], values);
-
-                var dataStr = ',';
-                _.each(data, function(data) {
-                    dataStr += _.join(data, ',') + '\n';
-                });
-
-                var blob = new Blob([dataStr], { type: 'text/plain;charset=utf-8' });
-                saveAs(blob, 'data.csv');
-            };
-
-            $scope.exportDataJSON = function() {
-                var data = _.map($scope.data, function(data) {
+                var data = _.map(rawData, function(data) {
                     var values = _.map(data.values, function(data) {
                         return {
                             x: $scope.options.chart.x(data),
@@ -87,7 +62,35 @@ angular.module('app.common').directive('chartExport', function() {
                     };
                 });
 
-                var dataStr = angular.toJson(data, true);
+                return data;
+            };
+
+            $scope.exportDataCSV = function() {
+                var data = $scope.getData();
+
+                //values
+                var values = _.map(data, 'values');
+                values = _.zip.apply(_, values);
+                values = _.map(values, function(value) {
+                    return _.concat([value[0].x], _.map(value, 'y'));
+                });
+
+                //header
+                var header = _.map(data, 'key');
+
+                //export
+                var rows = _.concat([header], values);
+                var dataStr = ',';
+                _.each(rows, function(row) {
+                    dataStr += _.join(row, ',') + '\n';
+                });
+
+                var blob = new Blob([dataStr], { type: 'text/plain;charset=utf-8' });
+                saveAs(blob, 'data.csv');
+            };
+
+            $scope.exportDataJSON = function() {
+                var dataStr = angular.toJson($scope.getData(), true);
 
                 var blob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
                 saveAs(blob, 'data.json');
@@ -102,16 +105,18 @@ angular.module('app.common').directive('chartExport', function() {
                 var sheets = document.styleSheets;
                 for (var i = 0; i < sheets.length; i++) {
                     var rules = sheets[i].cssRules;
-                    for (var j = 0; j < rules.length; j++) {
-                        var rule = rules[j];
-                        if (!angular.isUndefined(rule.style)) {
-                            try {
-                                var elems = svg.querySelectorAll(rule.selectorText);
-                                if (elems.length > 0) {
-                                    styles += rule.selectorText + ' { ' + rule.style.cssText + ' }\n';
-                                }
-                            } catch (e) {
+                    if (rules) {
+                        for (var j = 0; j < rules.length; j++) {
+                            var rule = rules[j];
+                            if (!angular.isUndefined(rule.style)) {
+                                try {
+                                    var elems = svg.querySelectorAll(rule.selectorText);
+                                    if (elems.length > 0) {
+                                        styles += rule.selectorText + ' { ' + rule.style.cssText + ' }\n';
+                                    }
+                                } catch (e) {
 
+                                }
                             }
                         }
                     }
