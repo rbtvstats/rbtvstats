@@ -2,7 +2,7 @@ angular.module('app.viewer').config(function($stateProvider) {
     $stateProvider.state('viewer.videos.hosts.one', {
         url: '/:hostId',
         templateUrl: 'app/viewer/videos/hosts/hosts-one/hosts-one.html',
-        controller: function($scope, $state, $stateParams, StateSrv, ChartTemplatesSrv, NgTableParams, VideosSrv, HostsSrv, ShowsSrv) {
+        controller: function($scope, $state, $stateParams, NgTableParams, StateSrv, ChartTemplatesSrv, VideosSrv, HostsSrv, ShowsSrv) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['videos-data'];
 
@@ -67,6 +67,20 @@ angular.module('app.viewer').config(function($stateProvider) {
                     return video.stats.viewCount;
                 }));
 
+                //views quartiles
+                var videosByViews = _.orderBy($scope.videos, function(video) {
+                    return video.stats.viewCount;
+                });
+                $scope.stats.videosViewsQ1 = _.round(d3.quantile(videosByViews, 0.25, function(video) {
+                    return video.stats.viewCount;
+                }));
+                $scope.stats.videosViewsQ2 = _.round(d3.quantile(videosByViews, 0.5, function(video) {
+                    return video.stats.viewCount;
+                }));
+                $scope.stats.videosViewsQ3 = _.round(d3.quantile(videosByViews, 0.75, function(video) {
+                    return video.stats.viewCount;
+                }));
+
                 //no Co-hosts
                 $scope.stats.videosCohostsNone = _.filter($scope.videos, function(video) {
                     return video.hosts.length === 1;
@@ -74,20 +88,13 @@ angular.module('app.viewer').config(function($stateProvider) {
 
                 //Co-hosts
                 $scope.stats.videosCohosts = _($scope.videos)
-                    .map(function(video) {
+                    .groupByArray(function(video) {
                         return video.hosts;
                     })
-                    .flatten()
-                    .filter(function(hostId) {
-                        return hostId !== $scope.host.id;
-                    })
-                    .countBy(function(hostId) {
-                        return hostId;
-                    })
-                    .map(function(count, hostId) {
+                    .map(function(videos, hostId) {
                         return {
                             host: HostsSrv.findById(hostId),
-                            count: count
+                            count: videos.length
                         };
                     })
                     .value();
@@ -101,17 +108,13 @@ angular.module('app.viewer').config(function($stateProvider) {
 
                 //shows
                 $scope.stats.videosShows = _($scope.videos)
-                    .map(function(video) {
+                    .groupByArray(function(video) {
                         return video.shows;
                     })
-                    .flatten()
-                    .countBy(function(showId) {
-                        return showId;
-                    })
-                    .map(function(count, showId) {
+                    .map(function(videos, showId) {
                         return {
                             show: ShowsSrv.findById(showId),
-                            count: count
+                            count: videos.length
                         };
                     })
                     .value();

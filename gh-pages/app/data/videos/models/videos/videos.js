@@ -528,7 +528,7 @@ angular.module('app.data.videos').service('VideosSrv', function($filter, $q, Dat
 
     this.groupBy = function(videos, target) {
         return _(videos)
-            .groupBy(target)
+            .groupByArray(target)
             .map(function(videos, target) {
                 return {
                     target: target,

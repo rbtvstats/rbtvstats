@@ -83,6 +83,20 @@ angular.module('app.viewer').config(function($stateProvider) {
                     return video.stats.viewCount;
                 }));
 
+                //views quartiles
+                var videosByViews = _.orderBy($scope.videos, function(video) {
+                    return video.stats.viewCount;
+                });
+                $scope.stats.videosViewsQ1 = _.round(d3.quantile(videosByViews, 0.25, function(video) {
+                    return video.stats.viewCount;
+                }));
+                $scope.stats.videosViewsQ2 = _.round(d3.quantile(videosByViews, 0.5, function(video) {
+                    return video.stats.viewCount;
+                }));
+                $scope.stats.videosViewsQ3 = _.round(d3.quantile(videosByViews, 0.75, function(video) {
+                    return video.stats.viewCount;
+                }));
+
                 //hosts
                 $scope.stats.videosHosts = _($scope.videos)
                     .map(function(video) {

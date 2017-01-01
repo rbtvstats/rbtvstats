@@ -75,23 +75,32 @@
                         {{stats.videosViewsTotal | number}} Aufrufe
                     </div>
                     <div name="'Durchschnittliche Video Aufrufe'" form-element>
-                        {{stats.videosViewsMean | number}} Aufrufe pro Video
+                        {{stats.videosViewsMean | number}} Aufrufe
+                    </div>
+                    <div name="'Video Aufrufe Quartil 25%'" form-element>
+                        {{stats.videosViewsQ1 | number}} Aufrufe
+                    </div>
+                    <div name="'Video Aufrufe Quartil 50%'" form-element>
+                        {{stats.videosViewsQ2 | number}} Aufrufe
+                    </div>
+                    <div name="'Video Aufrufe Quartil 75%'" form-element>
+                        {{stats.videosViewsQ3 | number}} Aufrufe
                     </div>
                     <div name="'Video Anzahl mit Moderatoren'" form-element>
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-8">
+                                <input type="text" placeholder="Suche" class="form-control" ng-model="stats.videosHostsTable.filter().$">
+                            </div>
+                        </div>
                         <div class="table-container">
                             <table class="table table-hover list" ng-table="stats.videosHostsTable">
                                 <tr class="middle link" ui-sref="viewer.videos.hosts.one({hostId: data.host.id})" ng-repeat="data in $data">
-                                    <td width="130" title="'Video Anzahl'" data-sortable="'count'">
+                                    <td width="220" title="'Moderator'" data-sortable="'host.firstname'">
+                                        {{data.host.firstname}} {{data.host.lastname}}
+                                        <span ng-if="data.host.nickname">({{data.host.nickname}})</span>
+                                    </td>
+                                    <td title="'Video Anzahl'" data-sortable="'count'">
                                         {{data.count | number}}
-                                    </td>
-                                    <td title="'Vorname'" data-sortable="'host.firstname'">
-                                        {{data.host.firstname}}
-                                    </td>
-                                    <td title="'Nachname'" data-sortable="'host.lastname'">
-                                        {{data.host.lastname}}
-                                    </td>
-                                    <td title="'Spitzname'" data-sortable="'host.nickname'">
-                                        {{data.host.nickname}}
                                     </td>
                                 </tr>
                             </table>

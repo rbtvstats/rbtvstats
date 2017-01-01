@@ -45,7 +45,16 @@
                         {{stats.videosViewsTotal | number}} Aufrufe
                     </div>
                     <div name="'Durchschnittliche Video Aufrufe'" form-element>
-                        {{stats.videosViewsMean | number}} Aufrufe pro Video
+                        {{stats.videosViewsMean | number}} Aufrufe
+                    </div>
+                    <div name="'Video Aufrufe Quartil 25%'" form-element>
+                        {{stats.videosViewsQ1 | number}} Aufrufe
+                    </div>
+                    <div name="'Video Aufrufe Quartil 50%'" form-element>
+                        {{stats.videosViewsQ2 | number}} Aufrufe
+                    </div>
+                    <div name="'Video Aufrufe Quartil 75%'" form-element>
+                        {{stats.videosViewsQ3 | number}} Aufrufe
                     </div>
                 </div>
             </div>

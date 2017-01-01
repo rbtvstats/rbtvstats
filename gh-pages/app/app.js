@@ -175,6 +175,34 @@ angular.module('app').run(function($rootScope, amMoment, Notification, $parse) {
         return options;
     };
 
+    _.mixin({
+        groupByArray: function(collection, iteratee) {
+            iteratee = _.iteratee(iteratee);
+
+            var result = {};
+            var targets;
+            var target;
+            var i;
+            _.each(collection, function(value, key) {
+                targets = iteratee(value);
+                if (!angular.isArray(targets)) {
+                    targets = [targets];
+                }
+
+                for (i = 0; i < targets.length; i++) {
+                    target = targets[i];
+                    if (result.hasOwnProperty(target)) {
+                        result[target].push(value);
+                    } else {
+                        result[target] = [value];
+                    }
+                }
+            });
+
+            return result;
+        }
+    });
+
     var domainIcons = {
         'rocketbeans.tv': 'c-icon c-icon-bohne',
         'forum.rocketbeans.tv': 'c-icon c-icon-bohne',
@@ -193,6 +221,8 @@ angular.module('app').run(function($rootScope, amMoment, Notification, $parse) {
         if (subdomain) {
             domain = subdomain + '.' + domain;
         }
+
+        domain = domain.replace(/^www./, '');
 
         return domain;
     };

@@ -2,6 +2,9 @@
 
 .table {
     margin-bottom: 0;
+    &.table-no-wrap {
+        white-space: nowrap;
+    }
     &.list {
         min-width: 800px;
         thead {
@@ -82,9 +85,11 @@
 
 .card-content {
     > .card-content-body {
-        > .table,
         > .table-container {
-            margin: -5px -10px;
+            margin: 0 -10px;
+        }
+        > .table-pagination {
+            margin-top: 5px;
         }
     }
 }

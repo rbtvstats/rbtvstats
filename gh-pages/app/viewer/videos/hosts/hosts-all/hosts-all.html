@@ -4,4 +4,99 @@
         <div id="list" name="Liste" icon="fa-th-list" template="app/viewer/videos/hosts/hosts-all/hosts-all-list.html"></div>
         <div id="card" name="Kacheln" icon="fa-th-large" template="app/viewer/videos/hosts/hosts-all/hosts-all-card.html"></div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card-content">
+                <div class="card-content-header">
+                    Statistiken
+                </div>
+                <div class="card-content-body form-stats" form>
+                    <div name="'Gesamte Moderatoren Anzahl'" form-element>
+                        {{stats.hostsCountTotal | number}} Moderatoren
+                    </div>
+                    <div name="'Video Anzahl nach Moderatoren'" form-element>
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-8">
+                                <input type="text" placeholder="Suche" class="form-control" ng-model="stats.videosCountTable.filter().$">
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="table table-hover table-no-wrap list" ng-table="stats.videosCountTable">
+                                <tr class="middle link" ui-sref="viewer.videos.hosts.one({hostId: data.host.id})" ng-repeat="data in $data">
+                                    <td width="220" title="'Moderator'" data-sortable="'host.firstname'">
+                                        {{data.host.firstname}} {{data.host.lastname}}
+                                        <span ng-if="data.host.nickname">({{data.host.nickname}})</span>
+                                    </td>
+                                    <td title="'Gesamte Video Anzahl'" data-sortable="'stats.videosCountTotal'">
+                                        {{data.stats.videosCountTotal | number}} Videos
+                                    </td>
+                                    <td title="'Durchschnittliche Video Anzahl'" data-sortable="'stats.videosCountMean'">
+                                        {{data.stats.videosCountMean | number}} Videos pro Tag
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div align="'right'" table-pagination="stats.videosCountTable"></div>
+                    </div>
+                    <div name="'Video Laufzeit nach Moderatoren'" form-element>
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-8">
+                                <input type="text" placeholder="Suche" class="form-control" ng-model="stats.videosDurationTable.filter().$">
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="table table-hover table-no-wrap list" ng-table="stats.videosDurationTable">
+                                <tr class="middle link" ui-sref="viewer.videos.hosts.one({hostId: data.host.id})" ng-repeat="data in $data">
+                                    <td width="220" title="'Moderator'" data-sortable="'host.firstname'">
+                                        {{data.host.firstname}} {{data.host.lastname}}
+                                        <span ng-if="data.host.nickname">({{data.host.nickname}})</span>
+                                    </td>
+                                    <td title="'Gesamte Video Laufzeit'" data-sortable="'stats.videosDurationTotal'">
+                                        {{data.stats.videosDurationTotal | duration}}
+                                    </td>
+                                    <td title="'Durchschnittliche Video Laufzeit'" data-sortable="'stats.videosDurationMean'">
+                                        {{data.stats.videosDurationMean | duration}}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div align="'right'" table-pagination="stats.videosDurationTable"></div>
+                    </div>
+                    <div name="'Video Aufrufe nach Moderatoren'" form-element>
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-8">
+                                <input type="text" placeholder="Suche" class="form-control" ng-model="stats.videosViewsTable.filter().$">
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="table table-hover table-no-wrap list" ng-table="stats.videosViewsTable">
+                                <tr class="middle link" ui-sref="viewer.videos.hosts.one({hostId: data.host.id})" ng-repeat="data in $data">
+                                    <td width="220" title="'Moderator'" data-sortable="'host.firstname'">
+                                        {{data.host.firstname}} {{data.host.lastname}}
+                                        <span ng-if="data.host.nickname">({{data.host.nickname}})</span>
+                                    </td>
+                                    <td title="'Gesamte Video Aufrufe'" data-sortable="'stats.videosViewsTotal'">
+                                        {{data.stats.videosViewsTotal | number}} Aufrufe
+                                    </td>
+                                    <td title="'Durchschnittliche Video Aufrufe'" data-sortable="'stats.videosViewsMean'">
+                                        {{data.stats.videosViewsMean | number}} Aufrufe
+                                    </td>
+                                    <td title="'Quartil 25%'" data-sortable="'stats.videosViewsQ1'">
+                                        {{data.stats.videosViewsQ1 | number}} Aufrufe
+                                    </td>
+                                    <td title="'Quartil 50%'" data-sortable="'stats.videosViewsQ2'">
+                                        {{data.stats.videosViewsQ2 | number}} Aufrufe
+                                    </td>
+                                    <td title="'Quartil 75%'" data-sortable="'stats.videosViewsQ3'">
+                                        {{data.stats.videosViewsQ3 | number}} Aufrufe
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div align="'right'" table-pagination="stats.videosViewsTable"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

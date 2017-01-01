@@ -1,6 +1,7 @@
 angular.module('app.common').directive('tablePagination', function(ngTableEventsChannel) {
     return {
         restrict: 'A',
+        replace: true,
         scope: {
             tableParams: '=tablePagination',
             align: '='
