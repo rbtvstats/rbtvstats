@@ -97,6 +97,9 @@ angular.module('app.viewer').config(function($stateProvider) {
                             count: videos.length
                         };
                     })
+                    .filter(function(data) {
+                        return data.host.id !== $scope.host.id;
+                    })
                     .value();
 
                 $scope.stats.videosCohostsTable = new NgTableParams({
