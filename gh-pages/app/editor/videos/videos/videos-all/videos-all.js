@@ -133,6 +133,10 @@ angular.module('app.editor').config(function($stateProvider) {
             };
 
             $scope.updateVideosAllUntil = function(date) {
+                if (angular.isNumber(date)) {
+                    date = date * 1000;
+                }
+
                 date = new Date(date);
 
                 function until(channel) {

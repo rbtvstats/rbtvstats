@@ -94,7 +94,7 @@
                         <div class="table-container">
                             <table class="table table-hover list" ng-table="stats.videosShowsTable">
                                 <tr class="middle link" ui-sref="viewer.videos.shows.one({showId: data.show.id})" ng-repeat="data in $data">
-                                    <td width="320" data-sortable="'show.name'">
+                                    <td width="320" title="'Format'" data-sortable="'show.name'">
                                         {{data.show.name}}
                                     </td>
                                     <td title="'Video Anzahl'" data-sortable="'count'">
