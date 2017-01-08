@@ -3,7 +3,7 @@ angular.module('app.viewer').config(function($stateProvider) {
         url: '/live/?from&to',
         templateUrl: 'app/viewer/live/live.html',
         reloadOnSearch: false,
-        controller: function($scope, $location, $stateParams, LiveDataSrv, $httpParamSerializer) {
+        controller: function($scope, $rootScope, $location, $state, $stateParams, LiveDataSrv, $httpParamSerializer) {
             $scope.initDelay = 50;
             $scope.initDependencies = ['live-metadata'];
 
@@ -14,17 +14,67 @@ angular.module('app.viewer').config(function($stateProvider) {
                 $scope.liveStats = null;
 
                 $scope.chart = $scope.chartVideosCount();
+
+                $scope.$watch('chart.options.dateRange.selected', function(newVal, oldVal) {
+                    if (!$scope.chart.options.dateRange.selected.start) {
+                        $scope.chart.options.dateRange.selected.start = $scope.chart.options.dateRange.minDate;
+                    }
+
+                    if (!$scope.chart.options.dateRange.selected.end) {
+                        $scope.chart.options.dateRange.selected.end = $scope.chart.options.dateRange.maxDate;
+                    }
+
+                    $state.transitionTo('viewer.live', {
+                        from: $scope.chart.options.dateRange.selected.start,
+                        to: $scope.chart.options.dateRange.selected.end
+                    });
+                }, true);
+
+                $scope.$on('$locationChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+                    $scope.chart.options.dateRange.selected.start = $stateParams.from && parseInt($stateParams.from);
+                    $scope.chart.options.dateRange.selected.end = $stateParams.to && parseInt($stateParams.to);
+                });
+            };
+
+            $rootScope.changeDate = function(num, type) {
+                var start = moment.unix($scope.chart.options.dateRange.selected.start);
+                var end = moment.unix($scope.chart.options.dateRange.selected.end);
+                var minDate = moment.unix($scope.chart.options.dateRange.minDate);
+                var maxDate = moment.unix($scope.chart.options.dateRange.maxDate);
+
+                if (num < 0) {
+                    num = Math.abs(num);
+                    start.subtract(num, type);
+                    end.subtract(num, type);
+                } else {
+                    start.add(num, type);
+                    end.add(num, type);
+                }
+
+                var diff = end.diff(start) / 1000;
+                if (start < minDate || end < minDate) {
+                    start = moment(minDate);
+                    end = moment(minDate).add(diff, 's');
+                }
+
+                if (start > maxDate || end > maxDate) {
+                    start = moment(maxDate).subtract(diff, 's');
+                    end = moment(maxDate);
+                }
+
+                $scope.chart.options.dateRange.selected.start = start.unix();
+                $scope.chart.options.dateRange.selected.end = end.unix();
             };
 
             $scope.chartVideosCount = function() {
                 var metadata = LiveDataSrv.metadata();
-                var latest = _.maxBy(metadata.files, function(file) {
-                    return file.end;
-                });
+                var earliest = _.minBy(metadata.files, 'start');
+                var latest = _.maxBy(metadata.files, 'end');
+                earliest = moment.unix(earliest.start);
                 latest = moment.unix(latest.end);
 
                 var from = moment(latest).subtract(24, 'h').unix();
-                var to = null;
+                var to = moment(latest).unix();
 
                 if (angular.isDefined($scope.from)) {
                     from = $scope.from;
@@ -61,34 +111,36 @@ angular.module('app.viewer').config(function($stateProvider) {
                             start: from,
                             end: to
                         },
+                        minDate: earliest.unix(),
+                        maxDate: latest.unix(),
                         ranges: [{
                             name: 'Letzten 8 Stunden',
                             start: moment(latest).subtract(8, 'h').unix(),
-                            end: null
+                            end: moment(latest).unix()
                         }, {
                             name: 'Letzten 24 Stunden',
                             start: moment(latest).subtract(24, 'h').unix(),
-                            end: null
+                            end: moment(latest).unix()
                         }, {
                             name: 'Letzten 7 Tage',
                             start: moment(latest).subtract(7, 'd').unix(),
-                            end: null
+                            end: moment(latest).unix()
                         }, {
                             name: 'Letzter Monat',
                             start: moment(latest).subtract(30, 'd').unix(),
-                            end: null
+                            end: moment(latest).unix()
                         }, {
                             name: 'Letzten 3 Monate',
                             start: moment(latest).subtract(3, 'M').unix(),
-                            end: null
+                            end: moment(latest).unix()
                         }, {
                             name: 'Letztes Jahr',
                             start: moment(latest).subtract(1, 'y').unix(),
-                            end: null
+                            end: moment(latest).unix()
                         }, {
                             name: 'Seit Sendestart',
                             start: 1421276400,
-                            end: null
+                            end: moment(latest).unix()
                         }]
                     },
                     title: {
@@ -101,11 +153,6 @@ angular.module('app.viewer').config(function($stateProvider) {
                     var start = options.dateRange.selected.start;
                     var end = options.dateRange.selected.end;
                     $scope.liveStats = null;
-
-                    $location.search({
-                        from: start,
-                        to: end
-                    });
 
                     return LiveDataSrv.loadRemote(start, end)
                         .then(function() {

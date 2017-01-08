@@ -1,6 +1,45 @@
 <div class="container-fluid animate-main-content" init>
     <div class="row">
         <div class="col-lg-12">
+            <div class="card-content">
+                <div class="card-content-header">
+                    <table width="100%">
+                        <tr>
+                            <td class="text-left">
+                                <button type="button" class="btn btn-default btn-xs" ng-click="changeDate(-1, 'M')">
+                                    <i class="fa fa-chevron-left"></i> 1M
+                                </button>
+                                <button type="button" class="btn btn-default btn-xs" ng-click="changeDate(-1, 'w')">
+                                    <i class="fa fa-chevron-left"></i> 1W
+                                </button>
+                                <button type="button" class="btn btn-default btn-xs" ng-click="changeDate(-1, 'd')">
+                                    <i class="fa fa-chevron-left"></i> 1T
+                                </button>
+                            </td>
+                            <td class="text-right">
+                                <button type="button" class="btn btn-default btn-xs" ng-click="changeDate(1, 'd')">
+                                    1T <i class="fa fa-chevron-right"></i>
+                                </button>
+                                <button type="button" class="btn btn-default btn-xs" ng-click="changeDate(1, 'w')">
+                                    1W <i class="fa fa-chevron-right"></i>
+                                </button>
+                                <button type="button" class="btn btn-default btn-xs" ng-click="changeDate(1, 'M')">
+                                    1M <i class="fa fa-chevron-right"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="live-daterange">
+                        {{chart.options.dateRange.selected.start | amFromUnix | amDateFormat:'LLLL'}}
+                        <span class="seperator">—</span>
+                        {{chart.options.dateRange.selected.end | amFromUnix | amDateFormat:'LLLL'}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
             <div options="chart.options" update="chart.update" chart></div>
         </div>
     </div>
@@ -15,20 +54,20 @@
                         {{liveStats.count | number}} Datenpunkte
                     </div>
                     <div name="'Ältester Datenpunkt'" form-element>
-                         <div>{{liveStats.start.time * 1000 | amDateFormat:'LLLL'}}</div>
-                         <div>{{liveStats.start.viewers | number}} Zuschauer</div>
+                        <div>{{liveStats.start.time | amFromUnix | amDateFormat:'LLLL'}}</div>
+                        <div>{{liveStats.start.viewers | number}} Zuschauer</div>
                     </div>
                     <div name="'Neuster Datenpunkt'" form-element>
-                         <div>{{liveStats.end.time * 1000 | amDateFormat:'LLLL'}}</div>
-                         <div>{{liveStats.end.viewers | number}} Zuschauer</div>
+                        <div>{{liveStats.end.time | amFromUnix | amDateFormat:'LLLL'}}</div>
+                        <div>{{liveStats.end.viewers | number}} Zuschauer</div>
                     </div>
                     <div name="'Minimum'" form-element>
-                         <div>{{liveStats.min.time * 1000 | amDateFormat:'LLLL'}}</div>
-                         <div>{{liveStats.min.viewers | number}} Zuschauer</div>
+                        <div>{{liveStats.min.time | amFromUnix | amDateFormat:'LLLL'}}</div>
+                        <div>{{liveStats.min.viewers | number}} Zuschauer</div>
                     </div>
                     <div name="'Maximum'" form-element>
-                         <div>{{liveStats.max.time * 1000 | amDateFormat:'LLLL'}}</div>
-                         <div>{{liveStats.max.viewers | number}} Zuschauer</div>
+                        <div>{{liveStats.max.time | amFromUnix | amDateFormat:'LLLL'}}</div>
+                        <div>{{liveStats.max.viewers | number}} Zuschauer</div>
                     </div>
                     <div name="'Durchschnitt'" form-element>
                         {{liveStats.mean | number}} Zuschauer
