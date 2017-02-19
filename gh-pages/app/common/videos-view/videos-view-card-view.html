@@ -34,7 +34,7 @@
                             <!-- series -->
                             <div class="series">
                                 <span ng-repeat="series in video.series | videosResolve:'series' | orderBy">
-                                    <a ng-href="#/videos/series/{{series.id}}" data-title="{{series.name}}" data-animation="badge-zoom-tooltip" bs-tooltip touch-tooltip>
+                                    <a ng-href="#/videos/shows/{{series.show}}/{{series.id}}" data-title="{{series.name}}" data-animation="badge-zoom-tooltip" bs-tooltip touch-tooltip>
                                         <img class="image-badge image-badge-md badge-zoom" img-src="{{series.image}}" img-fallback="{{imagePlaceholders.series}}" img-loading="{{imagePlaceholders.series}}">
                                     </a>
                                 </span>
