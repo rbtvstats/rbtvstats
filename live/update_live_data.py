@@ -10,48 +10,54 @@ LIVE_DATA_DIR = 'live/'
 LIVE_METADATA_FILEPATH = 'live/metadata.json'
 
 def updateMetadata():
-    files = sorted(glob.glob(os.path.join(LIVE_DATA_DIR, '*.csv')))
+    streamsMetadata = []
+    streams = os.walk(LIVE_DATA_DIR).next()[1]
+    for stream in streams: 
+        files = sorted(glob.glob(os.path.join(LIVE_DATA_DIR, stream, '*.csv')))
 
-    #first entry
-    filepath = files[0]
-    firstDate = os.path.splitext(os.path.basename(filepath))[0]
-    firstTimestamp = 0
-    with open(filepath, 'r') as file:
-        firstEntry = file.readline()
-        firstTimestamp = int(firstEntry.split(',')[0])
-
-    #last entry
-    filepath = files[-1]
-    lastDate = os.path.splitext(os.path.basename(filepath))[0]
-    lastTimestamp = 0
-    with open(filepath, 'r') as file:
-        lastEntry = file.readlines()[-1]
-        lastTimestamp = int(lastEntry.split(',')[0])
-
-    #time
-    currentTimestamp = int(time.time())
-
-    #files
-    metadataFiles = []
-    totalSize = 0
-    for filepath in files:
+        #first entry
+        filepath = files[0]
+        firstDate = os.path.splitext(os.path.basename(filepath))[0]
+        firstTimestamp = 0
         with open(filepath, 'r') as file:
-            f = {}
-            f['filename'] = os.path.basename(filepath)
-            lines = file.readlines()
-            firstEntry = lines[0]
-            f['start'] = int(firstEntry.split(',')[0])
-            lastEntry = lines[-1]
-            f['end'] = int(lastEntry.split(',')[0])
-            metadataFiles.append(f)
-            totalSize += file.tell()
+            firstEntry = file.readline()
+            firstTimestamp = int(firstEntry.split(',')[0])
 
-    metadataFiles.sort(key=lambda f: f['start'])
+        #last entry
+        filepath = files[-1]
+        lastDate = os.path.splitext(os.path.basename(filepath))[0]
+        lastTimestamp = 0
+        with open(filepath, 'r') as file:
+            lastEntry = file.readlines()[-1]
+            lastTimestamp = int(lastEntry.split(',')[0])
+
+        #files
+        metadataFiles = []
+        for filepath in files:
+            with open(filepath, 'r') as file:
+                f = {}
+                f['filename'] = os.path.basename(filepath)
+                lines = file.readlines()
+                firstEntry = lines[0]
+                f['start'] = int(firstEntry.split(',')[0])
+                lastEntry = lines[-1]
+                f['end'] = int(lastEntry.split(',')[0])
+                metadataFiles.append(f)
+
+        metadataFiles.sort(key=lambda f: f['start'])
+
+        #metadata
+        with open(os.path.join(LIVE_DATA_DIR, stream, 'metadata.json'), 'r') as file:    
+            metadata = json.load(file)
+
+        metadata['directory'] = stream
+        metadata['files'] = metadataFiles
+
+        streamsMetadata.append(metadata)
 
     metadata = {}
-    metadata['update'] = currentTimestamp
-    metadata['files'] = metadataFiles
-    metadata['size'] = totalSize
+    metadata['update'] = int(time.time())
+    metadata['streams'] = streamsMetadata
 
     filepath = LIVE_METADATA_FILEPATH
     with open(filepath, 'w') as file:

@@ -1,2 +1,3 @@
-* * * * * /home/marcel/rbtv/rbtvstats/live/get_live_data.py
+* * * * * /home/marcel/rbtv/rbtvstats/live/get_live_data_youtube.py
+* * * * * /home/marcel/rbtv/rbtvstats/live/get_live_data_twitch.py
 0 * * * * /home/marcel/rbtv/rbtvstats/live/update_live_data.py
