@@ -13,7 +13,7 @@ angular.module('app.viewer').config(function($stateProvider) {
                 $scope.live = LiveDataSrv.all();
                 $scope.liveStats = null;
 
-                $scope.chart = $scope.chartVideosCount();
+                $scope.chart = $scope.chartLiveViewers();
 
                 $scope.$watch('chart.options.dateRange.selected', function(newVal, oldVal) {
                     if (!$scope.chart.options.dateRange.selected.start) {
@@ -66,10 +66,11 @@ angular.module('app.viewer').config(function($stateProvider) {
                 $scope.chart.options.dateRange.selected.end = end.unix();
             };
 
-            $scope.chartVideosCount = function() {
+            $scope.chartLiveViewers = function() {
                 var metadata = LiveDataSrv.metadata();
-                var earliest = _.minBy(metadata.files, 'start');
-                var latest = _.maxBy(metadata.files, 'end');
+                var files = _(metadata.streams).map('files').flatten().value();
+                var earliest = _.minBy(files, 'start');
+                var latest = _.maxBy(files, 'end');
                 earliest = moment.unix(earliest.start);
                 latest = moment.unix(latest.end);
 
@@ -88,7 +89,7 @@ angular.module('app.viewer').config(function($stateProvider) {
                     chart: {
                         type: 'stackedAreaChart',
                         interpolate: 'linear',
-                        showLegend: false,
+                        showLegend: true,
                         xAxis: {
                             axisLabel: 'Datum',
                             tickFormatAutoDate: true
@@ -156,29 +157,35 @@ angular.module('app.viewer').config(function($stateProvider) {
 
                     return LiveDataSrv.loadRemote(start, end)
                         .then(function() {
-                            var data = LiveDataSrv.filter($scope.live, start, end);
+                            var live = { Youtube: $scope.live['Youtube'] }; //TODO
 
-                            var maxDatapoints = 3000;
-                            var numDatapoints = data.length;
-                            var step = 1;
+                            var d = _.map(live, function(data, id) {
+                                data = LiveDataSrv.filter(data, start, end);
 
-                            if (numDatapoints > maxDatapoints) {
-                                step = Math.floor(numDatapoints / maxDatapoints);
-                            }
+                                var maxDatapoints = 3000;
+                                var numDatapoints = data.length;
+                                var step = 1;
 
-                            var values = [];
-                            for (var i = 0; i < numDatapoints; i += step) {
-                                var d = data[i];
-                                values.push({ x: d.time, y: d.viewers });
-                            }
+                                if (numDatapoints > maxDatapoints) {
+                                    step = Math.floor(numDatapoints / maxDatapoints);
+                                }
 
-                            $scope.liveStats = $scope.updateStats(data);
+                                var values = [];
+                                for (var i = 0; i < numDatapoints; i += step) {
+                                    var d = data[i];
+                                    values.push({ x: d.time, y: d.viewers });
+                                }
 
-                            return {
-                                key: 'Live Zuschauer',
-                                columns: { x: 'time', y: 'viewers' },
-                                values: values
-                            };
+                                $scope.liveStats = $scope.updateStats(data);
+
+                                return {
+                                    key: id,
+                                    columns: { x: 'time', y: 'viewers' },
+                                    values: values
+                                };
+                            });
+
+                            return d;
                         });
                 }
 
